@@ -1,5 +1,6 @@
 package pl.coderstrust.accounting.model;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -23,10 +24,11 @@ public class Invoice {
     return id;
   }
 
-  public void getNetValue() {
+  public BigDecimal getNetValue() {
     for (InvoiceEntry entry : entries) {
 
     }
+    return BigDecimal.valueOf(4);
   }
   //"podzo" classa bez logiki
 }

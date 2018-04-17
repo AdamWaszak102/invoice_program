@@ -21,7 +21,12 @@ public class InMemoryDatabase implements Database {
   }
 
   @Override
-  public Collection<Invoice> getInvoice() {
+  public Collection<Invoice> getInvoices() {
+    return invoices.values();
+  }
+
+  @Override
+  public Collection<Invoice> getInvoiceById() {
     return invoices.values();
   }
 
@@ -33,7 +38,7 @@ public class InMemoryDatabase implements Database {
   }
 
   @Override
-  public void removeInvoice(int id) {
+  public void removeInvoiceById(int id) {
     invoices.remove(id);
 
   }

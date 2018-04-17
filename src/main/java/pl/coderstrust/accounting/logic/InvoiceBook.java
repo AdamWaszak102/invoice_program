@@ -12,7 +12,7 @@ import java.util.Collection;
 public class InvoiceBook {
 
   private Database database;
-  /*ciezko przetestowacwiec lepiej wygenerowac konstruktor, jest ponizej.podpowiedz tak jak
+  /*ciezko przetestowac wiec lepiej wygenerowac konstruktor, jest ponizej.podpowiedz tak jak
    w numbersFromFile.*/
 
   public InvoiceBook(Database database) {
@@ -29,15 +29,19 @@ najwazniejsza klasa na przyszlosc*/
     }
   }
 
-  public Collection<Invoice> getInvoice() {
+  public Collection<Invoice> getInvoices() {
     return Arrays.asList();
-    //tu wołamy get
   }
+
+  public Collection<Invoice> getInvoiceById() {
+    return Arrays.asList();
+  }
+  //tu wołamy get
 
   public void updateInvoice(Invoice invoice) {
   }
 
-  public void removeInvoice(int id) {
+  public void removeInvoiceById(int id) {
 
   }
 
