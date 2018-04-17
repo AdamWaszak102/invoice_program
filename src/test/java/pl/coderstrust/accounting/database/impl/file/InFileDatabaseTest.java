@@ -15,7 +15,7 @@ public class InFileDatabaseTest extends DatabaseTest {
   }
 
   @Test
-  public void ShouldCreateFileWhenInvoiceAdded() {
+  public void shouldCreateFileWhenInvoiceAdded() {
     new InFileDatabaseTest();
   }
   //tu potrzeba wiecej testow

@@ -12,33 +12,33 @@ import java.util.Collection;
 public class InvoiceBook {
 
   private Database database;
-  //ciezko przetestowacwiec lepiej wygenerowac konstruktor, jest ponizej.podpowiedz tak jak w numbersFromFile.
+  /*ciezko przetestowacwiec lepiej wygenerowac konstruktor, jest ponizej.podpowiedz tak jak
+   w numbersFromFile.*/
 
   public InvoiceBook(Database database) {
     this.database = database;
   }
 
-  // w przyszlosci invoiceService ---> kiedy bedzie spring
-//najwazniejsza klasa na przyszlosc
+  /* w przyszlosci invoiceService ---> kiedy bedzie spring
+najwazniejsza klasa na przyszlosc*/
   public void saveInvoice(Invoice invoice) {
     if (invoice.getId() != null) {
       database.saveInvoice(invoice);
-      //uzywamy interfejsu by clasa invoiceBook mogla dzialac z kazda baza.
-      //tu wolamy save
+      /*uzywamy interfejsu by clasa invoiceBook mogla dzialac z kazda baza.
+      tu wolamy save*/
     }
   }
 
   public Collection<Invoice> getInvoice() {
     return Arrays.asList();
-    //tu wolamy get
+    //tu wołamy get
   }
 
   public void updateInvoice(Invoice invoice) {
-// tu wolamy update
   }
 
   public void removeInvoice(int id) {
-// tu wolamy remove
+
   }
 
 }

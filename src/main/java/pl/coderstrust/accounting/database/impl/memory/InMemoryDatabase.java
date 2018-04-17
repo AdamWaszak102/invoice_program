@@ -28,7 +28,7 @@ public class InMemoryDatabase implements Database {
   @Override
   public void updateInvoice(Invoice invoice) {
     invoices.put(invoice.getId(), invoice);
-    /*todo: sprawdzic na testach czy dziala, wezmie nowa wartosc
+    /* sprawdzic na testach czy dziala, wezmie nowa wartosc
     czy zostawi stara.*/
   }
 
