@@ -8,7 +8,6 @@ public class Company {
   private String nameCompany;
   private String adress;
   private int taxIdentificationNumber;
-  private String nip;
 
   public String getNameCompany() {
     return nameCompany;
@@ -32,13 +31,5 @@ public class Company {
 
   public void setTaxIdentificationNumber(int taxIdentificationNumber) {
     this.taxIdentificationNumber = taxIdentificationNumber;
-  }
-
-  public String getNip() {
-    return nip;
-  }
-
-  public void setNip(String nip) {
-    this.nip = nip;
   }
 }
