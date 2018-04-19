@@ -13,10 +13,9 @@ public interface Database {
 
   Collection<Invoice> getInvoices();
 
-  Collection<Invoice> getInvoiceById();
+  Invoice getInvoiceById(Long id);
 
   void updateInvoice(Invoice invoice);
 
-  void removeInvoiceById(int id);
-
+  void removeInvoiceById(Long id);
 }

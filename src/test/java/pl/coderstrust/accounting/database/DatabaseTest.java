@@ -15,7 +15,7 @@ public abstract class DatabaseTest {
   public void shouldReturn2InvoicesWhen2InvoicesWereAdded() {
     Database db = getDatabase();
 
-    db.saveInvoice(new Invoice());
+    db.saveInvoice(new Invoice(null,null,null,null,null,null));
     //dalej asercje
   }
 }

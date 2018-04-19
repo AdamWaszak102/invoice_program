@@ -21,7 +21,7 @@ public class InFileDatabase implements Database {
   }
 
   @Override
-  public Collection<Invoice> getInvoiceById() {
+  public Invoice getInvoiceById(Long id) {
     return null;
   }
 
@@ -31,7 +31,6 @@ public class InFileDatabase implements Database {
   }
 
   @Override
-  public void removeInvoiceById(int id) {
-
+  public void removeInvoiceById(Long id) {
   }
 }

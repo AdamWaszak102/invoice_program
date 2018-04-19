@@ -5,24 +5,24 @@ package pl.coderstrust.accounting.model;
  */
 public class Company {
 
-  private String nameCompany;
-  private String adress;
+  private String companyName;
+  private String address;
   private int taxIdentificationNumber;
 
-  public String getNameCompany() {
-    return nameCompany;
+  public String getcompanyName() {
+    return companyName;
   }
 
-  public void setNameCompany(String nameCompany) {
-    this.nameCompany = nameCompany;
+  public void setcompanyName(String nameCompany) {
+    this.companyName = nameCompany;
   }
 
-  public String getAdress() {
-    return adress;
+  public String getAddress() {
+    return address;
   }
 
-  public void setAdress(String adress) {
-    this.adress = adress;
+  public void setAddress(String address) {
+    this.address = address;
   }
 
   public int getTaxIdentificationNumber() {

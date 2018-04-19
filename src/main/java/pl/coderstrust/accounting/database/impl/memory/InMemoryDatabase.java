@@ -12,12 +12,11 @@ import java.util.Map;
  */
 public class InMemoryDatabase implements Database {
 
-  private final Map<Integer, Invoice> invoices = new HashMap<>();
+  private final Map<Long, Invoice> invoices = new HashMap<>();
 
   @Override
   public void saveInvoice(Invoice invoice) {
     invoices.put(invoice.getId(), invoice);
-
   }
 
   @Override
@@ -26,20 +25,17 @@ public class InMemoryDatabase implements Database {
   }
 
   @Override
-  public Collection<Invoice> getInvoiceById() {
-    return invoices.values();
+  public Invoice getInvoiceById(Long id) {
+    return invoices.get(id);
   }
 
   @Override
   public void updateInvoice(Invoice invoice) {
     invoices.put(invoice.getId(), invoice);
-    /* sprawdzic na testach czy dziala, wezmie nowa wartosc
-    czy zostawi stara.*/
   }
 
   @Override
-  public void removeInvoiceById(int id) {
+  public void removeInvoiceById(Long id) {
     invoices.remove(id);
-
   }
 }
