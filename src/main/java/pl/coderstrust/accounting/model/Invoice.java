@@ -8,25 +8,49 @@ import java.util.List;
  */
 public class Invoice {
 
-  private int id;
+  private Long id;
   private String identifier;
-
   private LocalDate issueDate;
-
   private Company buyer;
   private Company seller;
-
   private List<InvoiceEntry> entries;
 
+  public Invoice(Long id, String identifier, LocalDate issueDate,
+      Company buyer, Company seller,
+      List<InvoiceEntry> entries) {
+    this.id = id;
+    this.identifier = identifier;
+    this.issueDate = issueDate;
+    this.buyer = buyer;
+    this.seller = seller;
+    this.entries = entries;
+  }
 
-  public Integer getId() {
+  public String getIdentifier() {
+    return identifier;
+  }
+
+  public LocalDate getIssueDate() {
+    return issueDate;
+  }
+
+  public Company getBuyer() {
+    return buyer;
+  }
+
+  public Company getSeller() {
+    return seller;
+  }
+
+  public List<InvoiceEntry> getEntries() {
+    return entries;
+  }
+
+  public Long getId() {
     return id;
   }
 
-  public void getNetValue() {
-    for (InvoiceEntry entry : entries) {
-
-    }
+  public Long removeInvoiceById() {
+    return id;
   }
-  //"podzo" classa bez logiki
 }

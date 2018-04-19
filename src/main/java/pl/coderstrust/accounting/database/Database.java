@@ -11,10 +11,11 @@ public interface Database {
 
   void saveInvoice(Invoice invoice);
 
-  Collection<Invoice> getInvoice();
+  Collection<Invoice> getInvoices();
+
+  Invoice getInvoiceById(Long id);
 
   void updateInvoice(Invoice invoice);
 
-  void removeInvoice(int id);
-
+  void removeInvoiceById(Long id);
 }

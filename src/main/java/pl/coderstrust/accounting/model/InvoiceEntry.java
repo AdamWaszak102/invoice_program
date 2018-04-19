@@ -8,12 +8,36 @@ import java.math.BigDecimal;
 public class InvoiceEntry {
 
   private String description;
-
-  private BigDecimal price = BigDecimal.valueOf(4);
-
+  private BigDecimal price;
   private Vat vat;
 
-  public BigDecimal getGross() {
-    return price.multiply(BigDecimal.valueOf(vat.getPrice()));
+  public InvoiceEntry(String description, BigDecimal price, Vat vat) {
+    this.description = description;
+    this.price = price;
+    this.vat = vat;
+  }
+
+  public String getDescription() {
+    return description;
+  }
+
+  public void setDescription(String description) {
+    this.description = description;
+  }
+
+  public BigDecimal getPrice() {
+    return price;
+  }
+
+  public void setPrice(BigDecimal price) {
+    this.price = price;
+  }
+
+  public Vat getVat() {
+    return vat;
+  }
+
+  public void setVat(Vat vat) {
+    this.vat = vat;
   }
 }
