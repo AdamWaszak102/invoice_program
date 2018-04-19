@@ -9,6 +9,8 @@ import java.util.Collection;
  * Created by Adam on 2018-04-16.
  */
 public class InFileDatabase implements Database {
+// otwiera plik pisze cos w pliku, wyszukuje cos w pliku
+  private FileHelper fileHelper;
 
   @Override
   public void saveInvoice(Invoice invoice) {
