@@ -3,8 +3,6 @@ package pl.coderstrust.accounting.logic;
 import pl.coderstrust.accounting.database.Database;
 import pl.coderstrust.accounting.model.Invoice;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 
 /**
@@ -27,17 +25,11 @@ public class InvoiceBook {
   }
 
   public Collection<Invoice> getInvoices() {
-    if (getInvoices() != null) {
-      database.getInvoices();
-    }
-    return Arrays.asList();
+    return database.getInvoices();
   }
 
-  public Invoice getInvoiceById() {
-    if (getInvoiceById() != null) {
-      database.removeInvoiceById(null);
-    }
-    return null;
+  public Invoice getInvoiceById(Long id) {
+    return database.getInvoiceById(id);
   }
 
   public void updateInvoice(Invoice invoice) {
@@ -47,8 +39,6 @@ public class InvoiceBook {
   }
 
   public void removeInvoiceById(Long id) {
-    if (getInvoiceById().removeInvoiceById() != null) {
-      database.removeInvoiceById(id);
-    }
+    database.removeInvoiceById(id);
   }
 }

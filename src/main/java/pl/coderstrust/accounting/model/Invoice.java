@@ -49,8 +49,4 @@ public class Invoice {
   public Long getId() {
     return id;
   }
-
-  public Long removeInvoiceById() {
-    return id;
-  }
 }
