@@ -13,8 +13,8 @@ public class Company {
     return companyName;
   }
 
-  public void setcompanyName(String nameCompany) {
-    this.companyName = nameCompany;
+  public void setcompanyName(String companyName) {
+    this.companyName = companyName;
   }
 
   public String getAddress() {

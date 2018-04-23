@@ -17,4 +17,3 @@ public enum Vat {
     this.vatValue = vatValue;
   }
 }
-//fixme: zmienic na zmienno przecinkowe.
