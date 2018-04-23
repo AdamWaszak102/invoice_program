@@ -25,6 +25,7 @@ public class Invoice {
     this.seller = seller;
     this.entries = entries;
   }
+  public Invoice(){};
 
   public String getIdentifier() {
     return identifier;
@@ -50,7 +51,4 @@ public class Invoice {
     return id;
   }
 
-  public Long removeInvoiceById() {
-    return id;
-  }
 }
