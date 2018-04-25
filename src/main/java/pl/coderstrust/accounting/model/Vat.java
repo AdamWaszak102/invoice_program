@@ -13,7 +13,14 @@ public enum Vat {
 
   private BigDecimal vatValue;
 
-  Vat(BigDecimal vatValue) {
+  private Vat(BigDecimal vatValue) {
     this.vatValue = vatValue;
   }
+
+  BigDecimal forCheckValue(int vatValue) { //only for tests
+    return BigDecimal.valueOf(vatValue);
+  }
+
+
+
 }

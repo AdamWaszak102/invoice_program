@@ -1,9 +1,72 @@
 package pl.coderstrust.accounting.logic;
 
-/**
- * Created by Adam on 2018-04-17.
- */
+import static org.mockito.Mockito.verify;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
+import pl.coderstrust.accounting.database.Database;
+import pl.coderstrust.accounting.model.Invoice;
+
+@RunWith(MockitoJUnitRunner.class)
 public class InvoiceBookTest {
-  //testy z mokiem, mozna inaczej ale tak mamy robic.
+
+  @Mock
+  Database database;
+
+  @Mock
+  Invoice invoice;
+
+  @InjectMocks
+  InvoiceBook invoiceBook;
+
+  @Test
+  public void shouldSaveInvoice() {
+    //given
+    //when
+    invoiceBook.saveInvoice(invoice);
+    //then
+    verify(database).saveInvoice(invoice);
+  }
+
+  @Test
+  public void shouldUpdateInvoice() {
+    //given
+    //when
+    invoiceBook.updateInvoice(invoice);
+    //then
+    verify(database).updateInvoice(invoice);
+  }
+
+  @Test
+  public void shouldRemoveInvoiceById() {
+    //given
+    Long id = 1L;
+    //when
+    invoiceBook.removeInvoiceById(id);
+    //then
+    verify(database).removeInvoiceById(id);
+  }
+
+  @Test
+  public void shouldGetInvoiceById() {
+    //given
+    Long id = 1L;
+    //when
+    invoiceBook.getInvoiceById(id);
+    //then
+    verify(database).getInvoiceById(id);
+  }
+
+  @Test
+  public void shouldGetInvoices() {
+    //given
+    //when
+    invoiceBook.getInvoices();
+    //then
+    verify(database).getInvoices();
+  }
 
 }
