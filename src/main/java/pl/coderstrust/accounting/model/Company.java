@@ -7,13 +7,13 @@ public class Company {
 
   private String companyName;
   private String address;
-  private int taxIdentificationNumber;
+  private Long taxIdentificationNumber;
 
-  public String getcompanyName() {
+  public String getCompanyName() {
     return companyName;
   }
 
-  public void setcompanyName(String companyName) {
+  public void setCompanyName(String companyName) {
     this.companyName = companyName;
   }
 
@@ -25,11 +25,11 @@ public class Company {
     this.address = address;
   }
 
-  public int getTaxIdentificationNumber() {
+  public Long getTaxIdentificationNumber() {
     return taxIdentificationNumber;
   }
 
-  public void setTaxIdentificationNumber(int taxIdentificationNumber) {
+  public void setTaxIdentificationNumber(Long taxIdentificationNumber) {
     this.taxIdentificationNumber = taxIdentificationNumber;
   }
 }

@@ -1,25 +1,25 @@
 package pl.coderstrust.accounting.database.impl.file;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import pl.coderstrust.accounting.database.Database;
+import pl.coderstrust.accounting.model.Invoice;
+import pl.coderstrust.accounting.model.InvoiceProvider;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 
 public class Main {
 
-  public static void main(String[] args) throws IOException {
-//    Invoice invoice = new Invoice(1L, "234",  LocalDate.of(2015, 1, 1),"Ah", "Wa","{\"name\":\"Antek\",\"age\":20}" );
-    ObjectMapper mapper = new ObjectMapper();
-    Inv obj = new Inv();
-//    Invoice obj = new Invoice();
-
-    mapper.writeValue(new FileWriter("file.json", true), obj);
-
-//    System.lineSeparator();
-//  String jsonInString = mapper.writeValueAsString(obj);System.getProperty("line.separator") +
-
-    Inv obj2 = mapper.readValue(new File("file.json"), Inv.class);
-    System.out.println(obj2.toString());
+  public static void main(String[] args){
+    FileHelper fileHelper = new FileHelper();
+    JsonHelper jsonHelper = new JsonHelper();
+    Configuration configuration = new Configuration();
+    configuration.setFileName("allInvoices.json");
+    Invoice obj00 = new InvoiceProvider().InvoiceOne();
+    Invoice obj01 = new InvoiceProvider().InvoiceTwo();
+    Invoice obj02 = new InvoiceProvider().InvoiceThree();
+    Database db = new InFileDatabase(fileHelper, jsonHelper, configuration);
+    db.saveInvoice(obj02);
+    List<Invoice> invoicesExamples = Arrays.asList(obj00, obj01, obj02);
+    db.saveListOfInvoices(invoicesExamples);
   }
 }

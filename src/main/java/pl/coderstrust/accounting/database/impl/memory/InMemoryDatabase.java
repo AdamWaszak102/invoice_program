@@ -5,6 +5,7 @@ import pl.coderstrust.accounting.model.Invoice;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -13,10 +14,18 @@ import java.util.Map;
 public class InMemoryDatabase implements Database {
 
   private final Map<Long, Invoice> invoices = new HashMap<>();
+  private Long id = 0L;
 
   @Override
   public void saveInvoice(Invoice invoice) {
-    invoices.put(invoice.getId(), invoice);
+    invoice.setId(id);
+    invoices.put(id++, invoice);
+  }
+  @Override
+  public void saveListOfInvoices(List<Invoice> invoicesListName){
+    for (Invoice invoice: invoicesListName){
+      saveInvoice(invoice);
+    }
   }
 
   @Override

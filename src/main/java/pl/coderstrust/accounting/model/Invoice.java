@@ -8,6 +8,10 @@ import java.util.List;
  */
 public class Invoice {
 
+  public void setId(Long id) {
+    this.id = id;
+  }
+
   private Long id;
   private String identifier;
   private LocalDate issueDate;
