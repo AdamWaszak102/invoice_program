@@ -12,7 +12,7 @@ import java.util.List;
 
 public class TestInvoiceProvider {
 
-  public Invoice InvoiceOne() {
+  public static Invoice invoiceOne() {
     Company seller = new Company();
     seller.setcompanyName("Abracodeabra");
     seller.setTaxIdentificationNumber(5213344000L);
@@ -29,7 +29,7 @@ public class TestInvoiceProvider {
     return invoice;
   }
 
-  public Invoice InvoiceTwo() {
+  public static Invoice invoiceTwo() {
     Company seller = new Company();
     seller.setcompanyName("Manta");
     seller.setTaxIdentificationNumber(5213345000L);
@@ -47,7 +47,7 @@ public class TestInvoiceProvider {
     return invoice;
   }
 
-  public Invoice InvoiceThree() {
+  public static Invoice invoiceThree() {
     Company seller = new Company();
     seller.setcompanyName("Proactive Investment Sp. z o.o.");
     seller.setTaxIdentificationNumber(5218774000L);

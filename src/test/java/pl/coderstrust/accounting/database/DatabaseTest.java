@@ -1,29 +1,31 @@
 package pl.coderstrust.accounting.database;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertNotNull;
+import static pl.coderstrust.accounting.model.TestInvoiceProvider.invoiceOne;
+import static pl.coderstrust.accounting.model.TestInvoiceProvider.invoiceThree;
+import static pl.coderstrust.accounting.model.TestInvoiceProvider.invoiceTwo;
 
 import org.junit.Test;
 import pl.coderstrust.accounting.model.Invoice;
-import pl.coderstrust.accounting.model.TestInvoiceProvider;
 
 public abstract class DatabaseTest {
 
   protected abstract Database getDatabase();
 
-//  @Test // ???
-//  public void shouldReturn2InvoicesWhen2InvoicesWereAdded() {
-//    Database db = getDatabase();
-//
-//    db.saveInvoice(new Invoice(null,null,null,null,null,null));
-//  //  Assert.assertEquals(0, db.getInvoices().size());
-//  }
+  @Test
+  public void shouldReturn2InvoicesWhen2InvoicesWereAdded() {
+    Database db = getDatabase();
 
-  @Test   //?????? NULL!
+    db.saveInvoice(new Invoice(null, null, null, null, null, null));
+    assertEquals(1, db.getInvoices().size());
+  }
+
+  @Test
   public void shouldSaveTwoInvoices() {
     //given
-    Invoice invoiceProviderOne = new TestInvoiceProvider().InvoiceOne();
-    Invoice invoiceProviderTwo = new TestInvoiceProvider().InvoiceTwo();
+    Invoice invoiceProviderOne = invoiceOne();
+    Invoice invoiceProviderTwo = invoiceTwo();
     Database db = getDatabase();
 
     //when
@@ -32,16 +34,15 @@ public abstract class DatabaseTest {
 
     //then
     assertEquals(2, db.getInvoices().size());
-    assertNull(db.getInvoices());
+    assertNotNull(db.getInvoices());
   }
-
 
   @Test
   public void shouldCheckIdNumbers() {
     //given
-    Invoice invoiceProviderOne = new TestInvoiceProvider().InvoiceOne();
-    Invoice invoiceProviderTwo = new TestInvoiceProvider().InvoiceTwo();
-    Invoice invoiceProviderThree = new TestInvoiceProvider().InvoiceThree();
+    Invoice invoiceProviderOne = invoiceOne();
+    Invoice invoiceProviderTwo = invoiceTwo();
+    Invoice invoiceProviderThree = invoiceThree();
     Database db = getDatabase();
 
     //when
@@ -58,18 +59,33 @@ public abstract class DatabaseTest {
     assertEquals(2L, idThree);
   }
 
-  @Test   //?????? NULL!
+  @Test
   public void shouldSaveAndRemoveOneInvoice() {
     //given
-    Invoice invoiceProviderOne = new TestInvoiceProvider().InvoiceOne();
+    Invoice invoiceProviderOne = invoiceOne();
     Database db = getDatabase();
 
     //when
     db.saveInvoice(invoiceProviderOne);
+    db.removeInvoiceById(0L);
 
     //then
-  //  assertEquals(0, db.getInvoices().size());
-    assertNull(db.getInvoices());
+    assertEquals(0, db.getInvoices().size());
+  }
+
+  @Test
+  public void shouldGetInvoiceById() {
+    //given
+    Invoice invoiceProviderOne = invoiceOne();
+    Database db = getDatabase();
+    Long id = 0L;
+    db.saveInvoice(invoiceProviderOne);
+
+    //when
+    Object actual = db.getInvoiceById(id);
+
+    //then
+    assertEquals(invoiceProviderOne, actual);
   }
 
 }

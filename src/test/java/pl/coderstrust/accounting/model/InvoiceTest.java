@@ -1,6 +1,9 @@
 package pl.coderstrust.accounting.model;
 
-import org.junit.Assert;
+import static org.junit.Assert.assertEquals;
+import static pl.coderstrust.accounting.model.TestInvoiceProvider.invoiceOne;
+import static pl.coderstrust.accounting.model.TestInvoiceProvider.invoiceTwo;
+
 import org.junit.Test;
 
 import java.math.BigDecimal;
@@ -10,8 +13,8 @@ import java.util.List;
 
 public class InvoiceTest {
 
-  Invoice invoiceProviderOne = new TestInvoiceProvider().InvoiceOne();
-  Invoice invoiceProviderTwo = new TestInvoiceProvider().InvoiceTwo();
+  Invoice invoiceProviderOne = invoiceOne();
+  Invoice invoiceProviderTwo = invoiceTwo();
 
   @Test
   public void shouldGetIssueDate() {
@@ -20,7 +23,7 @@ public class InvoiceTest {
     //when
     LocalDate actual = invoiceProviderTwo.getIssueDate();
     //then
-    Assert.assertEquals(expected, actual);
+    assertEquals(expected, actual);
   }
 
   @Test
@@ -30,6 +33,7 @@ public class InvoiceTest {
     expected.add("microscope");
     expected.add(String.valueOf(BigDecimal.valueOf(1000)));
     expected.add("VAT_23");
+
     //when
 //    List<String> actual = invoiceProviderOne.getEntries();
 //    Assert.assertEquals(expected, actual);
