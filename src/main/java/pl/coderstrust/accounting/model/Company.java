@@ -9,6 +9,15 @@ public class Company {
   private String address;
   private Long taxIdentificationNumber;
 
+  public Company(String companyName, String address, Long taxIdentificationNumber) {
+    this.companyName = companyName;
+    this.address = address;
+    this.taxIdentificationNumber = taxIdentificationNumber;
+  }
+  public Company(){
+    super();
+  }
+
   public String getCompanyName() {
     return companyName;
   }

@@ -1,14 +1,15 @@
 package pl.coderstrust.accounting.database.impl.file;
 
 public class Configuration {
-  //file paths should be in Configuration class
+  private String fileName;
+
+  public Configuration(String fileName) {
+    this.fileName = fileName;
+  }
+  public Configuration() {
+    this("defaultInvoiceFile.json");
+  }
   public String getFileName() {
     return fileName;
   }
-
-  public void setFileName(String fileName) {
-    this.fileName = fileName;
-  }
-
-  private String fileName;  //= "allInvoices.json";
 }

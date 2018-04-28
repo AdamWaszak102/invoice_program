@@ -16,6 +16,9 @@ public class InvoiceEntry {
     this.price = price;
     this.vat = vat;
   }
+  public InvoiceEntry(){
+    super();
+  }
 
   public String getDescription() {
     return description;
