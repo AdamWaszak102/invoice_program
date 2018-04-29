@@ -12,13 +12,13 @@ public interface Database {
 
   void saveInvoice(Invoice invoice);
 
-  void saveListOfInvoices (List<Invoice> invoicesListName);
+  void saveListOfInvoices(List<Invoice> invoicesListName);
 
   Collection<Invoice> getInvoices();
 
   Invoice getInvoiceById(Long id);
 
-  void updateInvoice(Invoice invoice);
+  void updateInvoice(Invoice invoice, Long id);
 
   void removeInvoiceById(Long id);
 }

@@ -12,8 +12,6 @@ public class InvoiceBook {
 
   private Database database;
 
-  /*ciezko przetestowac wiec lepiej wygenerowac konstruktor, jest ponizej.podpowiedz tak jak
-   w numbersFromFile.*/
   public InvoiceBook(Database database) {
     this.database = database;
   }
@@ -32,9 +30,9 @@ public class InvoiceBook {
     return database.getInvoiceById(id);
   }
 
-  public void updateInvoice(Invoice invoice) {
+  public void updateInvoice(Invoice invoice, Long id) {
     if (invoice.getId() != null) {
-      database.updateInvoice(invoice);
+      database.updateInvoice(invoice, id);
     }
   }
 

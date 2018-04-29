@@ -3,16 +3,15 @@ package pl.coderstrust.accounting.database.impl.file;
 import pl.coderstrust.accounting.database.Database;
 import pl.coderstrust.accounting.model.Invoice;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Adam on 2018-04-16.
- */
 public class InFileDatabase implements Database {
-//  The tricky part is id of invoices - you need to generate unique id for each invoice -
-// the easiest solution is to keep current largest id and update it each time new invoice is added.
-// The simplest solution is to keep that id in separate file.
+
   private FileHelper fileHelper;
   private JsonHelper jsonHelper;
   private Configuration configuration;
@@ -23,6 +22,7 @@ public class InFileDatabase implements Database {
     this.jsonHelper = jsonHelper;
     this.configuration = configuration;
   }
+
   @Override
   public void saveListOfInvoices(List<Invoice> invoicesListName) {
     List<String> jsonArray = new ArrayList<>();
@@ -43,31 +43,44 @@ public class InFileDatabase implements Database {
 
   @Override
   public List<Invoice> getInvoices() {
+    List<String> allInvoices = fileHelper.readAllJsonFiles(configuration.getFileName());
+    return jsonHelper.returnAllInvoices(allInvoices);
+  }
+
+  public void readInvoices() {
     fileHelper.printJsonInvoiceAsString(configuration.getFileName());
-    return null;
   }
 
   @Override
   public Invoice getInvoiceById(Long id) {
-//    for (Object item : mainMap2) {
-//      Map<String, Object> mapItem = (Map<String, Object>) item;
-//      id = (Integer) mapItem.get("id");
-//      if (id != null) {
-//        // We have found an Id so we print it and exit from the for loop
-//        System.out.printf("Id=%d%n", id);
-//        break;
-//      }
-//    }
-
-    return null;
+    String invoiceLine = fileHelper
+        .readJsonFileAndFindInvoiceLineById(configuration.getFileName(), id);
+    return jsonHelper.returnInvoiceById(invoiceLine);
   }
 
   @Override
-  public void updateInvoice(Invoice invoice) {
-
+  public void updateInvoice(Invoice invoice, Long id) {
+    String invoiceAsJsonString = jsonHelper.convertInvoiceToJsonString(invoice);
+    fileHelper
+        .updateInvoiceByIdWhenReadingJsonFile(invoiceAsJsonString, configuration.getFileName(), id);
+    replaceOldInvoiceFileByNew();
   }
 
   @Override
   public void removeInvoiceById(Long id) {
+    fileHelper.removeInvoiceByIdWhenReadingJsonFile(configuration.getFileName(), id);
+    replaceOldInvoiceFileByNew();
+  }
+
+  private void replaceOldInvoiceFileByNew() {
+    File newFileName = new File("tempFile.json");
+    File fileName = new File(configuration.getFileName());
+    boolean successful;
+    try {
+      Files.move(newFileName.toPath(), fileName.toPath(), StandardCopyOption.REPLACE_EXISTING);
+      successful = true;
+    } catch (IOException e) {
+      successful = false;
+    }
   }
 }
