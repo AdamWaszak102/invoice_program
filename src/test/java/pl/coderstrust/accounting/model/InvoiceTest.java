@@ -6,15 +6,12 @@ import static pl.coderstrust.accounting.model.TestInvoiceProvider.invoiceTwo;
 
 import org.junit.Test;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
 public class InvoiceTest {
 
-  Invoice invoiceProviderOne = invoiceOne();
-  Invoice invoiceProviderTwo = invoiceTwo();
+  private Invoice invoiceProviderOne = invoiceOne();
+  private Invoice invoiceProviderTwo = invoiceTwo();
 
   @Test
   public void shouldGetIssueDate() {
@@ -26,24 +23,28 @@ public class InvoiceTest {
     assertEquals(expected, actual);
   }
 
+//  @Test
+//  public void getEntries() {
+//    //given
+//    List<String> expected = new ArrayList<>();
+//    expected.add("microscope");
+//    expected.add(String.valueOf(BigDecimal.valueOf(1000)));
+//    expected.add("VAT_23");
+//
+//    //when
+//    List<InvoiceEntry> actual = invoiceProviderOne.getEntries();
+//    assertEquals(expected, actual);
+//  }
+
   @Test
-  public void getEntries() {
+  public void shouldReturnId() {
     //given
-    List<String> expected = new ArrayList<>();
-    expected.add("microscope");
-    expected.add(String.valueOf(BigDecimal.valueOf(1000)));
-    expected.add("VAT_23");
+    Long idExpected = 0L;
 
     //when
-//    List<String> actual = invoiceProviderOne.getEntries();
-//    Assert.assertEquals(expected, actual);
-  }
+    Long idActual = invoiceProviderOne.getId();
 
-//  InvoiceEntry invoiceEntry = new InvoiceEntry("microscope", BigDecimal.valueOf(1000), VAT_23);
-//  Invoice invoice = new Invoice(0L, "FV 1/2017", LocalDate.of(2017, 10, 2), buyer, seller,
-//  Arrays.asList(invoiceEntry));
-
-  @Test
-  public void getId() {
+    //then
+    assertEquals(idExpected, idActual);
   }
 }

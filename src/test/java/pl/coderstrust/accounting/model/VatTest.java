@@ -21,9 +21,9 @@ public class VatTest {
   }
 
   @Test
-  public void shouldCheckValueOfVatRateZERO() {
+  public void shouldCheckValueOfVatRateZero() {
     //given
-    BigDecimal expected = BigDecimal.ZERO;
+    BigDecimal    expected = BigDecimal.ZERO;
 
     //when
     BigDecimal actual = Vat.VAT_0.getVatValue(0);

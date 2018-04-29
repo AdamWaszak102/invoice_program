@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 
 public class InvoiceEntryTest {
 
-  InvoiceEntry invoiceEntry = new InvoiceEntry("Report", new BigDecimal("30.00"), VAT_5);
+  private  InvoiceEntry invoiceEntry = new InvoiceEntry("Report", new BigDecimal("30.00"), VAT_5);
 
   @Test
   public void shouldReturnDescription() {
@@ -22,13 +22,6 @@ public class InvoiceEntryTest {
     //then
     assertEquals(expected, actual);
   }
-
-//  @Test  //
-//  public void shouldReturnTheDescription2() {
-//    String expected = "Report";
-//    String actual = invoiceEntry.setDescription;
-//    Assert.assertEquals(expected, actual);
-//  }
 
   @Test
   public void shouldReturnPrice() {
@@ -43,10 +36,6 @@ public class InvoiceEntryTest {
   }
 
   @Test
-  public void setPrice() {
-  }
-
-  @Test
   public void shouldReturnVatValue() {
     //given
     Vat expected = VAT_5;
@@ -56,9 +45,5 @@ public class InvoiceEntryTest {
 
     //then
     assertEquals(expected, actual);
-  }
-
-  @Test
-  public void setVat() {
   }
 }
