@@ -5,15 +5,10 @@ import pl.coderstrust.accounting.model.Invoice;
 
 import java.util.Collection;
 
-/**
- * Created by Adam on 2018-04-16.
- */
 public class InvoiceBook {
 
   private Database database;
 
-  /*ciezko przetestowac wiec lepiej wygenerowac konstruktor, jest ponizej.podpowiedz tak jak
-   w numbersFromFile.*/
   public InvoiceBook(Database database) {
     this.database = database;
   }

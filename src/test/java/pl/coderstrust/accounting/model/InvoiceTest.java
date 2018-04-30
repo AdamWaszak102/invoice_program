@@ -17,24 +17,13 @@ public class InvoiceTest {
   public void shouldGetIssueDate() {
     //given
     LocalDate expected = LocalDate.of(2018, 2, 2);
+
     //when
     LocalDate actual = invoiceProviderTwo.getIssueDate();
+
     //then
     assertEquals(expected, actual);
   }
-
-//  @Test
-//  public void getEntries() {
-//    //given
-//    List<String> expected = new ArrayList<>();
-//    expected.add("microscope");
-//    expected.add(String.valueOf(BigDecimal.valueOf(1000)));
-//    expected.add("VAT_23");
-//
-//    //when
-//    List<InvoiceEntry> actual = invoiceProviderOne.getEntries();
-//    assertEquals(expected, actual);
-//  }
 
   @Test
   public void shouldReturnId() {

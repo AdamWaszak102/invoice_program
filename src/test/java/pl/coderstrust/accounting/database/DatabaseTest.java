@@ -88,4 +88,17 @@ public abstract class DatabaseTest {
     assertEquals(invoiceProviderOne, actual);
   }
 
+  @Test
+  public void shouldSaveAndUpdateInvoice() {
+    //given
+    Invoice invoiceProviderOne = invoiceOne();
+    Database db = getDatabase();
+
+    //when
+    db.saveInvoice(invoiceProviderOne);
+    db.updateInvoice(invoiceProviderOne);
+
+    //then
+    assertEquals(1, db.getInvoices().size());
+  }
 }
