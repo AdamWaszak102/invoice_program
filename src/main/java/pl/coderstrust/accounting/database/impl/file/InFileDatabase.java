@@ -73,7 +73,7 @@ public class InFileDatabase implements Database {
   }
 
   private void replaceOldInvoiceFileByNew() {
-    File newFileName = new File("tempFile.json");
+    File newFileName = new File("temporaryFile.json");
     File fileName = new File(configuration.getFileName());
     boolean successful;
     try {
