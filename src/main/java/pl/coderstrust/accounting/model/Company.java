@@ -14,7 +14,8 @@ public class Company {
     this.address = address;
     this.taxIdentificationNumber = taxIdentificationNumber;
   }
-  public Company(){
+
+  public Company() {
     super();
   }
 

@@ -16,7 +16,8 @@ public class InvoiceEntry {
     this.price = price;
     this.vat = vat;
   }
-  public InvoiceEntry(){
+
+  public InvoiceEntry() {
     super();
   }
 

@@ -30,9 +30,9 @@ public class InvoiceBook {
     return database.getInvoiceById(id);
   }
 
-  public void updateInvoice(Invoice invoice, Long id) {
+  public void updateInvoice(Invoice invoice) {
     if (invoice.getId() != null) {
-      database.updateInvoice(invoice, id);
+      database.updateInvoice(invoice);
     }
   }
 

@@ -23,7 +23,7 @@ public class InMemoryDatabase implements Database {
   }
 
   @Override
-  public void saveListOfInvoices(List<Invoice> invoicesListName) {
+  public void saveInvoices(List<Invoice> invoicesListName) {
     for (Invoice invoice : invoicesListName) {
       saveInvoice(invoice);
     }
@@ -41,7 +41,7 @@ public class InMemoryDatabase implements Database {
   }
 
   @Override
-  public void updateInvoice(Invoice invoice, Long id) {
+  public void updateInvoice(Invoice invoice) {
     invoices.put(invoice.getId(), invoice);
   }
 

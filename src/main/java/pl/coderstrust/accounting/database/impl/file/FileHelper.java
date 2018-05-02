@@ -15,73 +15,42 @@ public class FileHelper {
 
   private File tempFile = new File("temporaryFile.json");
 
-  public void writeJsonInvoiceToFile(String jsonAsString, String fileName) {
+  public void appendLine(String line, String fileName) {
     try {
       FileWriter fileWriter = new FileWriter(fileName, true);
       try (BufferedWriter bufferedWriter = new BufferedWriter(fileWriter)) {
-        bufferedWriter.append(jsonAsString);
+        bufferedWriter.append(line);
         bufferedWriter.append(",");
         bufferedWriter.newLine();
       }
-    } catch (IOException e) {
-      e.printStackTrace();
+    } catch (IOException error) {
+      error.printStackTrace();
     }
   }
 
-  public List<String> printJsonInvoiceAsString(String fileName) {
-    List<String> jsonArray = new ArrayList<>();
-    try {
-      FileReader fileReader = new FileReader(fileName);
-      try (BufferedReader bufferedReader = new BufferedReader(fileReader)) {
-        String currentLine;
-        while ((currentLine = bufferedReader.readLine()) != null) {
-          System.out.println(currentLine);
-          jsonArray.add(currentLine);
-        }
-      } catch (IOException e) {
-        e.printStackTrace();
+  public List<String> readLines(String fileName) {
+    List<String> lines = new ArrayList<>();
+    try (
+        FileReader fileReader = new FileReader(fileName);
+        BufferedReader bufferedReader = new BufferedReader(fileReader)
+    ) {
+      String currentLine;
+      while ((currentLine = bufferedReader.readLine()) != null) {
+        lines.add(currentLine);
       }
-    } catch (FileNotFoundException e) {
-      e.printStackTrace();
+    } catch (IOException exception) {
+      exception.printStackTrace();
     }
-    return jsonArray;
-  }
-
-  public List<String> readAllJsonFiles(String fileName) {
-    List<String> allInvoicesInJson = new ArrayList<>();
-    try {
-      FileReader fileReader = new FileReader(fileName);
-      try (BufferedReader bufferedReader = new BufferedReader(fileReader)) {
-        String currentLine;
-        while ((currentLine = bufferedReader.readLine()) != null) {
-          allInvoicesInJson.add(currentLine);
-        }
-      } catch (IOException e) {
-        e.printStackTrace();
-      }
-    } catch (FileNotFoundException e) {
-      e.printStackTrace();
-    }
-    return allInvoicesInJson;
+    return lines;
   }
 
   public String readJsonFileAndFindInvoiceLineById(String fileName, Long id) {
-    try {
-      FileReader fileReader = new FileReader(fileName);
-      try (BufferedReader bufferedReader = new BufferedReader(fileReader)) {
-        String currentLine;
-        while ((currentLine = bufferedReader.readLine()) != null) {
-          if (currentLine.contains("\"id\":" + id.toString() + ",")) {
-            return currentLine;
-          }
-        }
-      } catch (IOException e) {
-        e.printStackTrace();
-      }
-    } catch (FileNotFoundException e) {
-      e.printStackTrace();
-    }
-    return null;
+    List<String> allInvoicesInJson = readLines(fileName);
+    return allInvoicesInJson
+        .stream()
+        .filter(x -> x.contains("\"id\":" + id.toString() + ","))
+        .findFirst()
+        .orElse(null);
   }
 
   public void removeInvoiceByIdWhenReadingJsonFile(String fileName, Long id) {
@@ -99,12 +68,12 @@ public class FileHelper {
             bufferedWriter.append(currentLine);
             bufferedWriter.newLine();
           }
-        } catch (IOException e) {
-          e.printStackTrace();
+        } catch (IOException exception) {
+          exception.printStackTrace();
         }
       }
-    } catch (IOException e) {
-      e.printStackTrace();
+    } catch (IOException exception) {
+      exception.printStackTrace();
     }
   }
 
@@ -125,17 +94,12 @@ public class FileHelper {
             bufferedWriter.write(currentLine);
             bufferedWriter.newLine();
           }
-        } catch (IOException e) {
-          e.printStackTrace();
+        } catch (IOException exception) {
+          exception.printStackTrace();
         }
       }
-    } catch (IOException e) {
-      e.printStackTrace();
+    } catch (IOException exception) {
+      exception.printStackTrace();
     }
-  }
-
-  public boolean fileExists(String fileName) {
-    File file = new File(fileName);
-    return file.exists();
   }
 }

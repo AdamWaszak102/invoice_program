@@ -29,7 +29,8 @@ public class Invoice {
     this.seller = seller;
     this.entries = entries;
   }
-  public Invoice(){
+
+  public Invoice() {
     super();
   }
 
