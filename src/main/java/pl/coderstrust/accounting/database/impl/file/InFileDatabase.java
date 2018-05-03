@@ -99,9 +99,8 @@ public class InFileDatabase implements Database {
       String jsonAsString = convertInvoiceToJsonString(invoice);
       jsonArray.add(jsonAsString);
     }
-    for (String json : jsonArray) {
-      fileHelper.appendLine(json, configuration.getFileName());
-    }
+
+      fileHelper.writeListToTheFile(jsonArray, configuration.getFileName());
   }
 
   @Override
