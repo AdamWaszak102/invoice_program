@@ -14,19 +14,7 @@ public class VatTest {
     BigDecimal expected = new BigDecimal(0);
 
     //when
-    BigDecimal actual = Vat.VAT_0.getVatValue(0);
-
-    //then
-    assertEquals(expected, actual);
-  }
-
-  @Test
-  public void shouldCheckValueOfVatRateZero() {
-    //given
-    BigDecimal    expected = BigDecimal.ZERO;
-
-    //when
-    BigDecimal actual = Vat.VAT_0.getVatValue(0);
+    BigDecimal actual = Vat.VAT_0.getVatValue();
 
     //then
     assertEquals(expected, actual);
@@ -38,7 +26,31 @@ public class VatTest {
     BigDecimal expected = new BigDecimal(5);
 
     //when
-    BigDecimal actual = Vat.VAT_5.getVatValue(5);
+    BigDecimal actual = Vat.VAT_5.getVatValue();
+
+    //then
+    assertEquals(expected, actual);
+  }
+
+  @Test
+  public void shouldCheckValueOfVatRate8() {
+    //given
+    BigDecimal expected = new BigDecimal(8);
+
+    //when
+    BigDecimal actual = Vat.VAT_8.getVatValue();
+
+    //then
+    assertEquals(expected, actual);
+  }
+
+  @Test
+  public void shouldCheckValueOfVatRate23() {
+    //given
+    BigDecimal expected = new BigDecimal(23);
+
+    //when
+    BigDecimal actual = Vat.VAT_23.getVatValue();
 
     //then
     assertEquals(expected, actual);

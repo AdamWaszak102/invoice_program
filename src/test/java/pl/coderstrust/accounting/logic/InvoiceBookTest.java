@@ -17,8 +17,7 @@ public class InvoiceBookTest {
   @Mock
   Database database;
 
-  @Mock
-  Invoice invoiceProviderOne = invoiceOne();
+  Invoice invoice = invoiceOne();
 
   @InjectMocks
   InvoiceBook invoiceBook;
@@ -28,10 +27,10 @@ public class InvoiceBookTest {
     //given
 
     //when
-    invoiceBook.saveInvoice(invoiceProviderOne);
+    invoiceBook.saveInvoice(invoice);
 
     //then
-    verify(database).saveInvoice(invoiceProviderOne);
+    verify(database).saveInvoice(invoice);
   }
 
   @Test
@@ -39,10 +38,10 @@ public class InvoiceBookTest {
     //given
 
     //when
-    invoiceBook.updateInvoice(invoiceProviderOne);
+    invoiceBook.updateInvoice(invoice);
 
     //then
-    verify(database).updateInvoice(invoiceProviderOne);
+    verify(database).updateInvoice(invoice);
   }
 
   @Test

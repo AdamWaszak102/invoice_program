@@ -10,12 +10,11 @@ public enum Vat {
 
   private BigDecimal vatValue;
 
-  private Vat(BigDecimal vatValue) {
+  Vat(BigDecimal vatValue) {
     this.vatValue = vatValue;
   }
 
-  public BigDecimal getVatValue (int vatValue) {
-    return BigDecimal.valueOf(vatValue);
+  public BigDecimal getVatValue() {
+    return vatValue;
   }
-
 }
