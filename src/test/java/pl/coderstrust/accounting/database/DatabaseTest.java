@@ -1,6 +1,7 @@
 package pl.coderstrust.accounting.database;
 
 import static org.junit.Assert.assertEquals;
+import static pl.coderstrust.accounting.model.TestInvoiceProvider.assertSameInvoice;
 import static pl.coderstrust.accounting.model.TestInvoiceProvider.invoiceOne;
 import static pl.coderstrust.accounting.model.TestInvoiceProvider.invoiceThree;
 import static pl.coderstrust.accounting.model.TestInvoiceProvider.invoiceTwo;
@@ -75,17 +76,7 @@ public abstract class DatabaseTest {
     Invoice actual = db.getInvoiceById(id);
 
     //then
-    assertEquals(invoiceOne, actual);
-  }
-
-  public void assertSameInvoice(Invoice expected, Invoice actual) {
-
-    assertEquals(expected.getId(), actual.getId());
-    assertEquals(expected.getIdentifier(), actual.getIdentifier());
-    assertEquals(expected.getIssueDate(), actual.getIssueDate());
-    assertEquals(expected.getBuyer(), actual.getBuyer());
-    assertEquals(expected.getEntries(), actual.getEntries());
-    assertEquals(expected.getSeller(), actual.getSeller());
+    assertSameInvoice(invoiceOne, actual);
   }
 
   @Test

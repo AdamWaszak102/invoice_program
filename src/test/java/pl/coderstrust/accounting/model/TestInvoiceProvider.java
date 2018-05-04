@@ -1,5 +1,6 @@
 package pl.coderstrust.accounting.model;
 
+import static org.junit.Assert.assertEquals;
 import static pl.coderstrust.accounting.model.Vat.VAT_0;
 import static pl.coderstrust.accounting.model.Vat.VAT_23;
 import static pl.coderstrust.accounting.model.Vat.VAT_5;
@@ -64,6 +65,16 @@ public class TestInvoiceProvider {
     Invoice invoice = new Invoice(2L, "FV 2/2018", LocalDate.of(2018, 3, 2), buyer, seller,
         entries);
     return invoice;
+  }
+
+  public static void assertSameInvoice(Invoice expected, Invoice actual) {
+
+    assertEquals(expected.getId(), actual.getId());
+    assertEquals(expected.getIdentifier(), actual.getIdentifier());
+    assertEquals(expected.getIssueDate(), actual.getIssueDate());
+    assertEquals(expected.getBuyer(), actual.getBuyer());
+    assertEquals(expected.getEntries(), actual.getEntries());
+    assertEquals(expected.getSeller(), actual.getSeller());
   }
 
 }
