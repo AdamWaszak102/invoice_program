@@ -15,14 +15,14 @@ public class FileHelper {
   private File tempFile = new File("temporaryFile.json");
 
   public void appendLine(String line, String fileName) {
-    try {
-      FileWriter fileWriter = new FileWriter(fileName, true);
-      try (BufferedWriter bufferedWriter = new BufferedWriter(fileWriter)) {
-        bufferedWriter.append(line);
-        bufferedWriter.append(",");
-        bufferedWriter.newLine();
-      }
-    } catch (IOException error) {
+    try (
+        FileWriter fileWriter = new FileWriter(fileName, true);
+        BufferedWriter bufferedWriter = new BufferedWriter(fileWriter)) {
+      bufferedWriter.append(line);
+      bufferedWriter.append(",");
+      bufferedWriter.newLine();
+    } catch (
+        IOException error) {
       error.printStackTrace();
     }
   }
