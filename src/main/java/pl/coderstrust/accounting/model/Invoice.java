@@ -8,10 +8,6 @@ import java.util.List;
  */
 public class Invoice {
 
-  public void setId(Long id) {
-    this.id = id;
-  }
-
   private Long id;
   private String identifier;
   private LocalDate issueDate;
@@ -38,24 +34,47 @@ public class Invoice {
     return identifier;
   }
 
+  public void setIdentifier(String identifier) {
+    this.identifier = identifier;
+  }
+
   public LocalDate getIssueDate() {
     return issueDate;
+  }
+
+  public void setIssueDate(LocalDate issueDate) {
+    this.issueDate = issueDate;
   }
 
   public Company getBuyer() {
     return buyer;
   }
 
+  public void setBuyer(Company buyer) {
+    this.buyer = buyer;
+  }
+
   public Company getSeller() {
     return seller;
+  }
+
+  public void setSeller(Company seller) {
+    this.seller = seller;
   }
 
   public List<InvoiceEntry> getEntries() {
     return entries;
   }
 
+  public void setEntries(List<InvoiceEntry> entries) {
+    this.entries = entries;
+  }
+
   public Long getId() {
     return id;
   }
 
+  public void setId(Long id) {
+    this.id = id;
+  }
 }

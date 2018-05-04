@@ -2,9 +2,6 @@ package pl.coderstrust.accounting.model;
 
 import java.math.BigDecimal;
 
-/**
- * Created by Adam on 2018-04-17.
- */
 public enum Vat {
   VAT_0(BigDecimal.valueOf(0)),
   VAT_5(BigDecimal.valueOf(5)),
@@ -15,5 +12,9 @@ public enum Vat {
 
   Vat(BigDecimal vatValue) {
     this.vatValue = vatValue;
+  }
+
+  public BigDecimal getVatValue() {
+    return vatValue;
   }
 }

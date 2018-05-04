@@ -5,9 +5,6 @@ import pl.coderstrust.accounting.model.Invoice;
 
 import java.util.Collection;
 
-/**
- * Created by Adam on 2018-04-16.
- */
 public class InvoiceBook {
 
   private Database database;
