@@ -7,7 +7,7 @@ public class Company {
 
   private String companyName;
   private String address;
-  private int taxIdentificationNumber;
+  private Long taxIdentificationNumber;
 
   public String getcompanyName() {
     return companyName;
@@ -25,11 +25,11 @@ public class Company {
     this.address = address;
   }
 
-  public int getTaxIdentificationNumber() {
+  public Long getTaxIdentificationNumber() {
     return taxIdentificationNumber;
   }
 
-  public void setTaxIdentificationNumber(int taxIdentificationNumber) {
+  public void setTaxIdentificationNumber(Long taxIdentificationNumber) {
     this.taxIdentificationNumber = taxIdentificationNumber;
   }
 }
