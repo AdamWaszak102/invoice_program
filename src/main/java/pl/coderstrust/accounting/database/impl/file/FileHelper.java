@@ -88,7 +88,7 @@ public class FileHelper {
     }
   }
 
-  public void updateInvoiceByIdWhenReadingJsonFile(String invoiceAsJsonString, String fileName,
+  public void updateLineWithContentWhenReadingJsonFile(String invoiceAsJsonString, String fileName,
       Long id) {
     try (
         FileReader fileReader = new FileReader(fileName);
@@ -96,7 +96,7 @@ public class FileHelper {
         BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(tempFile))) {
       String currentLine;
       while ((currentLine = bufferedReader.readLine()) != null) {
-        if (currentLine.contains("\"id\":" + id.toString() + ",")) {
+        if (currentLine.contains("\"id\":" + id + ",")) {
           bufferedWriter.append((invoiceAsJsonString));
           bufferedWriter.append(",");
           bufferedWriter.newLine();

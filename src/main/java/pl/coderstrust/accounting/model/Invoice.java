@@ -30,8 +30,8 @@ public class Invoice {
     this.entries = entries;
   }
 
+  // needed for json serialization
   public Invoice() {
-    super();
   }
 
   public String getIdentifier() {
