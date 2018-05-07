@@ -2,58 +2,24 @@ package pl.coderstrust.accounting.model;
 
 import static org.junit.Assert.assertEquals;
 
+import junitparams.JUnitParamsRunner;
+import junitparams.Parameters;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import java.math.BigDecimal;
 
+@RunWith(JUnitParamsRunner.class)
 public class VatTest {
 
-  @Test
-  public void shouldCheckValueOfVatRate0() {
+ @Test
+ @Parameters({"VAT_0, 0", "VAT_5, 5", "VAT_8, 8", "VAT_23, 23"})
+  public void shouldCheckValueOfVatRate(Vat vat, BigDecimal expected) {
     //given
-    BigDecimal expected = new BigDecimal(0);
-
     //when
-    BigDecimal actual = Vat.VAT_0.getVatValue();
-
-    //then
-    assertEquals(expected, actual);
-  }
-
-  @Test
-  public void shouldCheckValueOfVatRate5() {
-    //given
-    BigDecimal expected = new BigDecimal(5);
-
-    //when
-    BigDecimal actual = Vat.VAT_5.getVatValue();
-
-    //then
-    assertEquals(expected, actual);
-  }
-
-  @Test
-  public void shouldCheckValueOfVatRate8() {
-    //given
-    BigDecimal expected = new BigDecimal(8);
-
-    //when
-    BigDecimal actual = Vat.VAT_8.getVatValue();
-
-    //then
-    assertEquals(expected, actual);
-  }
-
-  @Test
-  public void shouldCheckValueOfVatRate23() {
-    //given
-    BigDecimal expected = new BigDecimal(23);
-
-    //when
-    BigDecimal actual = Vat.VAT_23.getVatValue();
+    BigDecimal actual = vat.getVatValue();
 
     //then
     assertEquals(expected, actual);
   }
 }
-
