@@ -20,6 +20,70 @@ public class InFileDatabase implements Database {
   private File idNumber = new File("idNumber.txt");
   private Long id;
 
+  public InFileDatabase(FileHelper fileHelper, JsonHelper jsonHelper, Configuration configuration) {
+    this.fileHelper = fileHelper;
+    this.jsonHelper = jsonHelper;
+    this.configuration = configuration;
+  }
+
+  @Override
+  public void saveInvoices(List<Invoice> invoicesListName) {
+    List<String> jsonArray = new ArrayList<>();
+    for (Invoice invoice : invoicesListName) {
+      id = checkId();
+      ++id;
+      saveNewId(id);
+      invoice.setId(id);
+      String jsonAsString = jsonHelper.convertInvoiceToJsonString(invoice);
+      jsonArray.add(jsonAsString);
+    }
+    fileHelper.writeListToFile(jsonArray, configuration.getFileName(), true);
+  }
+
+  @Override
+  public void saveInvoice(Invoice invoice) {
+    id = checkId();
+    ++id;
+    saveNewId(id);
+    invoice.setId(id);
+    String jsonAsString = jsonHelper.convertInvoiceToJsonString(invoice);
+    fileHelper.appendLine(jsonAsString, configuration.getFileName(), true);
+  }
+
+  @Override
+  public List<Invoice> getInvoices() {
+    List<String> allInvoices = fileHelper.readLines(configuration.getFileName());
+    return jsonHelper.convertInvoicesToJsonStringsList(allInvoices);
+  }
+
+  @Override
+  public Invoice getInvoiceById(Long id) {
+    String invoiceLine = fileHelper
+        .readJsonFileAndFindInvoiceLineById(configuration.getFileName(), getContent(id));
+    return jsonHelper.returnInvoiceById(invoiceLine);
+  }
+
+  @Override
+  public void updateInvoice(Invoice invoice) {
+    String invoiceAsJsonString = jsonHelper.convertInvoiceToJsonString(invoice);
+    Long currentId = Optional.ofNullable(invoice.getId())
+        .orElse(0L);
+    System.out.println(currentId);
+    fileHelper
+        .updateLineWithContentWhenReadingJsonFile(invoiceAsJsonString, configuration.getFileName(),
+            getContent(currentId));
+  }
+
+  @Override
+  public void removeInvoiceById(Long id) {
+    fileHelper
+        .removeLineWithContentWhenReadingJsonFile(configuration.getFileName(), getContent(id));
+  }
+
+  public String getContent(Long id) {
+    return "\"id\":" + id + ",";
+  }
+
   public Long checkId() {
     try (Scanner scanner = new Scanner(idNumber)) {
       while (scanner.hasNextLong()) {
@@ -37,61 +101,5 @@ public class InFileDatabase implements Database {
     } catch (IOException exception) {
       exception.printStackTrace();
     }
-  }
-
-
-  public InFileDatabase(FileHelper fileHelper, JsonHelper jsonHelper, Configuration configuration) {
-    this.fileHelper = fileHelper;
-    this.jsonHelper = jsonHelper;
-    this.configuration = configuration;
-  }
-
-  @Override
-  public void saveInvoices(List<Invoice> invoicesListName) {
-    List<String> jsonArray = new ArrayList<>();
-    for (Invoice invoice : invoicesListName) {
-      String jsonAsString = jsonHelper.convertInvoiceToJsonString(invoice);
-      jsonArray.add(jsonAsString);
-    }
-
-    fileHelper.writeListToTheFile(jsonArray, configuration.getFileName());
-  }
-
-  @Override
-  public void saveInvoice(Invoice invoice) {
-    String jsonAsString = jsonHelper.convertInvoiceToJsonString(invoice);
-    fileHelper.appendLine(jsonAsString, configuration.getFileName());
-  }
-
-  @Override
-  public List<Invoice> getInvoices() {
-    List<String> allInvoices = fileHelper.readLines(configuration.getFileName());
-    return jsonHelper.returnAllInvoices(allInvoices);
-  }
-
-  public void readInvoices() {
-    fileHelper.readLines(configuration.getFileName());
-  }
-
-  @Override
-  public Invoice getInvoiceById(Long id) {
-    String invoiceLine = fileHelper
-        .readJsonFileAndFindInvoiceLineById(configuration.getFileName(), id);
-    return jsonHelper.returnInvoiceById(invoiceLine);
-  }
-
-  @Override
-  public void updateInvoice(Invoice invoice) {
-    String invoiceAsJsonString = jsonHelper.convertInvoiceToJsonString(invoice);
-    Long currentId = Optional.ofNullable(invoice.getId())
-        .orElse(0L);//do decyzji grupy, co zwrocic jesli id = null.
-    fileHelper
-        .updateInvoiceByIdWhenReadingJsonFile(invoiceAsJsonString, configuration.getFileName(),
-            currentId);
-  }
-
-  @Override
-  public void removeInvoiceById(Long id) {
-    fileHelper.removeInvoiceByIdWhenReadingJsonFile(configuration.getFileName(), id);
   }
 }

@@ -11,7 +11,10 @@ public class InFileDatabaseTest extends DatabaseTest {
 
   @Override
   protected Database getDatabase() {
-    return new InFileDatabase(null, null, null);
+    FileHelper fileHelper = new FileHelper();
+    JsonHelper jsonHelper = new JsonHelper();
+    Configuration configuration = new Configuration("test.json");
+    return new InFileDatabase(fileHelper, jsonHelper, configuration);
   }
 
   @Test

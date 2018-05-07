@@ -15,12 +15,12 @@ public class TestInvoiceProvider {
 
   public static Invoice invoiceOne() {
     Company seller = new Company();
-    seller.setcompanyName("Abracodeabra");
+    seller.setCompanyName("Abracodeabra");
     seller.setTaxIdentificationNumber(5213344000L);
     seller.setAddress("Kolejowa 5/7, 01-217 Warszawa");
 
     Company buyer = new Company();
-    buyer.setcompanyName("Bravecto");
+    buyer.setCompanyName("Bravecto");
     buyer.setTaxIdentificationNumber(4443322000L);
     buyer.setAddress("Matuszewska 14, 25-022 Kielce");
 
@@ -32,12 +32,12 @@ public class TestInvoiceProvider {
 
   public static Invoice invoiceTwo() {
     Company seller = new Company();
-    seller.setcompanyName("Manta");
+    seller.setCompanyName("Manta");
     seller.setTaxIdentificationNumber(5213345000L);
     seller.setAddress("Lokalna 20, 00-217 Warszawa");
 
     Company buyer = new Company();
-    buyer.setcompanyName("VetLab");
+    buyer.setCompanyName("VetLab");
     buyer.setTaxIdentificationNumber(4443322000L);
     buyer.setAddress("Graniczna 14, 05-500 Piaseczno");
 
@@ -50,12 +50,12 @@ public class TestInvoiceProvider {
 
   public static Invoice invoiceThree() {
     Company seller = new Company();
-    seller.setcompanyName("Proactive Investment Sp. z o.o.");
+    seller.setCompanyName("Proactive Investment Sp. z o.o.");
     seller.setTaxIdentificationNumber(5218774000L);
     seller.setAddress("Wiejska 17, 00-001 Mysiadło");
 
     Company buyer = new Company();
-    buyer.setcompanyName("Bravecto");
+    buyer.setCompanyName("Bravecto");
     buyer.setTaxIdentificationNumber(4443322000L);
     buyer.setAddress("Matuszewska 14, 25-022 Kielce");
 

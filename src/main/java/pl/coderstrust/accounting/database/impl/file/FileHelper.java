@@ -3,7 +3,6 @@ package pl.coderstrust.accounting.database.impl.file;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -12,24 +11,22 @@ import java.util.List;
 
 public class FileHelper {
 
-  private File tempFile = new File("temporaryFile.json");
-
-  public void appendLine(String line, String fileName) {
+  public void appendLine(String line, String fileName, boolean append) {
     try (
-        FileWriter fileWriter = new FileWriter(fileName, true);
+        FileWriter fileWriter = new FileWriter(fileName, append);
         BufferedWriter bufferedWriter = new BufferedWriter(fileWriter)) {
       bufferedWriter.append(line);
       bufferedWriter.append(",");
       bufferedWriter.newLine();
     } catch (
-        IOException error) {
-      error.printStackTrace();
+        IOException ex) {
+      ex.printStackTrace();
     }
   }
 
-  public void writeListToTheFile(List<String> stringList, String fileName) {
+  public void writeListToFile(List<String> stringList, String fileName, boolean append) {
     try (
-        FileWriter fileWriter = new FileWriter(fileName, false);
+        FileWriter fileWriter = new FileWriter(fileName, append);
         BufferedWriter bufferedWriter = new BufferedWriter(fileWriter)
     ) {
       for (String line : stringList) {
@@ -37,9 +34,8 @@ public class FileHelper {
         bufferedWriter.append(",");
         bufferedWriter.newLine();
       }
-
-    } catch (IOException error) {
-      error.printStackTrace();
+    } catch (IOException ex) {
+      ex.printStackTrace();
     }
   }
 
@@ -53,60 +49,57 @@ public class FileHelper {
       while ((currentLine = bufferedReader.readLine()) != null) {
         lines.add(currentLine);
       }
-    } catch (IOException exception) {
-      exception.printStackTrace();
+    } catch (IOException ex) {
+      ex.printStackTrace();
     }
     return lines;
   }
 
-  public String readJsonFileAndFindInvoiceLineById(String fileName, Long id) {
+  public String readJsonFileAndFindInvoiceLineById(String fileName, String content) {
     List<String> allInvoicesInJson = readLines(fileName);
     return allInvoicesInJson
         .stream()
-        .filter(x -> x.contains("\"id\":" + id.toString() + ","))
+        .filter(x -> x.contains(content))
         .findFirst()
         .orElse(null);
   }
 
-  public void removeInvoiceByIdWhenReadingJsonFile(String fileName, Long id) {
+  public void removeLineWithContentWhenReadingJsonFile(String fileName, String content) {
+    List<String> allInvoicesInJsonAfterRemoval = new ArrayList<>();
     try (
         FileReader fileReader = new FileReader(fileName);
-        BufferedReader bufferedReader = new BufferedReader(fileReader);
-        BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(tempFile))) {
+        BufferedReader bufferedReader = new BufferedReader(fileReader)) {
       String currentLine;
-      String emptyLine = "";
       while ((currentLine = bufferedReader.readLine()) != null) {
-        if (currentLine.contains("\"id\":" + id.toString() + ",")) {
-          bufferedWriter.append((emptyLine));
+        if (currentLine.contains(content)) {
           continue;
         }
-        bufferedWriter.append(currentLine);
-        bufferedWriter.newLine();
+        allInvoicesInJsonAfterRemoval.add(currentLine);
       }
-    } catch (IOException exception) {
-      exception.printStackTrace();
+      writeListToFile(allInvoicesInJsonAfterRemoval, fileName, false);
+    } catch (IOException ex) {
+      ex.printStackTrace();
     }
   }
 
   public void updateLineWithContentWhenReadingJsonFile(String invoiceAsJsonString, String fileName,
-      Long id) {
+      String content) {
+    List<String> allInvoicesInJsonAfterUpdate = new ArrayList<>();
     try (
         FileReader fileReader = new FileReader(fileName);
         BufferedReader bufferedReader = new BufferedReader(fileReader);
-        BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(tempFile))) {
+    ) {
       String currentLine;
       while ((currentLine = bufferedReader.readLine()) != null) {
-        if (currentLine.contains("\"id\":" + id + ",")) {
-          bufferedWriter.append((invoiceAsJsonString));
-          bufferedWriter.append(",");
-          bufferedWriter.newLine();
+        if (currentLine.contains(content)) {
+          allInvoicesInJsonAfterUpdate.add(invoiceAsJsonString);
           continue;
         }
-        bufferedWriter.write(currentLine);
-        bufferedWriter.newLine();
+        allInvoicesInJsonAfterUpdate.add(currentLine);
       }
-    } catch (IOException exception) {
-      exception.printStackTrace();
+      writeListToFile(allInvoicesInJsonAfterUpdate, fileName, false);
+    } catch (IOException ex) {
+      ex.printStackTrace();
     }
   }
 }
