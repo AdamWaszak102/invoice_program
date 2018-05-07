@@ -12,8 +12,8 @@ import java.math.BigDecimal;
 @RunWith(JUnitParamsRunner.class)
 public class VatTest {
 
- @Test
- @Parameters({"VAT_0, 0", "VAT_5, 5", "VAT_8, 8", "VAT_23, 23"})
+  @Test
+  @Parameters({"VAT_0, 0", "VAT_5, 5", "VAT_8, 8", "VAT_23, 23"})
   public void shouldCheckValueOfVatRate(Vat vat, BigDecimal expected) {
     //given
     //when

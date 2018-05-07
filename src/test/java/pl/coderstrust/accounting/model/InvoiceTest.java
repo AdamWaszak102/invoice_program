@@ -10,8 +10,8 @@ import java.time.LocalDate;
 
 public class InvoiceTest {
 
-  private Invoice invoiceProviderOne = invoiceOne();
-  private Invoice invoiceProviderTwo = invoiceTwo();
+  private Invoice invoiceOne = invoiceOne();
+  private Invoice invoiceTwo = invoiceTwo();
 
   @Test
   public void shouldGetIssueDate() {
@@ -19,7 +19,7 @@ public class InvoiceTest {
     LocalDate expected = LocalDate.of(2018, 2, 2);
 
     //when
-    LocalDate actual = invoiceProviderTwo.getIssueDate();
+    LocalDate actual = invoiceTwo.getIssueDate();
 
     //then
     assertEquals(expected, actual);
@@ -31,7 +31,7 @@ public class InvoiceTest {
     Long idExpected = 0L;
 
     //when
-    Long idActual = invoiceProviderOne.getId();
+    Long idActual = invoiceOne.getId();
 
     //then
     assertEquals(idExpected, idActual);

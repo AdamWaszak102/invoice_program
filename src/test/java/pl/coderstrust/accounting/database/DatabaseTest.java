@@ -26,7 +26,7 @@ public abstract class DatabaseTest {
 
     //then
     assertEquals(2, db.getInvoices().size());
-   }
+  }
 
   @Test
   public void shouldCheckIdNumbers() {
