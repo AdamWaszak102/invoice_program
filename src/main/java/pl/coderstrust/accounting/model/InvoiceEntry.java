@@ -18,7 +18,6 @@ public class InvoiceEntry {
   }
 
   public InvoiceEntry() {
-    super();
   }
 
   public String getDescription() {

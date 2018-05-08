@@ -21,20 +21,20 @@ public class JsonHelper {
   public String convertInvoiceToJsonString(Invoice invoice) {
     try {
       return writingMapper.writeValueAsString(invoice);
-    } catch (JsonProcessingException ex) {
-      ex.printStackTrace();
+    } catch (JsonProcessingException exception) {
+      exception.printStackTrace();
     }
     return "";
   }
 
-  public List<Invoice> convertInvoicesToJsonStringsList(List<String> allInvoicesInJson) {
+  public List<Invoice> convertJsonStringsListToListOfInvoices(List<String> allInvoicesInJson) {
     List<Invoice> allInvoices = new ArrayList<>();
     for (String invoiceInString : allInvoicesInJson) {
       try {
         Invoice invoice = readingMapper.readValue(invoiceInString, Invoice.class);
         allInvoices.add(invoice);
-      } catch (IOException ex) {
-        ex.printStackTrace();
+      } catch (IOException exception) {
+        exception.printStackTrace();
       }
     }
     return allInvoices;
@@ -43,8 +43,8 @@ public class JsonHelper {
   public Invoice returnInvoiceById(String invoiceLine) {
     try {
       return readingMapper.readValue(invoiceLine, Invoice.class);
-    } catch (IOException ex) {
-      ex.printStackTrace();
+    } catch (IOException exception) {
+      exception.printStackTrace();
     }
     return null;
   }

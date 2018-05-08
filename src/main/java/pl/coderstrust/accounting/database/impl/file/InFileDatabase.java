@@ -3,7 +3,6 @@ package pl.coderstrust.accounting.database.impl.file;
 import pl.coderstrust.accounting.database.Database;
 import pl.coderstrust.accounting.model.Invoice;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -17,7 +16,6 @@ public class InFileDatabase implements Database {
   private FileHelper fileHelper;
   private JsonHelper jsonHelper;
   private Configuration configuration;
-  private File idNumber = new File("idNumber.txt");
   private Long id;
 
   public InFileDatabase(FileHelper fileHelper, JsonHelper jsonHelper, Configuration configuration) {
@@ -30,10 +28,7 @@ public class InFileDatabase implements Database {
   public void saveInvoices(List<Invoice> invoicesListName) {
     List<String> jsonArray = new ArrayList<>();
     for (Invoice invoice : invoicesListName) {
-      id = checkId();
-      ++id;
-      saveNewId(id);
-      invoice.setId(id);
+      setNewId(invoice);
       String jsonAsString = jsonHelper.convertInvoiceToJsonString(invoice);
       jsonArray.add(jsonAsString);
     }
@@ -42,24 +37,21 @@ public class InFileDatabase implements Database {
 
   @Override
   public void saveInvoice(Invoice invoice) {
-    id = checkId();
-    ++id;
-    saveNewId(id);
-    invoice.setId(id);
+    setNewId(invoice);
     String jsonAsString = jsonHelper.convertInvoiceToJsonString(invoice);
-    fileHelper.appendLine(jsonAsString, configuration.getFileName(), true);
+    fileHelper.appendLine(jsonAsString, configuration.getFileName());
   }
 
   @Override
   public List<Invoice> getInvoices() {
     List<String> allInvoices = fileHelper.readLines(configuration.getFileName());
-    return jsonHelper.convertInvoicesToJsonStringsList(allInvoices);
+    return jsonHelper.convertJsonStringsListToListOfInvoices(allInvoices);
   }
 
   @Override
   public Invoice getInvoiceById(Long id) {
     String invoiceLine = fileHelper
-        .readJsonFileAndFindInvoiceLineById(configuration.getFileName(), getContent(id));
+        .readJsonFileAndFindInvoiceLineById(configuration.getFileName(), getJsonStringIdPart(id));
     return jsonHelper.returnInvoiceById(invoiceLine);
   }
 
@@ -71,21 +63,28 @@ public class InFileDatabase implements Database {
     System.out.println(currentId);
     fileHelper
         .updateLineWithContentWhenReadingJsonFile(invoiceAsJsonString, configuration.getFileName(),
-            getContent(currentId));
+            getJsonStringIdPart(currentId));
   }
 
   @Override
   public void removeInvoiceById(Long id) {
     fileHelper
-        .removeLineWithContentWhenReadingJsonFile(configuration.getFileName(), getContent(id));
+        .removeLineWithContentWhenReadingJsonFile(configuration.getFileName(),
+            getJsonStringIdPart(id));
   }
 
-  public String getContent(Long id) {
+  public String getJsonStringIdPart(Long id) {
     return "\"id\":" + id + ",";
   }
 
+  private void setNewId(Invoice invoice) {
+    id = checkId();
+    saveNewId(++id);
+    invoice.setId(id);
+  }
+
   public Long checkId() {
-    try (Scanner scanner = new Scanner(idNumber)) {
+    try (Scanner scanner = new Scanner(configuration.getIdFileName())) {
       while (scanner.hasNextLong()) {
         id = scanner.nextLong();
       }
@@ -96,7 +95,7 @@ public class InFileDatabase implements Database {
   }
 
   public void saveNewId(Long id) {
-    try (FileWriter fileWriter = new FileWriter(idNumber)) {
+    try (FileWriter fileWriter = new FileWriter(configuration.getIdFileName())) {
       fileWriter.write(id.toString());
     } catch (IOException exception) {
       exception.printStackTrace();

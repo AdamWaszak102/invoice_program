@@ -11,16 +11,15 @@ import java.util.List;
 
 public class FileHelper {
 
-  public void appendLine(String line, String fileName, boolean append) {
+  public void appendLine(String line, String fileName) {
     try (
-        FileWriter fileWriter = new FileWriter(fileName, append);
+        FileWriter fileWriter = new FileWriter(fileName, true);
         BufferedWriter bufferedWriter = new BufferedWriter(fileWriter)) {
       bufferedWriter.append(line);
       bufferedWriter.append(",");
       bufferedWriter.newLine();
-    } catch (
-        IOException ex) {
-      ex.printStackTrace();
+    } catch (IOException exception) {
+      exception.printStackTrace();
     }
   }
 
@@ -34,8 +33,8 @@ public class FileHelper {
         bufferedWriter.append(",");
         bufferedWriter.newLine();
       }
-    } catch (IOException ex) {
-      ex.printStackTrace();
+    } catch (IOException exception) {
+      exception.printStackTrace();
     }
   }
 
@@ -49,8 +48,8 @@ public class FileHelper {
       while ((currentLine = bufferedReader.readLine()) != null) {
         lines.add(currentLine);
       }
-    } catch (IOException ex) {
-      ex.printStackTrace();
+    } catch (IOException exception) {
+      exception.printStackTrace();
     }
     return lines;
   }
@@ -77,8 +76,8 @@ public class FileHelper {
         allInvoicesInJsonAfterRemoval.add(currentLine);
       }
       writeListToFile(allInvoicesInJsonAfterRemoval, fileName, false);
-    } catch (IOException ex) {
-      ex.printStackTrace();
+    } catch (IOException exception) {
+      exception.printStackTrace();
     }
   }
 
@@ -98,8 +97,8 @@ public class FileHelper {
         allInvoicesInJsonAfterUpdate.add(currentLine);
       }
       writeListToFile(allInvoicesInJsonAfterUpdate, fileName, false);
-    } catch (IOException ex) {
-      ex.printStackTrace();
+    } catch (IOException exception) {
+      exception.printStackTrace();
     }
   }
 }

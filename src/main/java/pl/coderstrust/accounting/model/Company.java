@@ -16,7 +16,6 @@ public class Company {
   }
 
   public Company() {
-    super();
   }
 
   public String getCompanyName() {
