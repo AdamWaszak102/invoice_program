@@ -2,6 +2,7 @@ package pl.coderstrust.accounting.model;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Created by Adam on 2018-04-16.
@@ -76,5 +77,27 @@ public class Invoice {
 
   public void setId(Long id) {
     this.id = id;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (!(o instanceof Invoice)) {
+      return false;
+    }
+    Invoice invoice = (Invoice) o;
+    return Objects.equals(id, invoice.id) &&
+        Objects.equals(identifier, invoice.identifier) &&
+        Objects.equals(issueDate, invoice.issueDate) &&
+        Objects.equals(buyer, invoice.buyer) &&
+        Objects.equals(seller, invoice.seller) &&
+        Objects.equals(entries, invoice.entries);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(id, identifier, issueDate, buyer, seller, entries);
   }
 }

@@ -1,5 +1,7 @@
 package pl.coderstrust.accounting.model;
 
+import java.util.Objects;
+
 /**
  * Created by Adam on 2018-04-17.
  */
@@ -15,6 +17,7 @@ public class Company {
     this.taxIdentificationNumber = taxIdentificationNumber;
   }
 
+  // needed for json serialization using jackson
   public Company() {
   }
 
@@ -40,5 +43,25 @@ public class Company {
 
   public void setTaxIdentificationNumber(Long taxIdentificationNumber) {
     this.taxIdentificationNumber = taxIdentificationNumber;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (!(o instanceof Company)) {
+      return false;
+    }
+    Company company = (Company) o;
+    return Objects.equals(companyName, company.companyName) &&
+        Objects.equals(address, company.address) &&
+        Objects.equals(taxIdentificationNumber, company.taxIdentificationNumber);
+  }
+
+  @Override
+  public int hashCode() {
+
+    return Objects.hash(companyName, address, taxIdentificationNumber);
   }
 }

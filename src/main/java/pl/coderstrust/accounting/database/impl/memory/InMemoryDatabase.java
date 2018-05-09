@@ -3,6 +3,7 @@ package pl.coderstrust.accounting.database.impl.memory;
 import pl.coderstrust.accounting.database.Database;
 import pl.coderstrust.accounting.model.Invoice;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -14,19 +15,22 @@ import java.util.Map;
 public class InMemoryDatabase implements Database {
 
   private final Map<Long, Invoice> invoices = new HashMap<>();
-  private Long id = 0L;
+  private Long id = 1L;
 
   @Override
-  public void saveInvoice(Invoice invoice) {
+  public Long saveInvoice(Invoice invoice) {
     invoice.setId(id);
-    invoices.put(id++, invoice);
+    invoices.put(id, invoice);
+    return id++;
   }
 
   @Override
-  public void saveInvoices(List<Invoice> invoicesListName) {
+  public List<Long> saveInvoices(List<Invoice> invoicesListName) {
+    List<Long> ids = new ArrayList<>();
     for (Invoice invoice : invoicesListName) {
-      saveInvoice(invoice);
+      ids.add(saveInvoice(invoice));
     }
+    return ids;
   }
 
   @Override

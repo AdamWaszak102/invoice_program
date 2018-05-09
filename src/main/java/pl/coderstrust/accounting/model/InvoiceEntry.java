@@ -1,6 +1,7 @@
 package pl.coderstrust.accounting.model;
 
 import java.math.BigDecimal;
+import java.util.Objects;
 
 /**
  * Created by Adam on 2018-04-17.
@@ -17,6 +18,7 @@ public class InvoiceEntry {
     this.vat = vat;
   }
 
+  // needed for json serialization using jackson
   public InvoiceEntry() {
   }
 
@@ -42,5 +44,24 @@ public class InvoiceEntry {
 
   public void setVat(Vat vat) {
     this.vat = vat;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (!(o instanceof InvoiceEntry)) {
+      return false;
+    }
+    InvoiceEntry that = (InvoiceEntry) o;
+    return Objects.equals(description, that.description) &&
+        Objects.equals(price, that.price) &&
+        vat == that.vat;
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(description, price, vat);
   }
 }

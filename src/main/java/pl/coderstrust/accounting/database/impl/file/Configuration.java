@@ -1,26 +1,25 @@
 package pl.coderstrust.accounting.database.impl.file;
 
-import java.io.File;
-
 public class Configuration {
 
   private String fileName;
 
-  private File idNumber = new File("idNumber.txt");
+  private String idNumberFileName;
 
-  public Configuration(String fileName) {
+  public Configuration(String fileName, String idNumberFileName) {
     this.fileName = fileName;
+    this.idNumberFileName = idNumberFileName;
   }
 
   public Configuration() {
-    this("allInvoices.json");
+    this("allInvoices.json", "idNumber.txt");
   }
 
   public String getFileName() {
     return fileName;
   }
 
-  public File getIdFileName() {
-    return idNumber;
+  public String getIdNumberFileName() {
+    return idNumberFileName;
   }
 }

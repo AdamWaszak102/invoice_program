@@ -3,6 +3,7 @@ package pl.coderstrust.accounting.database.impl.file;
 import pl.coderstrust.accounting.database.Database;
 import pl.coderstrust.accounting.model.Invoice;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -25,21 +26,25 @@ public class InFileDatabase implements Database {
   }
 
   @Override
-  public void saveInvoices(List<Invoice> invoicesListName) {
+  public List<Long> saveInvoices(List<Invoice> invoicesListName) {
+    List<Long> ids = new ArrayList<>();
     List<String> jsonArray = new ArrayList<>();
     for (Invoice invoice : invoicesListName) {
       setNewId(invoice);
+      ids.add(invoice.getId());
       String jsonAsString = jsonHelper.convertInvoiceToJsonString(invoice);
       jsonArray.add(jsonAsString);
     }
     fileHelper.writeListToFile(jsonArray, configuration.getFileName(), true);
+    return ids;
   }
 
   @Override
-  public void saveInvoice(Invoice invoice) {
+  public Long saveInvoice(Invoice invoice) {
     setNewId(invoice);
     String jsonAsString = jsonHelper.convertInvoiceToJsonString(invoice);
     fileHelper.appendLine(jsonAsString, configuration.getFileName());
+    return invoice.getId();
   }
 
   @Override
@@ -60,7 +65,6 @@ public class InFileDatabase implements Database {
     String invoiceAsJsonString = jsonHelper.convertInvoiceToJsonString(invoice);
     Long currentId = Optional.ofNullable(invoice.getId())
         .orElse(0L);
-    System.out.println(currentId);
     fileHelper
         .updateLineWithContentWhenReadingJsonFile(invoiceAsJsonString, configuration.getFileName(),
             getJsonStringIdPart(currentId));
@@ -78,13 +82,18 @@ public class InFileDatabase implements Database {
   }
 
   private void setNewId(Invoice invoice) {
-    id = checkId();
+    id = getIdFromFile();
     saveNewId(++id);
     invoice.setId(id);
   }
 
-  public Long checkId() {
-    try (Scanner scanner = new Scanner(configuration.getIdFileName())) {
+  public Long getIdFromFile() {
+    File file = new File(configuration.getIdNumberFileName());
+    if (!file.exists()) {
+      id = 0L;
+      return id;
+    }
+    try (Scanner scanner = new Scanner(file)) {
       while (scanner.hasNextLong()) {
         id = scanner.nextLong();
       }
@@ -95,7 +104,7 @@ public class InFileDatabase implements Database {
   }
 
   public void saveNewId(Long id) {
-    try (FileWriter fileWriter = new FileWriter(configuration.getIdFileName())) {
+    try (FileWriter fileWriter = new FileWriter(configuration.getIdNumberFileName())) {
       fileWriter.write(id.toString());
     } catch (IOException exception) {
       exception.printStackTrace();
