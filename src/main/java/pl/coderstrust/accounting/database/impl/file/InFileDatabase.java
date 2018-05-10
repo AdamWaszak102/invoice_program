@@ -76,11 +76,11 @@ public class InFileDatabase implements Database {
             getJsonStringIdPart(id));
   }
 
-  public String getJsonStringIdPart(Long id) {
+  private String getJsonStringIdPart(Long id) {
     return "\"id\":" + id + ",";
   }
 
-  public synchronized void getIdFromFileAndSaveItBack(Invoice invoice) {
+  private synchronized void getIdFromFileAndSaveItBack(Invoice invoice) {
     Long id = 0L;
     File file = new File(configuration.getIdNumberFileName());
     if (file.exists()) {

@@ -15,12 +15,16 @@ public class FileHelper {
     try (
         FileWriter fileWriter = new FileWriter(fileName, true);
         BufferedWriter bufferedWriter = new BufferedWriter(fileWriter)) {
-      bufferedWriter.append(line);
-      bufferedWriter.append(",");
-      bufferedWriter.newLine();
+      appendLine(line, bufferedWriter);
     } catch (IOException exception) {
       exception.printStackTrace();
     }
+  }
+
+  private void appendLine(String line, BufferedWriter bufferedWriter) throws IOException {
+    bufferedWriter.append(line);
+    bufferedWriter.append(",");
+    bufferedWriter.newLine();
   }
 
   public void writeListToFile(List<String> stringList, String fileName, boolean append) {
@@ -29,9 +33,7 @@ public class FileHelper {
         BufferedWriter bufferedWriter = new BufferedWriter(fileWriter)
     ) {
       for (String line : stringList) {
-        bufferedWriter.append(line);
-        bufferedWriter.append(",");
-        bufferedWriter.newLine();
+        appendLine(line, bufferedWriter);
       }
     } catch (IOException exception) {
       exception.printStackTrace();

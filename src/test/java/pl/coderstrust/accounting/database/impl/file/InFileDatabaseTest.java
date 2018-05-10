@@ -1,7 +1,6 @@
 package pl.coderstrust.accounting.database.impl.file;
 
 import org.junit.After;
-import org.junit.Test;
 import pl.coderstrust.accounting.database.Database;
 import pl.coderstrust.accounting.database.DatabaseTest;
 
@@ -33,10 +32,5 @@ public class InFileDatabaseTest extends DatabaseTest {
     if(idFile.exists()){
       idFile.delete();
     }
-  }
-
-  @Test
-  public void shouldCreateFileWhenInvoiceAdded() {
-    new InFileDatabaseTest();
   }
 }
