@@ -14,7 +14,7 @@ public class InvoiceBook {
   }
 
   public void saveInvoice(Invoice invoice) {
-      database.saveInvoice(invoice);
+    database.saveInvoice(invoice);
   }
 
   public Collection<Invoice> getInvoices() {

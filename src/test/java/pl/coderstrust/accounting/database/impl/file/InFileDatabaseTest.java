@@ -10,6 +10,7 @@ import java.io.File;
  * Created by Adam on 2018-04-17.
  */
 public class InFileDatabaseTest extends DatabaseTest {
+
   private static final String dbFileName = "test.json";
   private static final String idFileName = "idTest.txt";
 
@@ -25,11 +26,11 @@ public class InFileDatabaseTest extends DatabaseTest {
   @After
   public void cleanUp() {
     File dbFile = new File(dbFileName);
-    if(dbFile.exists()){
+    if (dbFile.exists()) {
       dbFile.delete();
     }
     File idFile = new File(idFileName);
-    if(idFile.exists()){
+    if (idFile.exists()) {
       idFile.delete();
     }
   }

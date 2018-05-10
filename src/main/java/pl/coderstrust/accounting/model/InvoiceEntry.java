@@ -47,17 +47,17 @@ public class InvoiceEntry {
   }
 
   @Override
-  public boolean equals(Object o) {
-    if (this == o) {
+  public boolean equals(Object obj) {
+    if (this == obj) {
       return true;
     }
-    if (!(o instanceof InvoiceEntry)) {
+    if (!(obj instanceof InvoiceEntry)) {
       return false;
     }
-    InvoiceEntry that = (InvoiceEntry) o;
-    return Objects.equals(description, that.description) &&
-        Objects.equals(price, that.price) &&
-        vat == that.vat;
+    InvoiceEntry that = (InvoiceEntry) obj;
+    return Objects.equals(description, that.description)
+        && Objects.equals(price, that.price)
+        && vat == that.vat;
   }
 
   @Override

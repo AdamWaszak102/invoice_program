@@ -46,17 +46,17 @@ public class Company {
   }
 
   @Override
-  public boolean equals(Object o) {
-    if (this == o) {
+  public boolean equals(Object obj) {
+    if (this == obj) {
       return true;
     }
-    if (!(o instanceof Company)) {
+    if (!(obj instanceof Company)) {
       return false;
     }
-    Company company = (Company) o;
-    return Objects.equals(companyName, company.companyName) &&
-        Objects.equals(address, company.address) &&
-        Objects.equals(taxIdentificationNumber, company.taxIdentificationNumber);
+    Company company = (Company) obj;
+    return Objects.equals(companyName, company.companyName)
+        && Objects.equals(address, company.address)
+        && Objects.equals(taxIdentificationNumber, company.taxIdentificationNumber);
   }
 
   @Override
