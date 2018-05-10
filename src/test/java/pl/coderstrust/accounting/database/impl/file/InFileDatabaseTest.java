@@ -1,22 +1,37 @@
 package pl.coderstrust.accounting.database.impl.file;
 
-import org.junit.Test;
+import org.junit.After;
 import pl.coderstrust.accounting.database.Database;
 import pl.coderstrust.accounting.database.DatabaseTest;
+
+import java.io.File;
 
 /**
  * Created by Adam on 2018-04-17.
  */
 public class InFileDatabaseTest extends DatabaseTest {
 
+  private static final String dbFileName = "test.json";
+  private static final String idFileName = "idTest.txt";
+
   @Override
   protected Database getDatabase() {
-    return new InFileDatabase();
+    FileHelper fileHelper = new FileHelper();
+    JsonHelper jsonHelper = new JsonHelper();
+    cleanUp();
+    Configuration configuration = new Configuration(dbFileName, idFileName);
+    return new InFileDatabase(fileHelper, jsonHelper, configuration);
   }
 
-  @Test
-  public void shouldCreateFileWhenInvoiceAdded() {
-    new InFileDatabaseTest();
+  @After
+  public void cleanUp() {
+    File dbFile = new File(dbFileName);
+    if (dbFile.exists()) {
+      dbFile.delete();
+    }
+    File idFile = new File(idFileName);
+    if (idFile.exists()) {
+      idFile.delete();
+    }
   }
-  //tu potrzeba wiecej testow
 }

@@ -10,12 +10,10 @@ import java.time.LocalDate;
 
 public class InvoiceTest {
 
-  private Invoice invoiceOne = invoiceOne();
-  private Invoice invoiceTwo = invoiceTwo();
-
   @Test
   public void shouldGetIssueDate() {
     //given
+    Invoice invoiceTwo = invoiceTwo();
     LocalDate expected = LocalDate.of(2018, 2, 2);
 
     //when
@@ -28,7 +26,9 @@ public class InvoiceTest {
   @Test
   public void shouldReturnId() {
     //given
-    Long idExpected = 0L;
+    Invoice invoiceOne = invoiceOne();
+    Long idExpected = 1L;
+    invoiceOne.setId(idExpected);
 
     //when
     Long idActual = invoiceOne.getId();
