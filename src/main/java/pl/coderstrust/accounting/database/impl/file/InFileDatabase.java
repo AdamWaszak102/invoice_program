@@ -17,7 +17,6 @@ public class InFileDatabase implements Database {
   private FileHelper fileHelper;
   private JsonHelper jsonHelper;
   private Configuration configuration;
-  private Long id;
 
   public InFileDatabase(FileHelper fileHelper, JsonHelper jsonHelper, Configuration configuration) {
     this.fileHelper = fileHelper;
@@ -30,7 +29,7 @@ public class InFileDatabase implements Database {
     List<Long> ids = new ArrayList<>();
     List<String> jsonArray = new ArrayList<>();
     for (Invoice invoice : invoicesListName) {
-      setNewId(invoice);
+      getIdFromFileAndSaveItBack(invoice);
       ids.add(invoice.getId());
       String jsonAsString = jsonHelper.convertInvoiceToJsonString(invoice);
       jsonArray.add(jsonAsString);
@@ -41,7 +40,7 @@ public class InFileDatabase implements Database {
 
   @Override
   public Long saveInvoice(Invoice invoice) {
-    setNewId(invoice);
+    getIdFromFileAndSaveItBack(invoice);
     String jsonAsString = jsonHelper.convertInvoiceToJsonString(invoice);
     fileHelper.appendLine(jsonAsString, configuration.getFileName());
     return invoice.getId();
@@ -81,30 +80,20 @@ public class InFileDatabase implements Database {
     return "\"id\":" + id + ",";
   }
 
-  private void setNewId(Invoice invoice) {
-    id = getIdFromFile();
-    saveNewId(++id);
-    invoice.setId(id);
-  }
-
-  public Long getIdFromFile() {
+  public synchronized void getIdFromFileAndSaveItBack(Invoice invoice) {
+    Long id = 0L;
     File file = new File(configuration.getIdNumberFileName());
-    if (!file.exists()) {
-      id = 0L;
-      return id;
-    }
-    try (Scanner scanner = new Scanner(file)) {
-      while (scanner.hasNextLong()) {
-        id = scanner.nextLong();
+    if (file.exists()) {
+      try (Scanner scanner = new Scanner(file)) {
+        while (scanner.hasNextLong()) {
+          id = scanner.nextLong();
+        }
+      } catch (FileNotFoundException exception) {
+        exception.printStackTrace();
       }
-    } catch (FileNotFoundException exception) {
-      exception.printStackTrace();
     }
-    return id;
-  }
-
-  public void saveNewId(Long id) {
-    try (FileWriter fileWriter = new FileWriter(configuration.getIdNumberFileName())) {
+    invoice.setId(++id);
+    try (FileWriter fileWriter = new FileWriter(file)) {
       fileWriter.write(id.toString());
     } catch (IOException exception) {
       exception.printStackTrace();
