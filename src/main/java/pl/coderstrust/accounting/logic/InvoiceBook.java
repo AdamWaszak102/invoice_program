@@ -13,8 +13,8 @@ public class InvoiceBook {
     this.database = database;
   }
 
-  public void saveInvoice(Invoice invoice) {
-    database.saveInvoice(invoice);
+  public Long saveInvoice(Invoice invoice) {
+   return database.saveInvoice(invoice);
   }
 
   public Collection<Invoice> getInvoices() {
