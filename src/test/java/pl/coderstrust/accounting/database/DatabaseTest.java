@@ -1,9 +1,7 @@
 package pl.coderstrust.accounting.database;
 
 import static org.junit.Assert.assertEquals;
-import static pl.coderstrust.accounting.model.TestInvoiceProvider.assertSameInvoice;
 import static pl.coderstrust.accounting.model.TestInvoiceProvider.invoiceOne;
-import static pl.coderstrust.accounting.model.TestInvoiceProvider.invoiceThree;
 import static pl.coderstrust.accounting.model.TestInvoiceProvider.invoiceTwo;
 
 import org.junit.Test;
@@ -32,22 +30,16 @@ public abstract class DatabaseTest {
   public void shouldCheckIdNumbers() {
     //given
     Invoice invoiceOne = invoiceOne();
-    Invoice invoiceTwo = invoiceTwo();
-    Invoice invoiceThree = invoiceThree();
     Database db = getDatabase();
 
     //when
-    db.saveInvoice(invoiceOne);
-    db.saveInvoice(invoiceTwo);
-    db.saveInvoice(invoiceThree);
-    long idOne = invoiceOne.getId();
-    long idTwo = invoiceTwo.getId();
-    long idThree = invoiceThree.getId();
+    long idOne = db.saveInvoice(invoiceOne);
+    long idTwo = db.saveInvoice(invoiceOne);
+    long idThree = db.saveInvoice(invoiceOne);
 
     //then
-    assertEquals(0, idOne);
-    assertEquals(1, idTwo);
-    assertEquals(2, idThree);
+    assertEquals(idOne + 1L, idTwo);
+    assertEquals(idTwo + 1L, idThree);
   }
 
   @Test
@@ -57,8 +49,8 @@ public abstract class DatabaseTest {
     Database db = getDatabase();
 
     //when
-    db.saveInvoice(invoiceOne);
-    db.removeInvoiceById(0L);
+    Long id = db.saveInvoice(invoiceOne);
+    db.removeInvoiceById(id);
 
     //then
     assertEquals(0, db.getInvoices().size());
@@ -67,16 +59,15 @@ public abstract class DatabaseTest {
   @Test
   public void shouldGetInvoiceById() {
     //given
-    Invoice invoiceOne = invoiceOne();
+    Invoice expected = invoiceTwo();
     Database db = getDatabase();
-    Long id = 0L;
-    db.saveInvoice(invoiceOne);
+    Long id = db.saveInvoice(expected);
 
     //when
     Invoice actual = db.getInvoiceById(id);
 
     //then
-    assertSameInvoice(invoiceOne, actual);
+    assertEquals(actual, expected);
   }
 
   @Test
@@ -85,15 +76,15 @@ public abstract class DatabaseTest {
     Invoice beforeUpdate = invoiceOne();
     Invoice afterUpdate = invoiceOne();
     Database db = getDatabase();
-
     afterUpdate.setIdentifier("FV 5/2018");
 
     //when
-    db.saveInvoice(beforeUpdate);
+    Long id = db.saveInvoice(beforeUpdate);
+    afterUpdate.setId(id);
     db.updateInvoice(afterUpdate);
     Invoice actual = db.getInvoiceById(beforeUpdate.getId());
 
     //then
-    assertSameInvoice(afterUpdate, actual);
+    assertEquals(afterUpdate, actual);
   }
 }

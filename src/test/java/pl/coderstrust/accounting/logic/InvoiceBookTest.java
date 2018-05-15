@@ -1,5 +1,6 @@
 package pl.coderstrust.accounting.logic;
 
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static pl.coderstrust.accounting.model.TestInvoiceProvider.invoiceOne;
 
@@ -34,14 +35,27 @@ public class InvoiceBookTest {
   }
 
   @Test
-  public void shouldUpdateInvoice() {
+  public void shouldUpdateInvoiceWhenInvoiceIdPresent() {
     //given
+    invoice.setId(1234L);
 
     //when
     invoiceBook.updateInvoice(invoice);
 
     //then
     verify(database).updateInvoice(invoice);
+  }
+
+  @Test
+  public void shouldNotCallUpdateInvoiceWhenInvoiceIdNotPresent() {
+    //given
+    invoice.setId(null);
+
+    //when
+    invoiceBook.updateInvoice(invoice);
+
+    //then
+    verify(database, never()).updateInvoice(invoice);
   }
 
   @Test
