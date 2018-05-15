@@ -21,10 +21,6 @@ public class InvoiceController {
 
   private InvoiceBook invoiceBook = new InvoiceBook(new InMemoryDatabase());
 
-//  public InvoiceController(InvoiceBook invoiceBook) {
-//    this.invoiceBook = invoiceBook;
-//  }
-
   @GetMapping
   public Collection<Invoice> getInvoices() {
     return invoiceBook.getInvoices();
