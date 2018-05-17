@@ -1,5 +1,6 @@
 package pl.coderstrust.accounting.database.impl.memory;
 
+import org.springframework.stereotype.Repository;
 import pl.coderstrust.accounting.database.Database;
 import pl.coderstrust.accounting.model.Invoice;
 
@@ -9,9 +10,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created by Adam on 2018-04-16.
- */
+//@Primary
+@Repository
 public class InMemoryDatabase implements Database {
 
   private final Map<Long, Invoice> invoices = new HashMap<>();
