@@ -1,6 +1,5 @@
 package pl.coderstrust.accounting.database.impl.file;
 
-import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
 import pl.coderstrust.accounting.database.Database;
 import pl.coderstrust.accounting.model.Invoice;
@@ -14,7 +13,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
 
-@Primary
+//@Primary
 @Repository
 public class InFileDatabase implements Database {
 
