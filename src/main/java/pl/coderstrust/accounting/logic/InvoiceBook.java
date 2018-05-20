@@ -4,6 +4,7 @@ import pl.coderstrust.accounting.database.Database;
 import pl.coderstrust.accounting.model.Invoice;
 
 import java.util.Collection;
+import java.util.List;
 
 public class InvoiceBook {
 
@@ -14,7 +15,7 @@ public class InvoiceBook {
   }
 
   public Long saveInvoice(Invoice invoice) {
-   return database.saveInvoice(invoice);
+    return database.saveInvoice(invoice);
   }
 
   public Collection<Invoice> getInvoices() {
@@ -33,5 +34,9 @@ public class InvoiceBook {
 
   public void removeInvoiceById(Long id) {
     database.removeInvoiceById(id);
+  }
+
+  public List<Long> saveInvoices(List<Invoice> invoices) {
+    return database.saveInvoices(invoices);
   }
 }
