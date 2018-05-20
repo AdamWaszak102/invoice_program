@@ -1,24 +1,22 @@
 package pl.coderstrust.accounting.logic;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static pl.coderstrust.accounting.model.TestInvoiceProvider.invoiceOne;
-import static pl.coderstrust.accounting.model.TestInvoiceProvider.invoiceTwo;
 import static pl.coderstrust.accounting.model.TestInvoiceProvider.invoiceThree;
+import static pl.coderstrust.accounting.model.TestInvoiceProvider.invoiceTwo;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 import pl.coderstrust.accounting.database.Database;
 import pl.coderstrust.accounting.model.Invoice;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 @RunWith(MockitoJUnitRunner.class)
