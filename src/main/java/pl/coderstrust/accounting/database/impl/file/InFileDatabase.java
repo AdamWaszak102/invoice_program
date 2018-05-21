@@ -1,5 +1,6 @@
 package pl.coderstrust.accounting.database.impl.file;
 
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Repository;
 import pl.coderstrust.accounting.database.Database;
 import pl.coderstrust.accounting.model.Invoice;
@@ -13,7 +14,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
 
-//@Primary
+@ConditionalOnProperty(value = "myBean.enabled", havingValue = "false")
 @Repository
 public class InFileDatabase implements Database {
 

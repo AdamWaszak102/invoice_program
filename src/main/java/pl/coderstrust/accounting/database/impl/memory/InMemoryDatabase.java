@@ -1,6 +1,6 @@
 package pl.coderstrust.accounting.database.impl.memory;
 
-import org.springframework.context.annotation.Primary;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Repository;
 import pl.coderstrust.accounting.database.Database;
 import pl.coderstrust.accounting.model.Invoice;
@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Primary
+@ConditionalOnProperty(value = "myBean.enabled", havingValue = "true")
 @Repository
 public class InMemoryDatabase implements Database {
 

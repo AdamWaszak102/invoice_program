@@ -16,8 +16,8 @@ public class JsonHelper {
   private ObjectMapper writingMapper;
   private ObjectMapper readingMapper;
 
-  public JsonHelper(@Qualifier("Ala") ObjectMapper writingMapper,
-      @Qualifier("Kot")ObjectMapper readingMapper) {
+  public JsonHelper(@Qualifier("wr") ObjectMapper writingMapper,
+      @Qualifier("rm")ObjectMapper readingMapper) {
     this.writingMapper = writingMapper;
     this.readingMapper = readingMapper;
   }
