@@ -1,4 +1,4 @@
-package pl.coderstrust.accounting.Rest;
+package pl.coderstrust.accounting.rest;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,9 +15,6 @@ import pl.coderstrust.accounting.model.Invoice;
 import java.util.Collection;
 import java.util.List;
 
-/**
- * Created by Adam on 2018-05-08.
- */
 @RestController
 @RequestMapping("/invoices")
 public class InvoiceController {
@@ -29,7 +26,7 @@ public class InvoiceController {
     return invoiceBook.getInvoices();
   }
 
-  @PostMapping
+  @PostMapping("/add_invoice")
   public Long saveInvoice(@RequestBody Invoice invoice) {
     return invoiceBook.saveInvoice(invoice);
   }
@@ -44,7 +41,7 @@ public class InvoiceController {
     invoiceBook.updateInvoice(invoice);
   }
 
-  @PostMapping
+  @PostMapping("/add_invoices")
   public List<Long> saveInvoices(@RequestBody List<Invoice> invoices) {
     return invoiceBook.saveInvoices(invoices);
   }
