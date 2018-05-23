@@ -12,14 +12,14 @@ import org.springframework.context.annotation.Primary;
 public class SpringConfiguration {
 
   @Primary
-  @Bean(value = "wr")
+  @Bean(value = "writingMapper")
   public ObjectMapper writingMapper() {
     ObjectMapper writingMapper = new ObjectMapper().registerModule(new JavaTimeModule())
         .configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
     return writingMapper;
   }
 
-  @Bean(value = "rm")
+  @Bean(value = "readingMapper")
   public ObjectMapper readingMapper() {
     ObjectMapper readingMapper = new ObjectMapper().registerModule(new JavaTimeModule())
         .configure(DeserializationFeature.READ_DATE_TIMESTAMPS_AS_NANOSECONDS, true);

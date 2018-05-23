@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
 
-@ConditionalOnProperty(value = "myBean.enabled", havingValue = "false")
+@ConditionalOnProperty(value = "inFileDatabase.enabled", havingValue = "true")
 @Repository
 public class InFileDatabase implements Database {
 

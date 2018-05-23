@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@ConditionalOnProperty(value = "myBean.enabled", havingValue = "true")
+@ConditionalOnProperty(value = "inMemoryDatabase.enabled", havingValue = "true")
 @Repository
 public class InMemoryDatabase implements Database {
 
