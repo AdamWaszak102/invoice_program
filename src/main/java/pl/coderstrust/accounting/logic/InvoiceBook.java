@@ -5,6 +5,7 @@ import pl.coderstrust.accounting.database.Database;
 import pl.coderstrust.accounting.model.Invoice;
 
 import java.util.Collection;
+import java.util.List;
 
 @Service
 public class InvoiceBook {
@@ -35,5 +36,9 @@ public class InvoiceBook {
 
   public void removeInvoiceById(Long id) {
     database.removeInvoiceById(id);
+  }
+
+  public List<Long> saveInvoices(List<Invoice> invoices) {
+    return database.saveInvoices(invoices);
   }
 }

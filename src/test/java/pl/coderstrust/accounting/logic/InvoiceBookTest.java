@@ -1,8 +1,12 @@
 package pl.coderstrust.accounting.logic;
 
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static pl.coderstrust.accounting.model.TestInvoiceProvider.invoiceOne;
+import static pl.coderstrust.accounting.model.TestInvoiceProvider.invoiceThree;
+import static pl.coderstrust.accounting.model.TestInvoiceProvider.invoiceTwo;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,6 +16,9 @@ import org.mockito.junit.MockitoJUnitRunner;
 import pl.coderstrust.accounting.database.Database;
 import pl.coderstrust.accounting.model.Invoice;
 
+import java.util.Arrays;
+import java.util.List;
+
 @RunWith(MockitoJUnitRunner.class)
 public class InvoiceBookTest {
 
@@ -20,18 +27,22 @@ public class InvoiceBookTest {
 
   Invoice invoice = invoiceOne();
 
+
   @InjectMocks
   InvoiceBook invoiceBook;
 
   @Test
   public void shouldSaveInvoice() {
     //given
+    Long id = 1234L;
+    when((database).saveInvoice(invoice)).thenReturn(id);
 
     //when
-    invoiceBook.saveInvoice(invoice);
+    Long result = invoiceBook.saveInvoice(invoice);
 
     //then
     verify(database).saveInvoice(invoice);
+    assertEquals(id, result);
   }
 
   @Test
@@ -91,6 +102,21 @@ public class InvoiceBookTest {
 
     //then
     verify(database).getInvoices();
+  }
+
+  @Test
+  public void shouldSaveInvoices() {
+    //given
+    List<Invoice> invoices = Arrays.asList(invoice, invoiceTwo(), invoiceThree());
+    List<Long> ids = Arrays.asList(123L, 345L, 678L);
+    when((database).saveInvoices(invoices)).thenReturn(ids);
+
+    //when
+    List<Long> result = invoiceBook.saveInvoices(invoices);
+
+    //then
+    verify(database).saveInvoices(invoices);
+    assertEquals(ids, result);
   }
 
 }
