@@ -1,5 +1,7 @@
 package pl.coderstrust.accounting.database.impl.file;
 
+import org.springframework.stereotype.Component;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
@@ -8,6 +10,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
 public class FileHelper {
 
   public void appendLine(String line, String fileName) {

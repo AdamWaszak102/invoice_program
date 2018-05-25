@@ -1,22 +1,26 @@
 package pl.coderstrust.accounting.database.impl.file;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Component;
 import pl.coderstrust.accounting.model.Invoice;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
 public class JsonHelper {
 
-  private ObjectMapper writingMapper = new ObjectMapper().registerModule(new JavaTimeModule())
-      .configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
-  private ObjectMapper readingMapper = new ObjectMapper().registerModule(new JavaTimeModule())
-      .configure(DeserializationFeature.READ_DATE_TIMESTAMPS_AS_NANOSECONDS, true);
+  private ObjectMapper writingMapper;
+  private ObjectMapper readingMapper;
+
+  public JsonHelper(@Qualifier("writingMapper") ObjectMapper writingMapper,
+      @Qualifier("readingMapper")ObjectMapper readingMapper) {
+    this.writingMapper = writingMapper;
+    this.readingMapper = readingMapper;
+  }
 
   public String convertInvoiceToJsonString(Invoice invoice) {
     try {

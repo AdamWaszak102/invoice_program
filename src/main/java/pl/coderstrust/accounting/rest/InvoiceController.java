@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import pl.coderstrust.accounting.database.impl.memory.InMemoryDatabase;
 import pl.coderstrust.accounting.logic.InvoiceBook;
 import pl.coderstrust.accounting.model.Invoice;
 
@@ -19,7 +18,11 @@ import java.util.List;
 @RequestMapping("/invoices")
 public class InvoiceController {
 
-  private InvoiceBook invoiceBook = new InvoiceBook(new InMemoryDatabase());
+  private InvoiceBook invoiceBook;
+
+  public InvoiceController(InvoiceBook invoiceBook) {
+    this.invoiceBook = invoiceBook;
+  }
 
   @GetMapping
   public Collection<Invoice> getInvoices() {
