@@ -1,8 +1,7 @@
 package pl.coderstrust.accounting.database.impl.file;
 
-import static org.mockito.Mockito.mock;
-
 import org.junit.After;
+import pl.coderstrust.accounting.SpringConfiguration;
 import pl.coderstrust.accounting.database.Database;
 import pl.coderstrust.accounting.database.DatabaseTest;
 
@@ -15,10 +14,13 @@ public class InFileDatabaseTest extends DatabaseTest {
 
   @Override
   protected Database getDatabase() {
-    FileHelper fileHelper = mock(FileHelper.class);
-    JsonHelper jsonHelper = mock(JsonHelper.class);
-//    cleanUp();
-    Configuration configuration = mock(Configuration.class);
+
+    SpringConfiguration springConfiguration = new SpringConfiguration();
+    FileHelper fileHelper = new FileHelper();
+    JsonHelper jsonHelper = new JsonHelper(springConfiguration.writingMapper(),
+        springConfiguration.readingMapper());
+    cleanUp();
+    Configuration configuration = new Configuration(dbFileName, idFileName);
     return new InFileDatabase(fileHelper, jsonHelper, configuration);
   }
 

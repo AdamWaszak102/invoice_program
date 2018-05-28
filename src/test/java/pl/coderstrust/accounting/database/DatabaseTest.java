@@ -21,13 +21,14 @@ public abstract class DatabaseTest {
     Invoice invoiceOne = invoiceOne();
     Invoice invoiceTwo = invoiceTwo();
     Database db = getDatabase();
+    int expected = db.getInvoices().size();
 
     //when
     db.saveInvoice(invoiceOne);
     db.saveInvoice(invoiceTwo);
 
     //then
-    assertEquals(2, db.getInvoices().size());
+    assertEquals(expected + 2, db.getInvoices().size());
   }
 
   @Test
@@ -35,7 +36,7 @@ public abstract class DatabaseTest {
     //given
     Invoice invoiceOne = invoiceOne();
     Invoice invoiceTwo = invoiceTwo();
-    List<Invoice> invoicesList = new ArrayList<>(Arrays.asList(invoiceOne,invoiceTwo));
+    List<Invoice> invoicesList = new ArrayList<>(Arrays.asList(invoiceOne, invoiceTwo));
     Database db = getDatabase();
     int expected = db.getInvoices().size();
 
