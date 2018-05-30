@@ -21,14 +21,14 @@ public abstract class DatabaseTest {
     Invoice invoiceOne = invoiceOne();
     Invoice invoiceTwo = invoiceTwo();
     Database db = getDatabase();
-    int invoicesNumberBeforeInsert = db.getInvoices().size();
+    int initialInvoicesNumber = db.getInvoices().size();
 
     //when
     db.saveInvoice(invoiceOne);
     db.saveInvoice(invoiceTwo);
 
     //then
-    assertEquals(invoicesNumberBeforeInsert + 2, db.getInvoices().size());
+    assertEquals(initialInvoicesNumber + 2, db.getInvoices().size());
   }
 
   @Test

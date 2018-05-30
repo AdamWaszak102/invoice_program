@@ -16,9 +16,6 @@ import java.io.File;
 @ComponentScan(basePackages = "pl.coderstrust.accounting")
 public class InFileDatabaseIntegrationTest extends DatabaseTest {
 
-  private static final String dbFileName = "test.json";
-  private static final String idFileName = "idTest.txt";
-
   @Autowired
   private Database inFileDatabase;
 
@@ -33,11 +30,11 @@ public class InFileDatabaseIntegrationTest extends DatabaseTest {
 
   @After
   public void cleanUp() {
-    File dbFile = new File(dbFileName);
+    File dbFile = new File(configuration.getFileName());
     if (dbFile.exists()) {
       dbFile.delete();
     }
-    File idFile = new File(idFileName);
+    File idFile = new File(configuration.getIdNumberFileName());
     if (idFile.exists()) {
       idFile.delete();
     }

@@ -2,7 +2,6 @@ package pl.coderstrust.accounting.database.impl.file;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import pl.coderstrust.accounting.model.Invoice;
 
@@ -13,18 +12,15 @@ import java.util.List;
 @Component
 public class JsonHelper {
 
-  private ObjectMapper writingMapper;
-  private ObjectMapper readingMapper;
+  private ObjectMapper objectMapper;
 
-  public JsonHelper(@Qualifier("writingMapper") ObjectMapper writingMapper,
-      @Qualifier("readingMapper")ObjectMapper readingMapper) {
-    this.writingMapper = writingMapper;
-    this.readingMapper = readingMapper;
+  public JsonHelper(ObjectMapper objectMapper) {
+    this.objectMapper = objectMapper;
   }
 
   public String convertInvoiceToJsonString(Invoice invoice) {
     try {
-      return writingMapper.writeValueAsString(invoice);
+      return objectMapper.writeValueAsString(invoice);
     } catch (JsonProcessingException exception) {
       exception.printStackTrace();
     }
@@ -35,7 +31,7 @@ public class JsonHelper {
     List<Invoice> allInvoices = new ArrayList<>();
     for (String invoiceInString : allInvoicesInJson) {
       try {
-        Invoice invoice = readingMapper.readValue(invoiceInString, Invoice.class);
+        Invoice invoice = objectMapper.readValue(invoiceInString, Invoice.class);
         allInvoices.add(invoice);
       } catch (IOException exception) {
         exception.printStackTrace();
@@ -46,7 +42,7 @@ public class JsonHelper {
 
   public Invoice returnInvoiceById(String invoiceLine) {
     try {
-      return readingMapper.readValue(invoiceLine, Invoice.class);
+      return objectMapper.readValue(invoiceLine, Invoice.class);
     } catch (IOException exception) {
       exception.printStackTrace();
     }

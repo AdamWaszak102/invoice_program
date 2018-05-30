@@ -21,7 +21,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @RunWith(MockitoJUnitRunner.class)
-public class InFileDatabaseMockTest extends DatabaseTest {
+public class InFileDatabaseTest extends DatabaseTest {
 
   private static final String dbFileName = "test.json";
   private static final String idFileName = "idTest.txt";
@@ -57,6 +57,9 @@ public class InFileDatabaseMockTest extends DatabaseTest {
           + "\":\"Proactive Investment Sp. z o.o.\",\"address\":\"Wiejska 17, 00-001 Mysiadło"
           + "\",\"taxIdentificationNumber\":5218774000},\"entries\":[{\"description\":"
           + "\"Fruit and vegetable processing\",\"price\":2500,\"vat\":\"VAT_5\"}]},"));
+  String anything = "anything";
+  String something = "something";
+  List<String> stringsList = new ArrayList<>(Arrays.asList(anything, something));
 
   @InjectMocks
   InFileDatabase inFileDatabase;
@@ -71,9 +74,7 @@ public class InFileDatabaseMockTest extends DatabaseTest {
     cleanUp();
     when(configuration.getFileName()).thenReturn(dbFileName);
     when(configuration.getIdNumberFileName()).thenReturn(idFileName);
-//    when(jsonHelper.convertInvoiceToJsonString(invoiceOne)).thenReturn(invoiceLine);
-//    when(jsonHelper.convertInvoiceToJsonString(invoiceTwo)).thenReturn(invoiceLine);
-//    when(fileHelper.appendLine(invoiceLine, configuration.getFileName()).thenReturn(invoice.getId());
+//    when(fileHelper.appendLine(anything, dbFileName)).thenReturn(invoiceOne);
     return inFileDatabase;
   }
 
