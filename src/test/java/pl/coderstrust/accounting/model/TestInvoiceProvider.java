@@ -65,4 +65,9 @@ public class TestInvoiceProvider {
         entries);
     return invoice;
   }
+
+  public static Invoice emptyInvoice() {
+    Invoice invoice = new Invoice(null,null,null,null,null, null);
+    return invoice;
+  }
 }

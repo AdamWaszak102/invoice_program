@@ -21,14 +21,14 @@ public abstract class DatabaseTest {
     Invoice invoiceOne = invoiceOne();
     Invoice invoiceTwo = invoiceTwo();
     Database db = getDatabase();
-    int expected = db.getInvoices().size();
+    int invoicesNumberBeforeInsert = db.getInvoices().size();
 
     //when
     db.saveInvoice(invoiceOne);
     db.saveInvoice(invoiceTwo);
 
     //then
-    assertEquals(expected + 2, db.getInvoices().size());
+    assertEquals(invoicesNumberBeforeInsert + 2, db.getInvoices().size());
   }
 
   @Test
@@ -38,13 +38,13 @@ public abstract class DatabaseTest {
     Invoice invoiceTwo = invoiceTwo();
     List<Invoice> invoicesList = new ArrayList<>(Arrays.asList(invoiceOne, invoiceTwo));
     Database db = getDatabase();
-    int expected = db.getInvoices().size();
+    int initialInvoicesNumber = db.getInvoices().size();
 
     //when
     db.saveInvoices(invoicesList);
 
     //then
-    assertEquals(expected + 2, db.getInvoices().size());
+    assertEquals(initialInvoicesNumber + 2, db.getInvoices().size());
   }
 
   @Test
@@ -68,14 +68,14 @@ public abstract class DatabaseTest {
     //given
     Invoice invoiceOne = invoiceOne();
     Database db = getDatabase();
-    int expected = db.getInvoices().size();
+    int initialInvoicesNumber = db.getInvoices().size();
 
     //when
     Long id = db.saveInvoice(invoiceOne);
     db.removeInvoiceById(id);
 
     //then
-    assertEquals(expected, db.getInvoices().size());
+    assertEquals(initialInvoicesNumber, db.getInvoices().size());
   }
 
   @Test

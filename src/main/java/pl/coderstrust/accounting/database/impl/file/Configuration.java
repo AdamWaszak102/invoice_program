@@ -12,13 +12,6 @@ public class Configuration {
   @Value("${idNumberFileName}")
   private String idNumberFileName;
 
-  public Configuration(String fileName, String idNumberFileName) {
-    this.fileName = fileName;
-    this.idNumberFileName = idNumberFileName;
-  }
-
-  public Configuration() {}
-
   public String getFileName() {
     return fileName;
   }
