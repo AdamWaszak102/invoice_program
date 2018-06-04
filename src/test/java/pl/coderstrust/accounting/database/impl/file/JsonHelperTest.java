@@ -86,11 +86,10 @@ public class JsonHelperTest {
       verify(objectMapper).readValue(invoiceInString, Invoice.class);
     }
     assertEquals(expected, actual);
-
   }
 
   @Test(expected = IOException.class)
-  public void shouldCheckThatJsonHelperThrowsExceptionWhenWrongListOfInvoicesInJsonProvided()
+  public void shouldCheckThatObjectMapperThrowsIOExceptionWhenStringsListProvided()
       throws Exception {
     //given
     when(objectMapper.readValue(anything, Invoice.class)).thenThrow(new IOException());
@@ -118,7 +117,7 @@ public class JsonHelperTest {
   }
 
   @Test(expected = IOException.class)
-  public void shouldCheckThatJsonHelperThrowsExceptionWhenInvoiceInJsonNotProvided()
+  public void shouldCheckThatObjectMapperThrowsIOException()
       throws Exception {
     //given
     when(objectMapper.readValue(anything, Invoice.class)).thenThrow(new IOException());

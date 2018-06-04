@@ -74,7 +74,7 @@ public class InFileDatabaseTest extends DatabaseTest {
     cleanUp();
     when(configuration.getFileName()).thenReturn(dbFileName);
     when(configuration.getIdNumberFileName()).thenReturn(idFileName);
-//    when(fileHelper.appendLine(anything, dbFileName)).thenReturn(invoiceOne);
+    //    when(fileHelper.appendLine(anything, dbFileName)).thenReturn(invoiceOne);
     return inFileDatabase;
   }
 

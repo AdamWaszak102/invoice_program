@@ -29,6 +29,23 @@ public class TestInvoiceProvider {
     return invoice;
   }
 
+  public static Invoice invoiceOneModified() {
+    Company seller = new Company();
+    seller.setCompanyName("Abracodeabra");
+    seller.setTaxIdentificationNumber(5213344000L);
+    seller.setAddress("Kolejowa 5/7, 01-217 Warszawa");
+
+    Company buyer = new Company();
+    buyer.setCompanyName("Bravecto");
+    buyer.setTaxIdentificationNumber(4443322000L);
+    buyer.setAddress("Matuszewska 14, 25-022 Kielce");
+
+    InvoiceEntry invoiceEntry = new InvoiceEntry("microscope", BigDecimal.valueOf(1000), VAT_23);
+    Invoice invoice = new Invoice(1L, "FV 6/2018", LocalDate.of(2017, 10, 2), buyer, seller,
+        Arrays.asList(invoiceEntry));
+    return invoice;
+  }
+
   public static Invoice invoiceTwo() {
     Company seller = new Company();
     seller.setCompanyName("Manta");
@@ -67,7 +84,7 @@ public class TestInvoiceProvider {
   }
 
   public static Invoice emptyInvoice() {
-    Invoice invoice = new Invoice(null,null,null,null,null, null);
+    Invoice invoice = new Invoice(null, null, null, null, null, null);
     return invoice;
   }
 }
