@@ -30,13 +30,14 @@ public class InFileDatabaseIntegrationTest extends DatabaseTest {
 
   @After
   public void cleanUp() {
-    File dbFile = new File(configuration.getFileName());
+    deleteIfExists(configuration.getFileName());
+    deleteIfExists(configuration.getIdNumberFileName());
+  }
+
+  private void deleteIfExists(String fileName) {
+    File dbFile = new File(fileName);
     if (dbFile.exists()) {
       dbFile.delete();
-    }
-    File idFile = new File(configuration.getIdNumberFileName());
-    if (idFile.exists()) {
-      idFile.delete();
     }
   }
 }

@@ -7,12 +7,10 @@ import static pl.coderstrust.accounting.model.TestInvoiceProvider.emptyInvoice;
 import static pl.coderstrust.accounting.model.TestInvoiceProvider.invoiceOne;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 import pl.coderstrust.accounting.model.Invoice;
 
@@ -36,29 +34,12 @@ public class JsonHelperTest {
   @InjectMocks
   JsonHelper jsonHelper;
 
-  @Before
-  public void setUp() {
-    MockitoAnnotations.initMocks(this);
-  }
-
-  @Test
-  public void shouldCheckThatJsonHelperConvertsInvoiceToJsonStringWhenInvoiceProvided()
-      throws Exception {
-    //given
-
-    //when
-    jsonHelper.convertInvoiceToJsonString(invoiceOne);
-
-    //then
-    verify(objectMapper).writeValueAsString(invoiceOne);
-  }
-
   @Test
   public void shouldCheckThatJsonHelperConvertsInvoiceToJsonString()
       throws Exception {
     //given
-    String expected = "";
-    when(objectMapper.writeValueAsString(invoiceThree)).thenReturn("");
+    String expected = anything;
+    when(objectMapper.writeValueAsString(invoiceThree)).thenReturn(anything);
 
     //when
     String actual = jsonHelper.convertInvoiceToJsonString(invoiceThree);

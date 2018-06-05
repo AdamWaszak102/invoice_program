@@ -20,6 +20,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import pl.coderstrust.accounting.SpringConfiguration;
@@ -32,6 +34,7 @@ import java.util.List;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class InvoiceControllerIntegrationTest {
 
   Invoice invoiceOne = invoiceOne();
@@ -42,7 +45,7 @@ public class InvoiceControllerIntegrationTest {
   private MockMvc mockMvc;
 
   @Test
-  public void shouldCheckThatInvoiceControllerFunctionsProperly() throws Exception {
+  public void shouldCheckThatInvoiceControllerSavesInvoiceAndReadsIt() throws Exception {
     mockMvc.perform(post("/invoices/add_invoice").content(invoiceToJson(invoiceOne))
         .contentType(MediaType.APPLICATION_JSON_UTF8))
         .andExpect(status().isOk());
@@ -52,6 +55,13 @@ public class InvoiceControllerIntegrationTest {
         .andExpect(jsonPath("$", hasSize(1)))
         .andExpect(status().isOk())
         .andExpect(content().string(containsString("FV 1/2017")));
+  }
+
+  @Test
+  public void shouldCheckThatInvoiceControllerUpdatesInvoice() throws Exception {
+    mockMvc.perform(post("/invoices/add_invoice").content(invoiceToJson(invoiceOne))
+        .contentType(MediaType.APPLICATION_JSON_UTF8))
+        .andExpect(status().isOk());
 
     mockMvc.perform(put("/invoices").content(invoiceToJson(invoiceModified))
         .contentType(MediaType.APPLICATION_JSON_UTF8))
@@ -61,10 +71,13 @@ public class InvoiceControllerIntegrationTest {
         .andExpect(jsonPath("$", hasSize(1)))
         .andExpect(status().isOk())
         .andExpect(content().string(containsString("FV 6/2018")));
+  }
 
-    //    mockMvc.perform(post("/invoices/add_invoices").content(invoicesToJson(invoicesList))
-    //        .contentType(MediaType.APPLICATION_JSON_UTF8).accept(MediaType.APPLICATION_JSON_UTF8))
-    //        .andExpect(status().isOk());
+  @Test
+  public void shouldCheckThatInvoiceControllerRemovesInvoice() throws Exception {
+    mockMvc.perform(post("/invoices/add_invoice").content(invoiceToJson(invoiceOne))
+        .contentType(MediaType.APPLICATION_JSON_UTF8))
+        .andExpect(status().isOk());
 
     mockMvc.perform(delete("/invoices/1"))
         .andExpect(status().isOk());
