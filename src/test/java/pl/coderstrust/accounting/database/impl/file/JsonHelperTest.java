@@ -1,9 +1,10 @@
 package pl.coderstrust.accounting.database.impl.file;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static pl.coderstrust.accounting.model.TestInvoiceProvider.emptyInvoice;
 import static pl.coderstrust.accounting.model.TestInvoiceProvider.invoiceOne;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -26,7 +27,6 @@ public class JsonHelperTest {
   ObjectMapper objectMapper;
 
   Invoice invoiceOne = invoiceOne();
-  Invoice invoiceThree = emptyInvoice();
   String anything = "anything";
   String something = "something";
   List<String> stringsList = new ArrayList<>(Arrays.asList(anything, something));
@@ -39,13 +39,13 @@ public class JsonHelperTest {
       throws Exception {
     //given
     String expected = anything;
-    when(objectMapper.writeValueAsString(invoiceThree)).thenReturn(anything);
+    when(objectMapper.writeValueAsString(invoiceOne)).thenReturn(anything);
 
     //when
-    String actual = jsonHelper.convertInvoiceToJsonString(invoiceThree);
+    String actual = jsonHelper.convertInvoiceToJsonString(invoiceOne);
 
     //then
-    verify(objectMapper).writeValueAsString(invoiceThree);
+    verify(objectMapper).writeValueAsString(invoiceOne);
     assertEquals(expected, actual);
   }
 
@@ -69,17 +69,18 @@ public class JsonHelperTest {
     assertEquals(expected, actual);
   }
 
-  @Test(expected = IOException.class)
-  public void shouldCheckThatObjectMapperThrowsIOExceptionWhenStringsListProvided()
+  @Test
+  public void shouldCheckThatEmptyListIsReturnedWhenObjectMapperThrowsIOException()
       throws Exception {
     //given
     when(objectMapper.readValue(anything, Invoice.class)).thenThrow(new IOException());
+    List<Invoice> expected = new ArrayList<>();
 
     //when
-    jsonHelper.convertJsonStringsListToListOfInvoices(stringsList);
+    List<Invoice> result = jsonHelper.convertJsonStringsListToListOfInvoices(stringsList);
 
     //then
-    verify(objectMapper.readValue(anything, Invoice.class));
+    assertTrue(result.contains(null));
   }
 
   @Test
@@ -90,23 +91,23 @@ public class JsonHelperTest {
         .thenReturn(invoiceOne);
 
     //when
-    Invoice actual = jsonHelper.returnInvoiceById(anything);
+    Invoice actual = jsonHelper.convertJsonStringToInvoice(anything);
 
     //then
     verify(objectMapper).readValue(anything, Invoice.class);
     assertEquals(invoiceOne, actual);
   }
 
-  @Test(expected = IOException.class)
-  public void shouldCheckThatObjectMapperThrowsIOException()
+  @Test
+  public void shouldCheckThatNullIsReturnedWhenObjectMapperThrowsIOException()
       throws Exception {
     //given
     when(objectMapper.readValue(anything, Invoice.class)).thenThrow(new IOException());
 
     //when
-    jsonHelper.returnInvoiceById(anything);
+    Invoice result = jsonHelper.convertJsonStringToInvoice(anything);
 
     //then
-    verify(objectMapper.readValue(anything, Invoice.class));
+    assertNull(result);
   }
 }

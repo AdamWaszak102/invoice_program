@@ -4,11 +4,14 @@ import org.springframework.stereotype.Component;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 @Component
 public class FileHelper {
@@ -104,5 +107,27 @@ public class FileHelper {
     } catch (IOException exception) {
       exception.printStackTrace();
     }
+  }
+
+  public void writeNumberToFile(Long id, String fileName) {
+    try (FileWriter fileWriter = new FileWriter(fileName)) {
+      fileWriter.write(id.toString());
+    } catch (IOException exception) {
+      exception.printStackTrace();
+    }
+  }
+
+  public Long readNumberFromFile(String fileName) {
+    File file = new File(fileName);
+    if (file.exists()) {
+      try (Scanner scanner = new Scanner(file)) {
+        if (scanner.hasNextLong()) {
+          return scanner.nextLong();
+        }
+      } catch (FileNotFoundException exception) {
+        exception.printStackTrace();
+      }
+    }
+    return 0L;
   }
 }

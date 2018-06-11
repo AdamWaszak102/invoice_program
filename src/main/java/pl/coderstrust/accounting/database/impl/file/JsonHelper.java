@@ -40,7 +40,7 @@ public class JsonHelper {
     return allInvoices;
   }
 
-  public Invoice returnInvoiceById(String invoiceLine) {
+  public Invoice convertJsonStringToInvoice(String invoiceLine) {
     try {
       return objectMapper.readValue(invoiceLine, Invoice.class);
     } catch (IOException exception) {

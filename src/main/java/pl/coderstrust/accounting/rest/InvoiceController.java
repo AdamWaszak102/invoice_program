@@ -48,4 +48,9 @@ public class InvoiceController {
   public List<Long> saveInvoices(@RequestBody List<Invoice> invoices) {
     return invoiceBook.saveInvoices(invoices);
   }
+
+  @GetMapping("/{id}")
+  public Invoice getInvoiceById(@RequestBody Invoice invoice, @PathVariable("id") Long id) {
+    return invoiceBook.getInvoiceById(id);
+  }
 }
