@@ -108,6 +108,5 @@ public abstract class DatabaseTest {
 
     //then
     assertEquals(afterUpdate, actual);
-    
   }
 }
