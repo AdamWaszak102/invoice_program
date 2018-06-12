@@ -2,6 +2,8 @@ package pl.coderstrust.accounting.database.impl.file;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import pl.coderstrust.accounting.model.Invoice;
@@ -12,6 +14,8 @@ import java.util.List;
 
 @Component
 public class JsonHelper {
+
+  private static final Logger logger = LoggerFactory.getLogger(JsonHelper.class);
 
   private ObjectMapper writingMapper;
   private ObjectMapper readingMapper;
@@ -25,8 +29,8 @@ public class JsonHelper {
   public String convertInvoiceToJsonString(Invoice invoice) {
     try {
       return writingMapper.writeValueAsString(invoice);
-    } catch (JsonProcessingException exception) {
-      exception.printStackTrace();
+    } catch (JsonProcessingException exceptionConvertingToJson) {
+      logger.error("Wrong invoice", exceptionConvertingToJson);
     }
     return "";
   }
@@ -37,8 +41,8 @@ public class JsonHelper {
       try {
         Invoice invoice = readingMapper.readValue(invoiceInString, Invoice.class);
         allInvoices.add(invoice);
-      } catch (IOException exception) {
-        exception.printStackTrace();
+      } catch (IOException exceptionConvertingFromJson) {
+        logger.error("Wrong file format", exceptionConvertingFromJson);
       }
     }
     return allInvoices;
@@ -47,8 +51,9 @@ public class JsonHelper {
   public Invoice returnInvoiceById(String invoiceLine) {
     try {
       return readingMapper.readValue(invoiceLine, Invoice.class);
-    } catch (IOException exception) {
-      exception.printStackTrace();
+    } catch (IOException exceptionConvertingFromJson) {
+      logger.error("Wrong file format", exceptionConvertingFromJson);
+      exceptionConvertingFromJson.printStackTrace();
     }
     return null;
   }

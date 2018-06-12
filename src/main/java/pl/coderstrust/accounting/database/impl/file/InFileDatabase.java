@@ -1,5 +1,7 @@
 package pl.coderstrust.accounting.database.impl.file;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Repository;
 import pl.coderstrust.accounting.database.Database;
@@ -17,6 +19,8 @@ import java.util.Scanner;
 @ConditionalOnProperty(value = "inFileDatabase.enabled", havingValue = "true")
 @Repository
 public class InFileDatabase implements Database {
+
+  private static final Logger logger = LoggerFactory.getLogger(InFileDatabase.class);
 
   private FileHelper fileHelper;
   private JsonHelper jsonHelper;
@@ -92,15 +96,15 @@ public class InFileDatabase implements Database {
         while (scanner.hasNextLong()) {
           id = scanner.nextLong();
         }
-      } catch (FileNotFoundException exception) {
-        exception.printStackTrace();
+      } catch (FileNotFoundException invoiceIdFileNotFound) {
+        logger.error("Cannot find the correct id number", invoiceIdFileNotFound);
       }
     }
     invoice.setId(++id);
     try (FileWriter fileWriter = new FileWriter(file)) {
       fileWriter.write(id.toString());
-    } catch (IOException exception) {
-      exception.printStackTrace();
+    } catch (IOException invoiceIdFileNotFound) {
+      logger.error("Cannot save the correct id number, try again", invoiceIdFileNotFound);
     }
   }
 }

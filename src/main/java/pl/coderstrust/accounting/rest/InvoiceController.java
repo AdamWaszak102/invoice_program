@@ -1,5 +1,8 @@
 package pl.coderstrust.accounting.rest;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,6 +21,8 @@ import java.util.List;
 @RequestMapping("/invoices")
 public class InvoiceController {
 
+  private static final Logger logger = LoggerFactory.getLogger(InvoiceController.class);
+
   private InvoiceBook invoiceBook;
 
   public InvoiceController(InvoiceBook invoiceBook) {
@@ -25,8 +30,13 @@ public class InvoiceController {
   }
 
   @GetMapping
-  public Collection<Invoice> getInvoices() {
-    return invoiceBook.getInvoices();
+  public ResponseEntity<Collection<Invoice>> getInvoices() {
+    Collection<Invoice> invoicesToReturn = invoiceBook.getInvoices();
+
+    if (invoicesToReturn == null) {
+      return ResponseEntity.notFound().build();
+    }
+    return ResponseEntity.ok(invoicesToReturn);
   }
 
   @PostMapping("/add_invoice")
@@ -37,6 +47,7 @@ public class InvoiceController {
   @DeleteMapping("/{id}")
   public void removeInvoiceById(@PathVariable("id") Long id) {
     invoiceBook.removeInvoiceById(id);
+    logger.info("Invoice deleted", id);
   }
 
   @PutMapping

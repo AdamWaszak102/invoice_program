@@ -1,5 +1,7 @@
 package pl.coderstrust.accounting.database.impl.file;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.io.BufferedReader;
@@ -13,13 +15,16 @@ import java.util.List;
 @Component
 public class FileHelper {
 
+  private static final Logger logger = LoggerFactory.getLogger(FileHelper.class);
+
   public void appendLine(String line, String fileName) {
     try (
         FileWriter fileWriter = new FileWriter(fileName, true);
         BufferedWriter bufferedWriter = new BufferedWriter(fileWriter)) {
       appendLine(line, bufferedWriter);
-    } catch (IOException exception) {
-      exception.printStackTrace();
+    } catch (IOException applicationException) {
+      logger.error("File does not exist", applicationException);  // or "change the path"?
+      throw new RuntimeException(applicationException);
     }
   }
 
@@ -37,8 +42,9 @@ public class FileHelper {
       for (String line : stringList) {
         appendLine(line, bufferedWriter);
       }
-    } catch (IOException exception) {
-      exception.printStackTrace();
+    } catch (IOException applicationException) {
+      logger.error("File does not exist", applicationException);
+      throw new RuntimeException(applicationException);
     }
   }
 
@@ -52,8 +58,8 @@ public class FileHelper {
       while ((currentLine = bufferedReader.readLine()) != null) {
         lines.add(currentLine);
       }
-    } catch (IOException exception) {
-      exception.printStackTrace();
+    } catch (IOException readingError) {
+      logger.error("File is empty or does not exist", readingError);
     }
     return lines;
   }
@@ -80,8 +86,8 @@ public class FileHelper {
         allInvoicesInJsonAfterRemoval.add(currentLine);
       }
       writeListToFile(allInvoicesInJsonAfterRemoval, fileName, false);
-    } catch (IOException exception) {
-      exception.printStackTrace();
+    } catch (IOException readingError) {
+      logger.info("File is empty or does not exist", readingError);
     }
   }
 
@@ -101,8 +107,8 @@ public class FileHelper {
         allInvoicesInJsonAfterUpdate.add(currentLine);
       }
       writeListToFile(allInvoicesInJsonAfterUpdate, fileName, false);
-    } catch (IOException exception) {
-      exception.printStackTrace();
+    } catch (IOException readingError) {
+      logger.info("File is empty or does not exist", readingError);
     }
   }
 }
