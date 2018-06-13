@@ -2,6 +2,7 @@ package pl.coderstrust.accounting.database.impl.file;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static pl.coderstrust.accounting.model.TestInvoiceProvider.invoiceOne;
@@ -73,14 +74,13 @@ public class JsonHelperTest {
       throws Exception {
     //given
     when(objectMapper.readValue(anything, Invoice.class)).thenThrow(new IOException());
-    List<Invoice> expected = new ArrayList<>();
-    expected.add(null);
+    when(objectMapper.readValue(something, Invoice.class)).thenThrow(new IOException());
 
     //when
     List<Invoice> result = jsonHelper.convertJsonStringsListToListOfInvoices(stringsList);
 
     //then
-    assertEquals(result, expected);
+    assertTrue(result.isEmpty());
   }
 
   @Test
