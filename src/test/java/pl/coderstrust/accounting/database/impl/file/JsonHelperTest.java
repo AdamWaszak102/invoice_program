@@ -74,13 +74,13 @@ public class JsonHelperTest {
       throws Exception {
     //given
     when(objectMapper.readValue(anything, Invoice.class)).thenThrow(new IOException());
-    List<Invoice> expected = new ArrayList<>();
+    when(objectMapper.readValue(something, Invoice.class)).thenThrow(new IOException());
 
     //when
     List<Invoice> result = jsonHelper.convertJsonStringsListToListOfInvoices(stringsList);
 
     //then
-    assertTrue(result.contains(null));
+    assertTrue(result.isEmpty());
   }
 
   @Test

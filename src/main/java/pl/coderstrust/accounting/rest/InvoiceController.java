@@ -50,7 +50,7 @@ public class InvoiceController {
   }
 
   @GetMapping("/{id}")
-  public Invoice getInvoiceById(@RequestBody Invoice invoice, @PathVariable("id") Long id) {
+  public Invoice getInvoiceById(@PathVariable("id") Long id) {
     return invoiceBook.getInvoiceById(id);
   }
 }
