@@ -59,12 +59,21 @@ public class InvoiceControllerIntegrationTest {
   }
 
   @Test
-  public void shouldCheckThatInvoiceControllerReadsInvoices() throws Exception {
+  public void shouldCheckThatInvoiceControllerSavesAListOfInvoicesAndReturnsId() throws Exception {
     MvcResult response = mockMvc
-        .perform(post("/invoices/add_invoice").content(invoiceToJson(invoiceOne))
+        .perform(post("/invoices/add_invoices").content(invoicesToJson(invoicesList))
             .contentType(MediaType.APPLICATION_JSON_UTF8))
         .andExpect(status().isOk())
         .andReturn();
+
+//    assertTrue((StringUtils.replaceChars(response.toString(), ",","")).isNumeric(response.getResponse().getContentAsString()));
+  }
+
+  @Test
+  public void shouldCheckThatInvoiceControllerReadsInvoices() throws Exception {
+    mockMvc.perform(post("/invoices/add_invoice").content(invoiceToJson(invoiceOne))
+            .contentType(MediaType.APPLICATION_JSON_UTF8))
+        .andExpect(status().isOk());
 
     mockMvc.perform(get("/invoices"))
         .andDo(print())
@@ -73,6 +82,13 @@ public class InvoiceControllerIntegrationTest {
         .andExpect(content().string(containsString("FV 1/2017")));
 //        .andExpect(content().mimeType(IntegrationTestUtil.APPLICATION_JSON_UTF8));
     mockMvc.perform(get("/invoices/{id}", 1L));
+  }
+  @Test
+  public void shouldCheckThatInvoiceControllerReadsInvoiceById() throws Exception {
+    mockMvc.perform(post("/invoices/add_invoices").content(invoicesToJson(invoicesList))
+            .contentType(MediaType.APPLICATION_JSON_UTF8))
+        .andExpect(status().isOk());
+
   }
 
   @Test
@@ -123,24 +139,18 @@ public class InvoiceControllerIntegrationTest {
     SpringConfiguration springConfiguration = new SpringConfiguration();
     return springConfiguration.objectMapper().writeValueAsString(invoice);
   }
-//
-//  private String invoicesToJson(List<Invoice> invoicesList) throws JsonProcessingException {
+
+  private String invoicesToJson(List<Invoice> invoicesList) throws JsonProcessingException {
 //    Gson gson = new GsonBuilder().create();
 //    JsonArray myCustomArray = gson.toJsonTree(myCustomList).getAsJsonArray();
-//
-//    String invoicesInJson = "";
-//    for (Invoice invoice : invoicesList) {
-//      invoicesInJson.(invoiceToJson(invoice));
-//    }
-//    return ;
-//  }
-public static String createStringWithLength(int length) {
-  StringBuilder builder = new StringBuilder();
-
-  for (int index = 0; index < length; index++) {
-    builder.append("a");
+    StringBuilder stringBuilder = new StringBuilder("[");
+    for (Invoice invoice : invoicesList) {
+      stringBuilder.append(invoiceToJson(invoice));
+      stringBuilder.append(",");
+//      stringBuilder.append("\n");
+    }
+    stringBuilder.deleteCharAt((stringBuilder.length()-1));
+//    stringBuilder.delete((stringBuilder.length() - 2),(stringBuilder.length() - 1));
+    return stringBuilder.append("]").toString();
   }
-
-  return builder.toString();
-}
 }
