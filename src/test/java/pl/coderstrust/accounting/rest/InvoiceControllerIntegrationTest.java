@@ -66,13 +66,16 @@ public class InvoiceControllerIntegrationTest {
         .andExpect(status().isOk())
         .andReturn();
 
-//    assertTrue((StringUtils.replaceChars(response.toString(), ",","")).isNumeric(response.getResponse().getContentAsString()));
+    String result = (response.getResponse().getContentAsString()).replace("[", "")
+        .replace(",", "").replace("]", "");
+
+    assertTrue(StringUtils.isNumeric(result));
   }
 
   @Test
   public void shouldCheckThatInvoiceControllerReadsInvoices() throws Exception {
     mockMvc.perform(post("/invoices/add_invoice").content(invoiceToJson(invoiceOne))
-            .contentType(MediaType.APPLICATION_JSON_UTF8))
+        .contentType(MediaType.APPLICATION_JSON_UTF8))
         .andExpect(status().isOk());
 
     mockMvc.perform(get("/invoices"))
@@ -80,15 +83,29 @@ public class InvoiceControllerIntegrationTest {
         .andExpect(jsonPath("$", hasSize(1)))
         .andExpect(status().isOk())
         .andExpect(content().string(containsString("FV 1/2017")));
-//        .andExpect(content().mimeType(IntegrationTestUtil.APPLICATION_JSON_UTF8));
-    mockMvc.perform(get("/invoices/{id}", 1L));
   }
+
   @Test
   public void shouldCheckThatInvoiceControllerReadsInvoiceById() throws Exception {
-    mockMvc.perform(post("/invoices/add_invoices").content(invoicesToJson(invoicesList))
+    MvcResult result = mockMvc
+        .perform(post("/invoices/add_invoices").content(invoicesToJson(invoicesList))
             .contentType(MediaType.APPLICATION_JSON_UTF8))
-        .andExpect(status().isOk());
+        .andExpect(status().isOk())
+        .andReturn();
 
+    String idsAsString = result.getResponse().getContentAsString().replace("]", "");
+    int lastInvoiceId = Integer.parseInt(StringUtils.substringAfterLast(idsAsString, ","));
+    int ids = StringUtils.lastIndexOf(idsAsString, ",");
+
+    mockMvc.perform(get("/invoices/{id}", StringUtils.lastIndexOf(idsAsString, ",")))
+        .andExpect(status().isOk())
+        .andExpect(content().string(containsString("FV 6/2018")));
+  }
+
+  @Test
+  public void shouldCheckThatStatusIsNotFoundWhenReadingInvoiceWithWrongId() throws Exception {
+    mockMvc.perform(get("/invoices/{id}", 333L))
+        .andExpect(status().isNotFound());
   }
 
   @Test
@@ -106,17 +123,7 @@ public class InvoiceControllerIntegrationTest {
         .andExpect(status().isOk())
         .andExpect(content().string(containsString("FV 6/2018")));
   }
-//  @Test
-//  public void deleteByIdWhenTodoIsNotFound() throws Exception {
-//    mockMvc.perform(delete("/api/todo/{id}", 3L))
-//        .andExpect(status().isNotFound());
-//  }
-  //  @Test
-//  public void shouldCheckThatInvoiceControllerRemovesInvoice1() throws Exception {
-//        mockMvc.perform(post("/invoices/add_invoices").content(invoicesToJson(invoicesList))
-//            .contentType(MediaType.APPLICATION_JSON_UTF8).accept(MediaType.APPLICATION_JSON_UTF8))
-//            .andExpect(status().isOk());
-//  }
+
   @Test
   public void shouldCheckThatInvoiceControllerRemovesInvoice() throws Exception {
     MvcResult response = mockMvc
@@ -124,8 +131,9 @@ public class InvoiceControllerIntegrationTest {
             .contentType(MediaType.APPLICATION_JSON_UTF8))
         .andExpect(status().isOk())
         .andReturn();
+    int id = (Integer.parseInt(response.getResponse().getContentAsString()));
 
-    mockMvc.perform(delete(invoiceToJson(invoiceOne),response))
+    mockMvc.perform(delete("/invoices/" + id))
         .andExpect(status().isOk());
 
     mockMvc.perform(get("/invoices"))
@@ -135,22 +143,24 @@ public class InvoiceControllerIntegrationTest {
         .andExpect(content().string(containsString("[]")));
   }
 
+  @Test
+  public void shouldCheckThatStatusIsNotFoundWhenRemovingInvoiceWithWrongId() throws Exception {
+    mockMvc.perform(delete("/invoices/{id}", 333L))
+        .andExpect(status().isNotFound());
+  }
+
   private String invoiceToJson(Invoice invoice) throws JsonProcessingException {
     SpringConfiguration springConfiguration = new SpringConfiguration();
     return springConfiguration.objectMapper().writeValueAsString(invoice);
   }
 
   private String invoicesToJson(List<Invoice> invoicesList) throws JsonProcessingException {
-//    Gson gson = new GsonBuilder().create();
-//    JsonArray myCustomArray = gson.toJsonTree(myCustomList).getAsJsonArray();
     StringBuilder stringBuilder = new StringBuilder("[");
     for (Invoice invoice : invoicesList) {
       stringBuilder.append(invoiceToJson(invoice));
       stringBuilder.append(",");
-//      stringBuilder.append("\n");
     }
-    stringBuilder.deleteCharAt((stringBuilder.length()-1));
-//    stringBuilder.delete((stringBuilder.length() - 2),(stringBuilder.length() - 1));
+    stringBuilder.deleteCharAt((stringBuilder.length() - 1));
     return stringBuilder.append("]").toString();
   }
 }
