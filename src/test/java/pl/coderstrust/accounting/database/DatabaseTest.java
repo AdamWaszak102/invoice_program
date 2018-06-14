@@ -7,23 +7,44 @@ import static pl.coderstrust.accounting.model.TestInvoiceProvider.invoiceTwo;
 import org.junit.Test;
 import pl.coderstrust.accounting.model.Invoice;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 public abstract class DatabaseTest {
 
   protected abstract Database getDatabase();
 
   @Test
-  public void shouldSaveTwoInvoices() {
+  public void shouldSaveTwoInvoicesSeparately() {
     //given
     Invoice invoiceOne = invoiceOne();
     Invoice invoiceTwo = invoiceTwo();
     Database db = getDatabase();
+    int initialInvoicesNumber = db.getInvoices().size();
 
     //when
     db.saveInvoice(invoiceOne);
     db.saveInvoice(invoiceTwo);
 
     //then
-    assertEquals(2, db.getInvoices().size());
+    assertEquals(initialInvoicesNumber + 2, db.getInvoices().size());
+  }
+
+  @Test
+  public void shouldSaveListOfTwoInvoices() {
+    //given
+    Invoice invoiceOne = invoiceOne();
+    Invoice invoiceTwo = invoiceTwo();
+    List<Invoice> invoicesList = new ArrayList<>(Arrays.asList(invoiceOne, invoiceTwo));
+    Database db = getDatabase();
+    int initialInvoicesNumber = db.getInvoices().size();
+
+    //when
+    db.saveInvoices(invoicesList);
+
+    //then
+    assertEquals(initialInvoicesNumber + 2, db.getInvoices().size());
   }
 
   @Test
@@ -47,13 +68,14 @@ public abstract class DatabaseTest {
     //given
     Invoice invoiceOne = invoiceOne();
     Database db = getDatabase();
+    int initialInvoicesNumber = db.getInvoices().size();
 
     //when
     Long id = db.saveInvoice(invoiceOne);
     db.removeInvoiceById(id);
 
     //then
-    assertEquals(0, db.getInvoices().size());
+    assertEquals(initialInvoicesNumber, db.getInvoices().size());
   }
 
   @Test

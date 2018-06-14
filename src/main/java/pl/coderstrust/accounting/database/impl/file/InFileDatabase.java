@@ -5,14 +5,9 @@ import org.springframework.stereotype.Repository;
 import pl.coderstrust.accounting.database.Database;
 import pl.coderstrust.accounting.model.Invoice;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Scanner;
 
 @ConditionalOnProperty(value = "inFileDatabase.enabled", havingValue = "true")
 @Repository
@@ -60,7 +55,7 @@ public class InFileDatabase implements Database {
   public Invoice getInvoiceById(Long id) {
     String invoiceLine = fileHelper
         .readJsonFileAndFindInvoiceLineById(configuration.getFileName(), getJsonStringIdPart(id));
-    return jsonHelper.returnInvoiceById(invoiceLine);
+    return jsonHelper.convertJsonStringToInvoice(invoiceLine);
   }
 
   @Override
@@ -85,22 +80,8 @@ public class InFileDatabase implements Database {
   }
 
   private synchronized void getIdFromFileAndSaveItBack(Invoice invoice) {
-    Long id = 0L;
-    File file = new File(configuration.getIdNumberFileName());
-    if (file.exists()) {
-      try (Scanner scanner = new Scanner(file)) {
-        while (scanner.hasNextLong()) {
-          id = scanner.nextLong();
-        }
-      } catch (FileNotFoundException exception) {
-        exception.printStackTrace();
-      }
-    }
+    Long id = fileHelper.readNumberFromFile(configuration.getIdNumberFileName());
     invoice.setId(++id);
-    try (FileWriter fileWriter = new FileWriter(file)) {
-      fileWriter.write(id.toString());
-    } catch (IOException exception) {
-      exception.printStackTrace();
-    }
+    fileHelper.writeNumberToFile(id, configuration.getIdNumberFileName());
   }
 }
