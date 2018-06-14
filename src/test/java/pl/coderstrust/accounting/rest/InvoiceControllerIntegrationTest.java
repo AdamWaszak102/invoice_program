@@ -56,12 +56,6 @@ public class InvoiceControllerIntegrationTest {
         .andReturn();
 
     assertTrue(StringUtils.isNumeric(response.getResponse().getContentAsString()));
-
-    mockMvc.perform(get("/invoices"))
-        .andDo(print())
-        .andExpect(jsonPath("$", hasSize(1)))
-        .andExpect(status().isOk())
-        .andExpect(content().string(containsString("FV 1/2017")));
   }
 
   @Test
@@ -77,6 +71,8 @@ public class InvoiceControllerIntegrationTest {
         .andExpect(jsonPath("$", hasSize(1)))
         .andExpect(status().isOk())
         .andExpect(content().string(containsString("FV 1/2017")));
+//        .andExpect(content().mimeType(IntegrationTestUtil.APPLICATION_JSON_UTF8));
+    mockMvc.perform(get("/invoices/{id}", 1L));
   }
 
   @Test
@@ -94,7 +90,11 @@ public class InvoiceControllerIntegrationTest {
         .andExpect(status().isOk())
         .andExpect(content().string(containsString("FV 6/2018")));
   }
-
+//  @Test
+//  public void deleteByIdWhenTodoIsNotFound() throws Exception {
+//    mockMvc.perform(delete("/api/todo/{id}", 3L))
+//        .andExpect(status().isNotFound());
+//  }
   //  @Test
 //  public void shouldCheckThatInvoiceControllerRemovesInvoice1() throws Exception {
 //        mockMvc.perform(post("/invoices/add_invoices").content(invoicesToJson(invoicesList))
@@ -103,11 +103,13 @@ public class InvoiceControllerIntegrationTest {
 //  }
   @Test
   public void shouldCheckThatInvoiceControllerRemovesInvoice() throws Exception {
-    mockMvc.perform(post("/invoices/add_invoice").content(invoiceToJson(invoiceOne))
-        .contentType(MediaType.APPLICATION_JSON_UTF8))
-        .andExpect(status().isOk());
+    MvcResult response = mockMvc
+        .perform(post("/invoices/add_invoice").content(invoiceToJson(invoiceOne))
+            .contentType(MediaType.APPLICATION_JSON_UTF8))
+        .andExpect(status().isOk())
+        .andReturn();
 
-    mockMvc.perform(delete("/invoices/1"))
+    mockMvc.perform(delete(invoiceToJson(invoiceOne),response))
         .andExpect(status().isOk());
 
     mockMvc.perform(get("/invoices"))
@@ -132,4 +134,13 @@ public class InvoiceControllerIntegrationTest {
 //    }
 //    return ;
 //  }
+public static String createStringWithLength(int length) {
+  StringBuilder builder = new StringBuilder();
+
+  for (int index = 0; index < length; index++) {
+    builder.append("a");
+  }
+
+  return builder.toString();
+}
 }
