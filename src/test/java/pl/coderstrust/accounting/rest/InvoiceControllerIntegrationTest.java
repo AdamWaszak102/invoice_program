@@ -94,8 +94,6 @@ public class InvoiceControllerIntegrationTest {
         .andReturn();
 
     String idsAsString = result.getResponse().getContentAsString().replace("]", "");
-    int lastInvoiceId = Integer.parseInt(StringUtils.substringAfterLast(idsAsString, ","));
-    int ids = StringUtils.lastIndexOf(idsAsString, ",");
 
     mockMvc.perform(get("/invoices/{id}", StringUtils.lastIndexOf(idsAsString, ",")))
         .andExpect(status().isOk())
