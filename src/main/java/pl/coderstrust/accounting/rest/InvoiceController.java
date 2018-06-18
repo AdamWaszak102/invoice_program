@@ -1,5 +1,6 @@
 package pl.coderstrust.accounting.rest;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -35,8 +36,12 @@ public class InvoiceController {
   }
 
   @DeleteMapping("/{id}")
-  public void removeInvoiceById(@PathVariable("id") Long id) {
+  public ResponseEntity removeInvoiceById(@PathVariable("id") Long id) {
+    if (invoiceBook.getInvoiceById(id) == null) {
+      return ResponseEntity.notFound().build();
+    }
     invoiceBook.removeInvoiceById(id);
+    return ResponseEntity.ok().build();
   }
 
   @PutMapping
@@ -50,7 +55,11 @@ public class InvoiceController {
   }
 
   @GetMapping("/{id}")
-  public Invoice getInvoiceById(@PathVariable("id") Long id) {
-    return invoiceBook.getInvoiceById(id);
+  public ResponseEntity<Invoice> getInvoiceById(@PathVariable Long id) {
+    Invoice invoiceToReturn = invoiceBook.getInvoiceById(id);
+    if (invoiceToReturn == null) {
+      return ResponseEntity.notFound().build();
+    }
+    return ResponseEntity.ok(invoiceToReturn);
   }
 }
