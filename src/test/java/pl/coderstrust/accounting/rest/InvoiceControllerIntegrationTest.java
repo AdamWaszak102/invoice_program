@@ -16,6 +16,7 @@ import static pl.coderstrust.accounting.model.TestInvoiceProvider.invoiceOne;
 import static pl.coderstrust.accounting.model.TestInvoiceProvider.invoiceOneModified;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -50,6 +51,9 @@ public class InvoiceControllerIntegrationTest {
 
   @Autowired
   private SpringConfiguration springConfiguration = new SpringConfiguration();
+
+  @Autowired
+  private ObjectMapper objectMapper = springConfiguration.objectMapper();
 
 
   @Test
@@ -160,7 +164,7 @@ public class InvoiceControllerIntegrationTest {
   }
 
   private String invoiceToJson(Invoice invoice) throws JsonProcessingException {
-    return springConfiguration.objectMapper().writeValueAsString(invoice);
+    return objectMapper.writeValueAsString(invoice);
   }
 
   private String invoicesToJson(List<Invoice> invoicesList) throws JsonProcessingException {
