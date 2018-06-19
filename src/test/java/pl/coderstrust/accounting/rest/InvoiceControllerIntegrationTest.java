@@ -2,6 +2,7 @@ package pl.coderstrust.accounting.rest;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.hasSize;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -47,6 +48,10 @@ public class InvoiceControllerIntegrationTest {
   @Autowired
   private MockMvc mockMvc;
 
+  @Autowired
+  private SpringConfiguration springConfiguration = new SpringConfiguration();
+
+
   @Test
   public void shouldCheckThatInvoiceControllerSavesInvoiceAndReturnsId() throws Exception {
     MvcResult response = mockMvc
@@ -66,10 +71,16 @@ public class InvoiceControllerIntegrationTest {
         .andExpect(status().isOk())
         .andReturn();
 
-    String result = (response.getResponse().getContentAsString()).replace("[", "")
-        .replace(",", "").replace("]", "");
+    String[] ids = response.getResponse().getContentAsString().split(",");
+    int idsNumberExpected = 2;
+    int idsNumberActual = 0;
+    for (String id : ids) {
+      idsNumberActual++;
+    }
+    String result = StringUtils.substringBetween(Arrays.toString(ids), "[[", "]]").replace(",", "");
 
-    assertTrue(StringUtils.isNumeric(result));
+    assertTrue(StringUtils.isNumericSpace(result));
+    assertEquals(idsNumberActual, idsNumberExpected);
   }
 
   @Test
@@ -93,9 +104,10 @@ public class InvoiceControllerIntegrationTest {
         .andExpect(status().isOk())
         .andReturn();
 
-    String idsAsString = result.getResponse().getContentAsString().replace("]", "");
+    String[] ids = result.getResponse().getContentAsString().replace("]", "").split(",");
+    Long lastId = Long.valueOf(ids[ids.length - 1]);
 
-    mockMvc.perform(get("/invoices/{id}", StringUtils.lastIndexOf(idsAsString, ",")))
+    mockMvc.perform(get("/invoices/{id}", lastId))
         .andExpect(status().isOk())
         .andExpect(content().string(containsString("FV 6/2018")));
   }
@@ -148,7 +160,6 @@ public class InvoiceControllerIntegrationTest {
   }
 
   private String invoiceToJson(Invoice invoice) throws JsonProcessingException {
-    SpringConfiguration springConfiguration = new SpringConfiguration();
     return springConfiguration.objectMapper().writeValueAsString(invoice);
   }
 

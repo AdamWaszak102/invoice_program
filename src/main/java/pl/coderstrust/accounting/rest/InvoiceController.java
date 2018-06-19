@@ -55,11 +55,11 @@ public class InvoiceController {
   }
 
   @GetMapping("/{id}")
-  public ResponseEntity<Invoice> getInvoiceById(@PathVariable("id") Long id) {
-    if (invoiceBook.getInvoiceById(id) == null) {
+  public ResponseEntity<Invoice> getInvoiceById(@PathVariable Long id) {
+    Invoice invoiceToReturn = invoiceBook.getInvoiceById(id);
+    if (invoiceToReturn == null) {
       return ResponseEntity.notFound().build();
     }
-    ResponseEntity.ok().build();
-    return ResponseEntity.ok(invoiceBook.getInvoiceById(id));
+    return ResponseEntity.ok(invoiceToReturn);
   }
 }
