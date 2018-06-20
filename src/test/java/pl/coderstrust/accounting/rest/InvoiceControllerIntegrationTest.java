@@ -81,7 +81,8 @@ public class InvoiceControllerIntegrationTest {
     for (String id : ids) {
       idsNumberActual++;
     }
-    String result = StringUtils.substringBetween(Arrays.toString(ids), "[[", "]]").replace(",", "");
+    String result = StringUtils.substringBetween(Arrays.toString(ids), "[[", "]]")
+        .replace(",", "");
 
     assertTrue(StringUtils.isNumericSpace(result));
     assertEquals(idsNumberActual, idsNumberExpected);
@@ -145,7 +146,7 @@ public class InvoiceControllerIntegrationTest {
             .contentType(MediaType.APPLICATION_JSON_UTF8))
         .andExpect(status().isOk())
         .andReturn();
-    int id = (Integer.parseInt(response.getResponse().getContentAsString()));
+    int id = Integer.parseInt(response.getResponse().getContentAsString());
 
     mockMvc.perform(delete("/invoices/" + id))
         .andExpect(status().isOk());
