@@ -48,9 +48,7 @@ public class InvoiceController {
   }
 
   @ApiOperation(value = "Deletes one Invoice by id",
-      notes = "One invoice is deleted from the list by its id.",
-      response = Invoice.class,
-      responseContainer = "String")
+      notes = "One invoice is deleted from the list by its id.")
   @DeleteMapping("/{id}")
   public ResponseEntity removeInvoiceById(
       @ApiParam(value = "id number of the invoice to be deleted",
