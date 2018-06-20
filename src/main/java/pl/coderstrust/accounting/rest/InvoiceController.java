@@ -39,9 +39,7 @@ public class InvoiceController {
   }
 
   @ApiOperation(value = "Posts one Invoice",
-      notes = "One invoice is added to the list and is provided with a new id number value.",
-      response = Invoice.class,
-      responseContainer = "String")
+      notes = "One invoice is added to the list and is provided with a new id number value.")
   @PostMapping("/add_invoice")
   public Long saveInvoice(@RequestBody Invoice invoice) {
     return invoiceBook.saveInvoice(invoice);
@@ -61,18 +59,14 @@ public class InvoiceController {
   }
 
   @ApiOperation(value = "Updates one invoice",
-      notes = "Information contained in one invoice is updated using the information provided.",
-      response = Invoice.class,
-      responseContainer = "String")
+      notes = "Information contained in one invoice is updated using the information provided")
   @PutMapping
   public void updateInvoice(@RequestBody Invoice invoice) {
     invoiceBook.updateInvoice(invoice);
   }
 
   @ApiOperation(value = "Posts a list of invoices",
-      notes = "Adds a list of invoices, each one provided with unique id number value.",
-      response = Invoice.class,
-      responseContainer = "List")
+      notes = "Adds a list of invoices, each one provided with unique id number value.")
   @PostMapping("/add_invoices")
   public List<Long> saveInvoices(@RequestBody List<Invoice> invoices) {
     return invoiceBook.saveInvoices(invoices);
