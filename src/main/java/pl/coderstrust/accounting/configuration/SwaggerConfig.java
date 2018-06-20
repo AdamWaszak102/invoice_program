@@ -30,9 +30,9 @@ public class SwaggerConfig {
     return new ApiInfo(
         "Invoice Processing System",
         "This API supports saving, updating, getting and deleting invoices.",
-        "InvoicePS v. 1.00",
-        "Terms of service",
-        new Contact("Karina-Ania-Adam", "www.example.com", "myeaddress@company.com"),
-        "pl.coderstrust", "API license URL", Collections.emptyList());
+        "InvoicePS v. 1.0",
+        "",
+        new Contact("Karina-Ania-Adam", "", "myeaddress@company.com"),
+        "pl.coderstrust", "", Collections.emptyList());
   }
 }

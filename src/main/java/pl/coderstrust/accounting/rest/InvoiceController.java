@@ -1,5 +1,8 @@
 package pl.coderstrust.accounting.rest;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +18,7 @@ import pl.coderstrust.accounting.model.Invoice;
 import java.util.Collection;
 import java.util.List;
 
+@Api(value = "/invoices", description = "Operations on invoices")
 @RestController
 @RequestMapping("/invoices")
 public class InvoiceController {
@@ -25,18 +29,32 @@ public class InvoiceController {
     this.invoiceBook = invoiceBook;
   }
 
+  @ApiOperation(value = "Gets all Invoices",
+      notes = "Multiple invoices values can be provided with comma seperated strings.",
+      response = Invoice.class,
+      responseContainer = "List")
   @GetMapping
   public Collection<Invoice> getInvoices() {
     return invoiceBook.getInvoices();
   }
 
+  @ApiOperation(value = "Posts one Invoice",
+      notes = "One invoice is added to the list and is provided with a new id number value.",
+      response = Invoice.class,
+      responseContainer = "String")
   @PostMapping("/add_invoice")
   public Long saveInvoice(@RequestBody Invoice invoice) {
     return invoiceBook.saveInvoice(invoice);
   }
 
+  @ApiOperation(value = "Deletes one Invoice by id",
+      notes = "One invoice is deleted from the list by its id.",
+      response = Invoice.class,
+      responseContainer = "String")
   @DeleteMapping("/{id}")
-  public ResponseEntity removeInvoiceById(@PathVariable("id") Long id) {
+  public ResponseEntity removeInvoiceById(
+      @ApiParam(value = "id number of the invoice to be deleted",
+          required = true) @PathVariable("id") Long id) {
     if (invoiceBook.getInvoiceById(id) == null) {
       return ResponseEntity.notFound().build();
     }
@@ -44,18 +62,32 @@ public class InvoiceController {
     return ResponseEntity.ok().build();
   }
 
+  @ApiOperation(value = "Updates one invoice",
+      notes = "Information contained in one invoice is updated using the information provided.",
+      response = Invoice.class,
+      responseContainer = "String")
   @PutMapping
   public void updateInvoice(@RequestBody Invoice invoice) {
     invoiceBook.updateInvoice(invoice);
   }
 
+  @ApiOperation(value = "Posts a list of invoices",
+      notes = "Adds a list of invoices, each one provided with unique id number value.",
+      response = Invoice.class,
+      responseContainer = "List")
   @PostMapping("/add_invoices")
   public List<Long> saveInvoices(@RequestBody List<Invoice> invoices) {
     return invoiceBook.saveInvoices(invoices);
   }
 
+  @ApiOperation(value = "Gets one invoice by id",
+      notes = "Gets one invoice by its id value.",
+      response = Invoice.class,
+      responseContainer = "String")
   @GetMapping("/{id}")
-  public ResponseEntity<Invoice> getInvoiceById(@PathVariable Long id) {
+  public ResponseEntity<Invoice> getInvoiceById(
+      @ApiParam(value = "id number of the invoice to be read",
+          required = true) @PathVariable Long id) {
     Invoice invoiceToReturn = invoiceBook.getInvoiceById(id);
     if (invoiceToReturn == null) {
       return ResponseEntity.notFound().build();
