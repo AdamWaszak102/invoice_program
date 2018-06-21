@@ -101,20 +101,20 @@ public class InFileDatabaseTest {
     List<Long> result = inFileDatabase.saveInvoices(invoicesList);
 
     //then
+    assertEquals(ids.get(0), result.get(0));
     verify(jsonHelper, times(2)).convertInvoiceToJsonString(invoiceOne);
     verify(fileHelper).writeListToFile(invoicesListInStrings, configuration.getFileName(), true);
     verify(fileHelper, times(3)).readNumberFromFile(configuration.getIdNumberFileName());
-    assertEquals(ids.get(0), result.get(0));
   }
 
   @Test
   public void shouldSaveAndRemoveOneInvoice() {
     //given
-    String content = "\"id\":";
     Long id = 100L;
     when(fileHelper.readNumberFromFile(idFileName)).thenReturn(id);
     inFileDatabase.saveInvoice(invoiceOne);
     id++;
+    String content = "\"id\":";
 
     //when
     inFileDatabase.removeInvoiceById(id);
@@ -126,7 +126,7 @@ public class InFileDatabaseTest {
   }
 
   @Test
-  public void shouldSave3InvoicesAndReadThem(){
+  public void shouldSave3InvoicesAndReadThem() {
     //given
     inFileDatabase.saveInvoices(invoicesList);
 
@@ -150,7 +150,8 @@ public class InFileDatabaseTest {
     //then
     verify(fileHelper)
         .readJsonFileAndFindInvoiceLineById(configuration.getFileName(), "\"id\":" + id + ",");
-    verify(jsonHelper).convertJsonStringToInvoice(jsonHelper.convertInvoiceToJsonString(invoiceOne));
+    verify(jsonHelper)
+        .convertJsonStringToInvoice(jsonHelper.convertInvoiceToJsonString(invoiceOne));
   }
 
   @Test

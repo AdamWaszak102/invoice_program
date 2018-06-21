@@ -70,7 +70,7 @@ public class JsonHelperTest {
   }
 
   @Test
-  public void shouldCheckThatEmptyListIsReturnedWhenObjectMapperThrowsIOException()
+  public void shouldCheckThatEmptyListIsReturnedWhenObjectMapperThrowsIoException()
       throws Exception {
     //given
     when(objectMapper.readValue(anything, Invoice.class)).thenThrow(new IOException());
@@ -99,7 +99,7 @@ public class JsonHelperTest {
   }
 
   @Test
-  public void shouldCheckThatNullIsReturnedWhenObjectMapperThrowsIOException()
+  public void shouldCheckThatNullIsReturnedWhenObjectMapperThrowsIoException()
       throws Exception {
     //given
     when(objectMapper.readValue(anything, Invoice.class)).thenThrow(new IOException());
