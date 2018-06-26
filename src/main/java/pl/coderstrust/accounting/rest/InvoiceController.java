@@ -30,7 +30,7 @@ public class InvoiceController {
   }
 
   @ApiOperation(value = "Gets all Invoices",
-      notes = "Multiple invoices values can be provided with comma seperated strings.",
+      notes = "Gets all invoices stored in file.",
       response = Invoice.class,
       responseContainer = "List")
   @GetMapping
@@ -59,7 +59,8 @@ public class InvoiceController {
   }
 
   @ApiOperation(value = "Updates one invoice",
-      notes = "Information contained in one invoice is updated using the information provided")
+      notes = "Information contained in one invoice is updated"
+          + " using its id and information provided")
   @PutMapping
   public void updateInvoice(@RequestBody Invoice invoice) {
     invoiceBook.updateInvoice(invoice);

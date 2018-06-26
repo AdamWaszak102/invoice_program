@@ -29,7 +29,7 @@ public class SwaggerConfig {
   private ApiInfo apiInfo() {
     return new ApiInfo(
         "Invoice Processing System",
-        "This API supports saving, updating, getting and deleting invoices.",
+        "This API supports saving, updating, reading and deleting invoices.",
         "InvoicePS v. 1.0",
         "",
         new Contact("Karina-Ania-Adam", "", "myeaddress@company.com"),
