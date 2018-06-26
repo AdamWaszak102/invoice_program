@@ -49,7 +49,6 @@ public class InvoiceControllerIntegrationTest {
   @Autowired
   private MockMvc mockMvc;
 
-  @Autowired
   private SpringConfiguration springConfiguration = new SpringConfiguration();
 
   @Autowired
@@ -75,17 +74,12 @@ public class InvoiceControllerIntegrationTest {
         .andExpect(status().isOk())
         .andReturn();
 
-    String[] ids = response.getResponse().getContentAsString().split(",");
-    int idsNumberExpected = 2;
-    int idsNumberActual = 0;
-    for (String id : ids) {
-      idsNumberActual++;
-    }
-    String result = StringUtils.substringBetween(Arrays.toString(ids), "[[", "]]")
-        .replace(",", "");
+    String[] ids = response.getResponse().getContentAsString()
+        .replace("]", "").split(",");
+    Long idsNumberExpected = 2L;
 
-    assertTrue(StringUtils.isNumericSpace(result));
-    assertEquals(idsNumberActual, idsNumberExpected);
+    Long lastId = Long.valueOf(ids[ids.length - 1]);
+    assertEquals(lastId, idsNumberExpected);
   }
 
   @Test

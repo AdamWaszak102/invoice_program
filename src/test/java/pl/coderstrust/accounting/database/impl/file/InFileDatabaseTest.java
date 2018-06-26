@@ -5,7 +5,6 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static pl.coderstrust.accounting.model.TestInvoiceProvider.invoiceOne;
-import static pl.coderstrust.accounting.model.TestInvoiceProvider.invoiceOneModified;
 import static pl.coderstrust.accounting.model.TestInvoiceProvider.invoiceTwo;
 
 import org.junit.Before;
@@ -36,11 +35,12 @@ public class InFileDatabaseTest {
   private FileHelper fileHelper;
 
   Invoice invoiceOne = invoiceOne();
-  Invoice invoiceOneModified = invoiceOneModified();
   Invoice invoiceTwo = invoiceTwo();
   List<Invoice> invoicesList = new ArrayList<>(Arrays.asList(invoiceOne, invoiceTwo, invoiceTwo));
   String anything = "anything";
   String something = "something";
+  List<String> invoicesListInString = new ArrayList<>(
+      Arrays.asList(anything, something, something));
 
   @InjectMocks
   InFileDatabase inFileDatabase;
@@ -75,8 +75,6 @@ public class InFileDatabaseTest {
     Long result = inFileDatabase.saveInvoice(invoiceOne);
 
     //then
-    verify(fileHelper)
-        .appendLine(jsonHelper.convertInvoiceToJsonString(invoiceOne), configuration.getFileName());
     verify(fileHelper).appendLine(anything, dbFileName);
     assertEquals((Long) (previousId + 1L), result);
   }
@@ -85,26 +83,18 @@ public class InFileDatabaseTest {
   public void shouldSaveListOfThreeInvoicesAndReturnId() {
     //given
     Long id = 135L;
-    List<String> invoicesListInStrings = new ArrayList<>();
-    List<Long> ids = new ArrayList<>();
+    when(fileHelper.readNumberFromFile(idFileName)).thenReturn(id);
+    List<Long> ids = new ArrayList<>(Arrays.asList(136L, 137L, 138L));
     when(jsonHelper.convertInvoiceToJsonString(invoiceOne)).thenReturn(anything);
     when(jsonHelper.convertInvoiceToJsonString(invoiceTwo)).thenReturn(something);
-    when(fileHelper.readNumberFromFile(idFileName)).thenReturn(id);
-    for (Invoice invoice : invoicesList) {
-      Long currentId = id + 1L;
-      ids.add(currentId);
-      invoicesListInStrings.add(jsonHelper.convertInvoiceToJsonString(invoice));
-      id++;
-    }
 
     //when
     List<Long> result = inFileDatabase.saveInvoices(invoicesList);
 
     //then
-    assertEquals(ids.get(0), result.get(0));
-    verify(jsonHelper, times(2)).convertInvoiceToJsonString(invoiceOne);
-    verify(fileHelper).writeListToFile(invoicesListInStrings, configuration.getFileName(), true);
-    verify(fileHelper, times(3)).readNumberFromFile(configuration.getIdNumberFileName());
+    assertEquals(ids.size(), result.size());
+    verify(fileHelper).writeListToFile(invoicesListInString, dbFileName, true);
+    verify(fileHelper, times(3)).readNumberFromFile(idFileName);
   }
 
   @Test
@@ -121,55 +111,51 @@ public class InFileDatabaseTest {
 
     //then
     verify(fileHelper)
-        .removeLineWithContentWhenReadingJsonFile(configuration.getFileName(),
+        .removeLineWithContentWhenReadingJsonFile(dbFileName,
             content + id + ",");
   }
 
   @Test
-  public void shouldSave3InvoicesAndReadThem() {
+  public void shouldReadThreeInvoices() {
     //given
-    inFileDatabase.saveInvoices(invoicesList);
+    when(fileHelper.readLines(dbFileName)).thenReturn(invoicesListInString);
 
     //when
     inFileDatabase.getInvoices();
 
     //then
-    verify(fileHelper).readLines(configuration.getFileName());
+    verify(fileHelper).readLines(dbFileName);
+    verify(jsonHelper).convertJsonStringsListToListOfInvoices(invoicesListInString);
   }
 
   @Test
-  public void shouldSaveAndReadInvoiceById() {
+  public void shouldReadOneInvoice() {
     //given
     Long id = 32L;
-    when(fileHelper.readNumberFromFile(configuration.getIdNumberFileName())).thenReturn(id);
-    inFileDatabase.saveInvoice(invoiceOne);
+    when(fileHelper.readJsonFileAndFindInvoiceLineById(dbFileName, "\"id\":" + id + ","))
+        .thenReturn(anything);
 
     //when
     inFileDatabase.getInvoiceById(id);
 
     //then
     verify(fileHelper)
-        .readJsonFileAndFindInvoiceLineById(configuration.getFileName(), "\"id\":" + id + ",");
-    verify(jsonHelper)
-        .convertJsonStringToInvoice(jsonHelper.convertInvoiceToJsonString(invoiceOne));
+        .readJsonFileAndFindInvoiceLineById(dbFileName, "\"id\":" + id + ",");
+    verify(jsonHelper).convertJsonStringToInvoice(anything);
   }
 
   @Test
-  public void shouldSaveAndUpdateInvoice() {
+  public void shouldUpdateInvoice() {
     //given
-    Long id = 144L;
-    when(fileHelper.readNumberFromFile(configuration.getIdNumberFileName())).thenReturn(id);
-    inFileDatabase.saveInvoice(invoiceOne);
-    invoiceOneModified.setId(id + 1L);
-    id++;
+    Long id = 0L;
+    when(jsonHelper.convertInvoiceToJsonString(invoiceOne)).thenReturn(something);
 
     //when
-    inFileDatabase.updateInvoice(invoiceOneModified);
+    inFileDatabase.updateInvoice(invoiceOne);
 
     //then
-    verify(jsonHelper).convertInvoiceToJsonString(invoiceOneModified);
-    verify(fileHelper).updateLineWithContentWhenReadingJsonFile(jsonHelper
-            .convertInvoiceToJsonString(invoiceOneModified), configuration.getFileName(),
+    verify(jsonHelper).convertInvoiceToJsonString(invoiceOne);
+    verify(fileHelper).updateLineWithContentWhenReadingJsonFile(something, dbFileName,
         "\"id\":" + id + ",");
   }
 }
