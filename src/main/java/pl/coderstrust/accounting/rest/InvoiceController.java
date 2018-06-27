@@ -58,14 +58,12 @@ public class InvoiceController {
     return ResponseEntity.ok().build();
   }
 
-  @ApiOperation(value = "Updates one invoice by id",
+  @ApiOperation(value = "Updates one invoice",
       notes = "Information contained in one invoice is updated"
           + " using its id and information provided")
-  @PutMapping("/{id}")
-  public void updateInvoice(
-      @ApiParam(value = "id number of the invoice to be updated",
-          required = true)@PathVariable("id") Long id, @RequestBody Invoice invoice) {
-    invoiceBook.updateInvoice(invoice, id);
+  @PutMapping
+  public void updateInvoice( @RequestBody Invoice invoice) {
+    invoiceBook.updateInvoice(invoice);
   }
 
   @ApiOperation(value = "Posts a list of invoices",

@@ -103,7 +103,7 @@ public abstract class DatabaseTest {
     //when
     Long id = db.saveInvoice(beforeUpdate);
     afterUpdate.setId(id);
-    db.updateInvoiceById(afterUpdate,id );
+    db.updateInvoice(afterUpdate);
     Invoice actual = db.getInvoiceById(beforeUpdate.getId());
 
     //then

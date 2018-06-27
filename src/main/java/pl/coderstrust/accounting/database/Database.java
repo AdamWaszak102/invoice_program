@@ -18,7 +18,7 @@ public interface Database {
 
   Invoice getInvoiceById(Long id);
 
-  void updateInvoiceById(Invoice invoice, Long id);
+  void updateInvoice(Invoice invoice);
 
   void removeInvoiceById(Long id);
 }
