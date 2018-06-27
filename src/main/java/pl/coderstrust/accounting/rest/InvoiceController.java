@@ -62,7 +62,7 @@ public class InvoiceController {
       notes = "Information contained in one invoice is updated"
           + " using its id and information provided")
   @PutMapping
-  public void updateInvoice( @RequestBody Invoice invoice) {
+  public void updateInvoice(@RequestBody Invoice invoice) {
     invoiceBook.updateInvoice(invoice);
   }
 
