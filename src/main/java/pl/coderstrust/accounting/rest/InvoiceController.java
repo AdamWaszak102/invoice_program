@@ -40,23 +40,36 @@ public class InvoiceController {
   }
 
   @PostMapping("/add_invoice")
-  public Long saveInvoice(@RequestBody Invoice invoice) {
-    return invoiceBook.saveInvoice(invoice);
+  public ResponseEntity<Long> saveInvoice(@RequestBody Invoice invoice) {
+    Long id = invoiceBook.saveInvoice(invoice);
+
+    if (id == 0) {
+      return ResponseEntity.notFound().build();
+    }
+    return ResponseEntity.ok(id);
   }
 
   @DeleteMapping("/{id}")
   public void removeInvoiceById(@PathVariable("id") Long id) {
     invoiceBook.removeInvoiceById(id);
-    logger.info("Invoice deleted", id);
+    logger.info("Invoice deleted, invoice id:{}", id);
   }
 
   @PutMapping
-  public void updateInvoice(@RequestBody Invoice invoice) {
-    invoiceBook.updateInvoice(invoice);
+  public ResponseEntity<Long> updateInvoice(@RequestBody Invoice invoice) {
+    Long id = invoiceBook.updateInvoice(invoice);
+    if (id == 0) {
+      return ResponseEntity.notFound().build();
+    }
+    return ResponseEntity.ok(id);
   }
 
   @PostMapping("/add_invoices")
-  public List<Long> saveInvoices(@RequestBody List<Invoice> invoices) {
-    return invoiceBook.saveInvoices(invoices);
+  public ResponseEntity<List<Long>> saveInvoices(@RequestBody List<Invoice> invoices) {
+    List<Long> savedInvoices = invoiceBook.saveInvoices(invoices);
+    if (savedInvoices == null) {
+      return ResponseEntity.notFound().build();
+    }
+    return ResponseEntity.ok().body(savedInvoices);
   }
 }

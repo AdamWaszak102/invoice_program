@@ -3,6 +3,7 @@ package pl.coderstrust.accounting.database.impl.file;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+import pl.coderstrust.accounting.exceptions.ApplicationException;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -22,9 +23,9 @@ public class FileHelper {
         FileWriter fileWriter = new FileWriter(fileName, true);
         BufferedWriter bufferedWriter = new BufferedWriter(fileWriter)) {
       appendLine(line, bufferedWriter);
-    } catch (IOException applicationException) {
-      logger.error("File does not exist", applicationException);  // or "change the path"?
-      throw new RuntimeException(applicationException);
+    } catch (IOException exception) {
+      logger.error("There was a problem with the file: {}.", fileName, exception);
+      throw new ApplicationException("There was a problem with the file");
     }
   }
 
@@ -42,9 +43,9 @@ public class FileHelper {
       for (String line : stringList) {
         appendLine(line, bufferedWriter);
       }
-    } catch (IOException applicationException) {
-      logger.error("File does not exist", applicationException);
-      throw new RuntimeException(applicationException);
+    } catch (IOException exception) {
+      logger.error("There was a problem with the file: {}.", fileName, exception);
+      throw new ApplicationException("There was a problem with the file.Cannot save data to file.");
     }
   }
 
@@ -58,8 +59,9 @@ public class FileHelper {
       while ((currentLine = bufferedReader.readLine()) != null) {
         lines.add(currentLine);
       }
-    } catch (IOException readingError) {
-      logger.error("File is empty or does not exist", readingError);
+    } catch (IOException exception) {
+      logger.error("There was a problem with the file: {}.", fileName, exception);
+      throw new ApplicationException("There was a problem with the file, cannot read the data form file");
     }
     return lines;
   }
@@ -86,8 +88,9 @@ public class FileHelper {
         allInvoicesInJsonAfterRemoval.add(currentLine);
       }
       writeListToFile(allInvoicesInJsonAfterRemoval, fileName, false);
-    } catch (IOException readingError) {
-      logger.info("File is empty or does not exist", readingError);
+    } catch (IOException exception) {
+      logger.error("There was a problem with the file: {}.", fileName, exception);
+      throw new ApplicationException("There was a problem with the file.");
     }
   }
 
@@ -107,8 +110,9 @@ public class FileHelper {
         allInvoicesInJsonAfterUpdate.add(currentLine);
       }
       writeListToFile(allInvoicesInJsonAfterUpdate, fileName, false);
-    } catch (IOException readingError) {
-      logger.info("File is empty or does not exist", readingError);
+    } catch (IOException exception) {
+      logger.error("There was a problem with the file: {}.", fileName, exception);
+      throw new ApplicationException("There was a problem with the file, cannot write data to file.");
     }
   }
 }

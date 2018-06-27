@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
+import pl.coderstrust.accounting.exceptions.ApplicationException;
 import pl.coderstrust.accounting.model.Invoice;
 
 import java.io.IOException;
@@ -29,10 +30,10 @@ public class JsonHelper {
   public String convertInvoiceToJsonString(Invoice invoice) {
     try {
       return writingMapper.writeValueAsString(invoice);
-    } catch (JsonProcessingException exceptionConvertingToJson) {
-      logger.error("Wrong invoice", exceptionConvertingToJson);
+    } catch (JsonProcessingException exception) {
+      logger.error("Wrong invoice. Invoice id: {}", invoice.getId(),  exception);
+      throw new ApplicationException("Wrong invoice format");
     }
-    return "";
   }
 
   public List<Invoice> convertJsonStringsListToListOfInvoices(List<String> allInvoicesInJson) {
@@ -41,8 +42,10 @@ public class JsonHelper {
       try {
         Invoice invoice = readingMapper.readValue(invoiceInString, Invoice.class);
         allInvoices.add(invoice);
-      } catch (IOException exceptionConvertingFromJson) {
-        logger.error("Wrong file format", exceptionConvertingFromJson);
+      } catch (IOException exception) {
+        logger.error("Wrong file format:{}. Cannot convert invoice and add to list of \n"
+            + "invoices", invoiceInString, exception);
+        throw new ApplicationException("Wrong file format,it cannot be added to list of invoices");
       }
     }
     return allInvoices;
@@ -51,10 +54,9 @@ public class JsonHelper {
   public Invoice returnInvoiceById(String invoiceLine) {
     try {
       return readingMapper.readValue(invoiceLine, Invoice.class);
-    } catch (IOException exceptionConvertingFromJson) {
-      logger.error("Wrong file format", exceptionConvertingFromJson);
-      exceptionConvertingFromJson.printStackTrace();
+    } catch (IOException exception) {
+      logger.error("Wrong file format: {}", invoiceLine, exception);
+      throw new ApplicationException("Wrong file format.");
     }
-    return null;
   }
 }

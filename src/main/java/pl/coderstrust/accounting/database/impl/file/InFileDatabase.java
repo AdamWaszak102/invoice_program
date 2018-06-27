@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Repository;
 import pl.coderstrust.accounting.database.Database;
+import pl.coderstrust.accounting.exceptions.ApplicationException;
 import pl.coderstrust.accounting.model.Invoice;
 
 import java.io.File;
@@ -96,15 +97,17 @@ public class InFileDatabase implements Database {
         while (scanner.hasNextLong()) {
           id = scanner.nextLong();
         }
-      } catch (FileNotFoundException invoiceIdFileNotFound) {
-        logger.error("Cannot find the correct id number", invoiceIdFileNotFound);
+      } catch (FileNotFoundException exception) {
+        logger.error("Cannot find the correct id number.Problem with the file:{}.", file,exception);
+        throw new ApplicationException("Cannot find the correct id number.");
       }
     }
     invoice.setId(++id);
     try (FileWriter fileWriter = new FileWriter(file)) {
       fileWriter.write(id.toString());
-    } catch (IOException invoiceIdFileNotFound) {
-      logger.error("Cannot save the correct id number, try again", invoiceIdFileNotFound);
+    } catch (IOException exception) {
+      logger.error("Cannot save the correct id number.Problem with the file:{}.", file, exception);
+      throw new ApplicationException("Cannot save the correct id number");
     }
   }
 }
