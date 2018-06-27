@@ -7,7 +7,6 @@ import pl.coderstrust.accounting.model.Invoice;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @ConditionalOnProperty(value = "inFileDatabase.enabled", havingValue = "true")
 @Repository
@@ -59,13 +58,12 @@ public class InFileDatabase implements Database {
   }
 
   @Override
-  public void updateInvoice(Invoice invoice) {
+  public void updateInvoiceById(Invoice invoice, Long id) {
+    invoice.setId(id);
     String invoiceAsJsonString = jsonHelper.convertInvoiceToJsonString(invoice);
-    Long currentId = Optional.ofNullable(invoice.getId())
-        .orElse(0L);
     fileHelper
         .updateLineWithContentWhenReadingJsonFile(invoiceAsJsonString, configuration.getFileName(),
-            getJsonStringIdPart(currentId));
+            getJsonStringIdPart(id));
   }
 
   @Override

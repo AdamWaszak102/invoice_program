@@ -93,7 +93,7 @@ public class FileHelper {
     List<String> allInvoicesInJsonAfterUpdate = new ArrayList<>();
     try (
         FileReader fileReader = new FileReader(fileName);
-        BufferedReader bufferedReader = new BufferedReader(fileReader);
+        BufferedReader bufferedReader = new BufferedReader(fileReader)
     ) {
       String currentLine;
       while ((currentLine = bufferedReader.readLine()) != null) {

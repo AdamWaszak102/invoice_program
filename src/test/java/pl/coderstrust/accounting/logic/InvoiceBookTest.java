@@ -48,25 +48,27 @@ public class InvoiceBookTest {
   @Test
   public void shouldUpdateInvoiceWhenInvoiceIdPresent() {
     //given
-    invoice.setId(1234L);
+    Long id = 1234L;
+    invoice.setId(id);
 
     //when
-    invoiceBook.updateInvoice(invoice);
+    invoiceBook.updateInvoice(invoice, id);
 
     //then
-    verify(database).updateInvoice(invoice);
+    verify(database).updateInvoiceById(invoice, id);
   }
 
   @Test
   public void shouldNotCallUpdateInvoiceWhenInvoiceIdNotPresent() {
     //given
-    invoice.setId(null);
+    Long id = null;
+    invoice.setId(id);
 
     //when
-    invoiceBook.updateInvoice(invoice);
+    invoiceBook.updateInvoice(invoice, id);
 
     //then
-    verify(database, never()).updateInvoice(invoice);
+    verify(database, never()).updateInvoiceById(invoice, id);
   }
 
   @Test

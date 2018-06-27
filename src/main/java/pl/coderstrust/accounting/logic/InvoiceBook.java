@@ -28,9 +28,9 @@ public class InvoiceBook {
     return database.getInvoiceById(id);
   }
 
-  public void updateInvoice(Invoice invoice) {
+  public void updateInvoice(Invoice invoice, Long id) {
     if (invoice.getId() != null) {
-      database.updateInvoice(invoice);
+      database.updateInvoiceById(invoice, id);
     }
   }
 

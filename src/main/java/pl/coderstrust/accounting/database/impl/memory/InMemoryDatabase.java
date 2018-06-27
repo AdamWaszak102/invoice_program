@@ -46,8 +46,11 @@ public class InMemoryDatabase implements Database {
   }
 
   @Override
-  public void updateInvoice(Invoice invoice) {
-    invoices.put(invoice.getId(), invoice);
+  public void updateInvoiceById(Invoice invoice, Long id) {
+    invoice.setId(id);
+    if (invoices.get(id) != null) {
+      invoices.put(id, invoice);
+    }
   }
 
   @Override

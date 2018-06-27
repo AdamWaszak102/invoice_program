@@ -30,7 +30,7 @@ public class InvoiceController {
   }
 
   @ApiOperation(value = "Gets all Invoices",
-      notes = "Gets all invoices stored in file.",
+      notes = "Gets all invoices that were saved",
       response = Invoice.class,
       responseContainer = "List")
   @GetMapping
@@ -58,12 +58,14 @@ public class InvoiceController {
     return ResponseEntity.ok().build();
   }
 
-  @ApiOperation(value = "Updates one invoice",
+  @ApiOperation(value = "Updates one invoice by its id",
       notes = "Information contained in one invoice is updated"
           + " using its id and information provided")
-  @PutMapping
-  public void updateInvoice(@RequestBody Invoice invoice) {
-    invoiceBook.updateInvoice(invoice);
+  @PutMapping("/{id}")
+  public void updateInvoice(
+      @ApiParam(value = "id number of the invoice to be updated",
+          required = true)@PathVariable("id") Long id, @RequestBody Invoice invoice) {
+    invoiceBook.updateInvoice(invoice, id);
   }
 
   @ApiOperation(value = "Posts a list of invoices",
