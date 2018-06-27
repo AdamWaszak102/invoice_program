@@ -58,7 +58,7 @@ public class InvoiceController {
     return ResponseEntity.ok().build();
   }
 
-  @ApiOperation(value = "Updates one invoice by its id",
+  @ApiOperation(value = "Updates one invoice by id",
       notes = "Information contained in one invoice is updated"
           + " using its id and information provided")
   @PutMapping("/{id}")
