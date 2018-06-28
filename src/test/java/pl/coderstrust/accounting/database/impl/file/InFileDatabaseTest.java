@@ -15,7 +15,6 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import pl.coderstrust.accounting.model.Invoice;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -36,11 +35,10 @@ public class InFileDatabaseTest {
 
   Invoice invoiceOne = invoiceOne();
   Invoice invoiceTwo = invoiceTwo();
-  List<Invoice> invoicesList = new ArrayList<>(Arrays.asList(invoiceOne, invoiceTwo, invoiceTwo));
+  List<Invoice> invoicesList = Arrays.asList(invoiceOne, invoiceTwo, invoiceTwo);
   String anything = "anything";
   String something = "something";
-  List<String> invoicesListInString = new ArrayList<>(
-      Arrays.asList(anything, something, something));
+  List<String> invoicesListInString = Arrays.asList(anything, something, something);
 
   @InjectMocks
   InFileDatabase inFileDatabase;
@@ -82,9 +80,8 @@ public class InFileDatabaseTest {
   @Test
   public void shouldSaveListOfThreeInvoicesAndReturnId() {
     //given
-    Long id = 135L;
-    when(fileHelper.readNumberFromFile(idFileName)).thenReturn(id);
-    List<Long> ids = new ArrayList<>(Arrays.asList(136L, 137L, 138L));
+    when(fileHelper.readNumberFromFile(idFileName)).thenReturn(135L, 136L, 137L);
+    List<Long> ids = Arrays.asList(136L, 137L, 138L);
     when(jsonHelper.convertInvoiceToJsonString(invoiceOne)).thenReturn(anything);
     when(jsonHelper.convertInvoiceToJsonString(invoiceTwo)).thenReturn(something);
 
@@ -92,7 +89,7 @@ public class InFileDatabaseTest {
     List<Long> result = inFileDatabase.saveInvoices(invoicesList);
 
     //then
-    assertEquals(ids.size(), result.size());
+    assertEquals(ids, result);
     verify(fileHelper).writeListToFile(invoicesListInString, dbFileName, true);
     verify(fileHelper, times(3)).readNumberFromFile(idFileName);
   }

@@ -29,7 +29,6 @@ import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-import pl.coderstrust.accounting.SpringConfiguration;
 import pl.coderstrust.accounting.model.Invoice;
 
 import java.util.ArrayList;
@@ -49,11 +48,8 @@ public class InvoiceControllerIntegrationTest {
   @Autowired
   private MockMvc mockMvc;
 
-  private SpringConfiguration springConfiguration = new SpringConfiguration();
-
   @Autowired
-  private ObjectMapper objectMapper = springConfiguration.objectMapper();
-
+  private ObjectMapper objectMapper;
 
   @Test
   public void shouldCheckThatInvoiceControllerSavesInvoiceAndReturnsId() throws Exception {
@@ -74,12 +70,12 @@ public class InvoiceControllerIntegrationTest {
         .andExpect(status().isOk())
         .andReturn();
 
-    String[] ids = response.getResponse().getContentAsString()
-        .replace("]", "").split(",");
-    Long idsNumberExpected = 2L;
+    String ids = response.getResponse().getContentAsString();
+    int idsNumberExpected = 2;
+    int idsNumberActual = ids.split(",").length;
 
-    Long lastId = Long.valueOf(ids[ids.length - 1]);
-    assertEquals(lastId, idsNumberExpected);
+    assertEquals(idsNumberActual, idsNumberExpected);
+    assertTrue(ids.matches("^\\[[\\d,]*]$"));
   }
 
   @Test
@@ -140,7 +136,7 @@ public class InvoiceControllerIntegrationTest {
             .contentType(MediaType.APPLICATION_JSON_UTF8))
         .andExpect(status().isOk())
         .andReturn();
-    int id = Integer.parseInt(response.getResponse().getContentAsString());
+    Long id = Long.parseLong(response.getResponse().getContentAsString());
 
     mockMvc.perform(delete("/invoices/" + id))
         .andExpect(status().isOk());
