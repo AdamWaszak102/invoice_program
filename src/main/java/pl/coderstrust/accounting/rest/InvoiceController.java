@@ -1,6 +1,5 @@
 package pl.coderstrust.accounting.rest;
 
-import org.springframework.http.ResponseEntity;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
