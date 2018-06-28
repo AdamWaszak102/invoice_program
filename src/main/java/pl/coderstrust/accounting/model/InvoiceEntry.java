@@ -1,14 +1,21 @@
 package pl.coderstrust.accounting.model;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 import java.math.BigDecimal;
 import java.util.Objects;
 
 /**
  * Created by Adam on 2018-04-17.
  */
+@ApiModel(value = "Invoice entries model", description = "Sample Invoice entries")
 public class InvoiceEntry {
 
+  @ApiModelProperty(value = "Transaction's description", example = "Fruit and vegetable processing")
   private String description;
+
+  @ApiModelProperty(value = "Transaction's price", example = "500")
   private BigDecimal price;
   private Vat vat;
 

@@ -60,9 +60,9 @@ public class InFileDatabase implements Database {
 
   @Override
   public void updateInvoice(Invoice invoice) {
-    String invoiceAsJsonString = jsonHelper.convertInvoiceToJsonString(invoice);
     Long currentId = Optional.ofNullable(invoice.getId())
         .orElse(0L);
+    String invoiceAsJsonString = jsonHelper.convertInvoiceToJsonString(invoice);
     fileHelper
         .updateLineWithContentWhenReadingJsonFile(invoiceAsJsonString, configuration.getFileName(),
             getJsonStringIdPart(currentId));
