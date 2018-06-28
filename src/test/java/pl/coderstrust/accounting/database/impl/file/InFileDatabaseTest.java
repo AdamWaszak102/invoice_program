@@ -144,8 +144,8 @@ public class InFileDatabaseTest {
   @Test
   public void shouldUpdateInvoice() {
     //given
-    Long id = 0L;
     when(jsonHelper.convertInvoiceToJsonString(invoiceOne)).thenReturn(something);
+    Long id = 0L;
 
     //when
     inFileDatabase.updateInvoice(invoiceOne);
