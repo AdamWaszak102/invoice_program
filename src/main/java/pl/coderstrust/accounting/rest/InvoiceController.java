@@ -3,7 +3,6 @@ package pl.coderstrust.accounting.rest;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import org.springframework.http.ResponseEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -78,12 +77,8 @@ public class InvoiceController {
       notes = "Information contained in one invoice is updated"
           + " using its id and information provided")
   @PutMapping
-  public ResponseEntity<Long> updateInvoice(@RequestBody Invoice invoice) {
-    Long id = invoiceBook.updateInvoice(invoice);
-    if (id == 0) {
-      return ResponseEntity.notFound().build();
-    }
-    return ResponseEntity.ok(id);
+  public void updateInvoice(@RequestBody Invoice invoice) {
+    invoiceBook.updateInvoice(invoice);
   }
 
   @ApiOperation(value = "Posts a list of invoices",

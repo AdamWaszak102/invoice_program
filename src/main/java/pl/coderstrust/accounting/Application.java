@@ -12,6 +12,6 @@ public class Application {
 
   public static void main(String[] args) {
     SpringApplication.run(Application.class, args);
-    logger.info("Welcome");
+    logger.info("Welcome to invoice processing system");
   }
 }

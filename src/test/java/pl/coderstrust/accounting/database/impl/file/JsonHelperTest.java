@@ -1,8 +1,6 @@
 package pl.coderstrust.accounting.database.impl.file;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static pl.coderstrust.accounting.model.TestInvoiceProvider.invoiceOne;
@@ -13,9 +11,9 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import pl.coderstrust.accounting.exceptions.ApplicationException;
 import pl.coderstrust.accounting.model.Invoice;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -69,18 +67,18 @@ public class JsonHelperTest {
     assertEquals(expected, actual);
   }
 
-  @Test
-  public void shouldCheckThatEmptyListIsReturnedWhenObjectMapperThrowsIOException()
+  @Test(expected = ApplicationException.class)
+  public void shouldCheckThatObjectMapperThrowsIOExceptionWhenJsonStringsListIsConvertedToListOfInvoices()
       throws Exception {
     //given
-    when(objectMapper.readValue(anything, Invoice.class)).thenThrow(new IOException());
-    when(objectMapper.readValue(something, Invoice.class)).thenThrow(new IOException());
+    when(objectMapper.readValue(anything, Invoice.class))
+        .thenThrow(new ApplicationException("Wrong file format."));
 
     //when
-    List<Invoice> result = jsonHelper.convertJsonStringsListToListOfInvoices(stringsList);
+    jsonHelper.convertJsonStringsListToListOfInvoices(stringsList);
 
     //then
-    assertTrue(result.isEmpty());
+    verify(objectMapper.readValue(anything, Invoice.class));
   }
 
   @Test
@@ -98,16 +96,17 @@ public class JsonHelperTest {
     assertEquals(invoiceOne, actual);
   }
 
-  @Test
-  public void shouldCheckThatNullIsReturnedWhenObjectMapperThrowsIOException()
+  @Test(expected = ApplicationException.class)
+  public void shouldCheckThatApplicationExceptionIsThrownWhenJsonHelperConvertsJsonStringToInvoice()
       throws Exception {
     //given
-    when(objectMapper.readValue(anything, Invoice.class)).thenThrow(new IOException());
+    when(objectMapper.readValue(anything, Invoice.class))
+        .thenThrow(new ApplicationException("Wrong file format."));
 
     //when
-    Invoice result = jsonHelper.convertJsonStringToInvoice(anything);
+    jsonHelper.convertJsonStringToInvoice(anything);
 
     //then
-    assertNull(result);
+    verify(objectMapper.readValue(anything, Invoice.class));
   }
 }

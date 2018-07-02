@@ -64,7 +64,8 @@ public class FileHelper {
       }
     } catch (IOException exception) {
       logger.error("There was a problem with the file: {}.", fileName, exception);
-      throw new ApplicationException("There was a problem with the file, cannot read the data form file");
+      throw new ApplicationException("There was a problem with the file,"
+          + " cannot read the data form file");
     }
     return lines;
   }
@@ -115,7 +116,8 @@ public class FileHelper {
       writeListToFile(allInvoicesInJsonAfterUpdate, fileName, false);
     } catch (IOException exception) {
       logger.error("There was a problem with the file: {}.", fileName, exception);
-      throw new ApplicationException("There was a problem with the file, cannot write data to file.");
+      throw new ApplicationException("There was a problem with the file,"
+          + " cannot write data to file.");
     }
   }
 
