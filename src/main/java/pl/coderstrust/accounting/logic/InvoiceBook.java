@@ -28,10 +28,11 @@ public class InvoiceBook {
     return database.getInvoiceById(id);
   }
 
-  public void updateInvoice(Invoice invoice) {
+  public Long updateInvoice(Invoice invoice) {
     if (invoice.getId() != null) {
       database.updateInvoice(invoice);
     }
+    return null;
   }
 
   public void removeInvoiceById(Long id) {

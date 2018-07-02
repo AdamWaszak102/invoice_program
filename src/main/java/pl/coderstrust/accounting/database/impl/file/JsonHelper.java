@@ -2,7 +2,11 @@ package pl.coderstrust.accounting.database.impl.file;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
+import pl.coderstrust.accounting.exceptions.ApplicationException;
 import pl.coderstrust.accounting.model.Invoice;
 
 import java.io.IOException;
@@ -13,6 +17,7 @@ import java.util.List;
 public class JsonHelper {
 
   private ObjectMapper objectMapper;
+  private static final Logger logger = LoggerFactory.getLogger(JsonHelper.class);
 
   public JsonHelper(ObjectMapper objectMapper) {
     this.objectMapper = objectMapper;
@@ -22,9 +27,9 @@ public class JsonHelper {
     try {
       return objectMapper.writeValueAsString(invoice);
     } catch (JsonProcessingException exception) {
-      exception.printStackTrace();
+      logger.error("Wrong invoice. Invoice id: {}", invoice.getId(),  exception);
+      throw new ApplicationException("Wrong invoice format");
     }
-    return "";
   }
 
   public List<Invoice> convertJsonStringsListToListOfInvoices(List<String> allInvoicesInJson) {
@@ -34,7 +39,9 @@ public class JsonHelper {
         Invoice invoice = objectMapper.readValue(invoiceInString, Invoice.class);
         allInvoices.add(invoice);
       } catch (IOException exception) {
-        exception.printStackTrace();
+        logger.error("Wrong file format:{}. Cannot convert invoice and add to list of \n"
+            + "invoices", invoiceInString, exception);
+        throw new ApplicationException("Wrong file format,it cannot be added to list of invoices");
       }
     }
     return allInvoices;
@@ -44,8 +51,8 @@ public class JsonHelper {
     try {
       return objectMapper.readValue(invoiceLine, Invoice.class);
     } catch (IOException exception) {
-      exception.printStackTrace();
+      logger.error("Wrong file format: {}", invoiceLine, exception);
+      throw new ApplicationException("Wrong file format.");
     }
-    return null;
   }
 }

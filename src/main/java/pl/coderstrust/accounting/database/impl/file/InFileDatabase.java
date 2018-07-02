@@ -1,8 +1,11 @@
 package pl.coderstrust.accounting.database.impl.file;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Repository;
 import pl.coderstrust.accounting.database.Database;
+import pl.coderstrust.accounting.exceptions.ApplicationException;
 import pl.coderstrust.accounting.model.Invoice;
 
 import java.util.ArrayList;
@@ -12,6 +15,8 @@ import java.util.Optional;
 @ConditionalOnProperty(value = "inFileDatabase.enabled", havingValue = "true")
 @Repository
 public class InFileDatabase implements Database {
+
+  private static final Logger logger = LoggerFactory.getLogger(InFileDatabase.class);
 
   private FileHelper fileHelper;
   private JsonHelper jsonHelper;

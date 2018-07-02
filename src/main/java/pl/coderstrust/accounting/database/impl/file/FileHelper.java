@@ -1,6 +1,9 @@
 package pl.coderstrust.accounting.database.impl.file;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+import pl.coderstrust.accounting.exceptions.ApplicationException;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -16,13 +19,16 @@ import java.util.Scanner;
 @Component
 public class FileHelper {
 
+  private static final Logger logger = LoggerFactory.getLogger(FileHelper.class);
+
   public void appendLine(String line, String fileName) {
     try (
         FileWriter fileWriter = new FileWriter(fileName, true);
         BufferedWriter bufferedWriter = new BufferedWriter(fileWriter)) {
       appendLine(line, bufferedWriter);
     } catch (IOException exception) {
-      exception.printStackTrace();
+      logger.error("There was a problem with the file: {}.", fileName, exception);
+      throw new ApplicationException("There was a problem with the file");
     }
   }
 
@@ -41,7 +47,8 @@ public class FileHelper {
         appendLine(line, bufferedWriter);
       }
     } catch (IOException exception) {
-      exception.printStackTrace();
+      logger.error("There was a problem with the file: {}.", fileName, exception);
+      throw new ApplicationException("There was a problem with the file.Cannot save data to file.");
     }
   }
 
@@ -56,7 +63,8 @@ public class FileHelper {
         lines.add(currentLine);
       }
     } catch (IOException exception) {
-      exception.printStackTrace();
+      logger.error("There was a problem with the file: {}.", fileName, exception);
+      throw new ApplicationException("There was a problem with the file, cannot read the data form file");
     }
     return lines;
   }
@@ -84,7 +92,8 @@ public class FileHelper {
       }
       writeListToFile(allInvoicesInJsonAfterRemoval, fileName, false);
     } catch (IOException exception) {
-      exception.printStackTrace();
+      logger.error("There was a problem with the file: {}.", fileName, exception);
+      throw new ApplicationException("There was a problem with the file.");
     }
   }
 
@@ -105,7 +114,8 @@ public class FileHelper {
       }
       writeListToFile(allInvoicesInJsonAfterUpdate, fileName, false);
     } catch (IOException exception) {
-      exception.printStackTrace();
+      logger.error("There was a problem with the file: {}.", fileName, exception);
+      throw new ApplicationException("There was a problem with the file, cannot write data to file.");
     }
   }
 

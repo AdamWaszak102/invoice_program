@@ -4,6 +4,9 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.http.ResponseEntity;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,6 +26,8 @@ import java.util.List;
 @RequestMapping("/invoices")
 public class InvoiceController {
 
+  private static final Logger logger = LoggerFactory.getLogger(InvoiceController.class);
+
   private InvoiceBook invoiceBook;
 
   public InvoiceController(InvoiceBook invoiceBook) {
@@ -34,15 +39,25 @@ public class InvoiceController {
       response = Invoice.class,
       responseContainer = "List")
   @GetMapping
-  public Collection<Invoice> getInvoices() {
-    return invoiceBook.getInvoices();
+  public ResponseEntity<Collection<Invoice>> getInvoices() {
+    Collection<Invoice> invoicesToReturn = invoiceBook.getInvoices();
+
+    if (invoicesToReturn == null) {
+      return ResponseEntity.notFound().build();
+    }
+    return ResponseEntity.ok(invoicesToReturn);
   }
 
   @ApiOperation(value = "Posts one Invoice",
       notes = "One invoice is added to the list and is provided with a new id number value.")
   @PostMapping("/add_invoice")
-  public Long saveInvoice(@RequestBody Invoice invoice) {
-    return invoiceBook.saveInvoice(invoice);
+  public ResponseEntity<Long> saveInvoice(@RequestBody Invoice invoice) {
+    Long id = invoiceBook.saveInvoice(invoice);
+
+    if (id == 0) {
+      return ResponseEntity.notFound().build();
+    }
+    return ResponseEntity.ok(id);
   }
 
   @ApiOperation(value = "Deletes one Invoice by id",
@@ -55,6 +70,7 @@ public class InvoiceController {
       return ResponseEntity.notFound().build();
     }
     invoiceBook.removeInvoiceById(id);
+    logger.info("Invoice deleted, invoice id:{}", id);
     return ResponseEntity.ok().build();
   }
 
@@ -62,15 +78,23 @@ public class InvoiceController {
       notes = "Information contained in one invoice is updated"
           + " using its id and information provided")
   @PutMapping
-  public void updateInvoice(@RequestBody Invoice invoice) {
-    invoiceBook.updateInvoice(invoice);
+  public ResponseEntity<Long> updateInvoice(@RequestBody Invoice invoice) {
+    Long id = invoiceBook.updateInvoice(invoice);
+    if (id == 0) {
+      return ResponseEntity.notFound().build();
+    }
+    return ResponseEntity.ok(id);
   }
 
   @ApiOperation(value = "Posts a list of invoices",
       notes = "Adds a list of invoices, each one provided with unique id number value.")
   @PostMapping("/add_invoices")
-  public List<Long> saveInvoices(@RequestBody List<Invoice> invoices) {
-    return invoiceBook.saveInvoices(invoices);
+  public ResponseEntity<List<Long>> saveInvoices(@RequestBody List<Invoice> invoices) {
+    List<Long> savedInvoices = invoiceBook.saveInvoices(invoices);
+    if (savedInvoices == null) {
+      return ResponseEntity.notFound().build();
+    }
+    return ResponseEntity.ok().body(savedInvoices);
   }
 
   @ApiOperation(value = "Gets one invoice by id",
