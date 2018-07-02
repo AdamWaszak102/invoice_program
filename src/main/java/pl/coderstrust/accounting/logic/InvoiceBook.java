@@ -29,7 +29,9 @@ public class InvoiceBook {
   }
 
   public void updateInvoice(Invoice invoice) {
-    database.updateInvoice(invoice);
+    if (invoice.getId() != null) {
+      database.updateInvoice(invoice);
+    }
   }
 
   public void removeInvoiceById(Long id) {
