@@ -15,6 +15,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import pl.coderstrust.accounting.model.Invoice;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -36,9 +37,11 @@ public class InFileDatabaseTest {
   Invoice invoiceOne = invoiceOne();
   Invoice invoiceTwo = invoiceTwo();
   List<Invoice> invoicesList = Arrays.asList(invoiceOne, invoiceTwo, invoiceTwo);
+  List<Invoice>emptyInvoicesList = new ArrayList<>();
   String anything = "anything";
   String something = "something";
   List<String> invoicesListInString = Arrays.asList(anything, something, something);
+  List<String> emptyStringList = Arrays.asList("","");
 
   @InjectMocks
   InFileDatabase inFileDatabase;

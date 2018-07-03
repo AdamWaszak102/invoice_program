@@ -40,8 +40,7 @@ public class InvoiceController {
   @GetMapping
   public ResponseEntity<Collection<Invoice>> getInvoices() {
     Collection<Invoice> invoicesToReturn = invoiceBook.getInvoices();
-
-    if (invoicesToReturn == null) {
+    if (invoicesToReturn.isEmpty()) {
       return ResponseEntity.notFound().build();
     }
     return ResponseEntity.ok(invoicesToReturn);
@@ -50,13 +49,8 @@ public class InvoiceController {
   @ApiOperation(value = "Posts one Invoice",
       notes = "One invoice is added to the list and is provided with a new id number value.")
   @PostMapping("/add_invoice")
-  public ResponseEntity<Long> saveInvoice(@RequestBody Invoice invoice) {
-    Long id = invoiceBook.saveInvoice(invoice);
-
-    if (id == 0) {
-      return ResponseEntity.notFound().build();
-    }
-    return ResponseEntity.ok(id);
+  public Long saveInvoice(@RequestBody Invoice invoice) {
+    return invoiceBook.saveInvoice(invoice);
   }
 
   @ApiOperation(value = "Deletes one Invoice by id",
@@ -77,8 +71,12 @@ public class InvoiceController {
       notes = "Information contained in one invoice is updated"
           + " using its id and information provided")
   @PutMapping
-  public void updateInvoice(@RequestBody Invoice invoice) {
+  public ResponseEntity updateInvoice(@RequestBody Invoice invoice) {
+    if (invoiceBook.getInvoiceById(invoice.getId()) == null) {
+      return ResponseEntity.notFound().build();
+    }
     invoiceBook.updateInvoice(invoice);
+    return ResponseEntity.ok().build();
   }
 
   @ApiOperation(value = "Posts a list of invoices",
@@ -86,8 +84,8 @@ public class InvoiceController {
   @PostMapping("/add_invoices")
   public ResponseEntity<List<Long>> saveInvoices(@RequestBody List<Invoice> invoices) {
     List<Long> savedInvoices = invoiceBook.saveInvoices(invoices);
-    if (savedInvoices == null) {
-      return ResponseEntity.notFound().build();
+    if (savedInvoices.size() == 0) {
+      return ResponseEntity.badRequest().build();
     }
     return ResponseEntity.ok().body(savedInvoices);
   }

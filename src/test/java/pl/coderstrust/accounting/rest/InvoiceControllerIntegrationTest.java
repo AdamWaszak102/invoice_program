@@ -43,7 +43,8 @@ public class InvoiceControllerIntegrationTest {
 
   Invoice invoiceOne = invoiceOne();
   Invoice invoiceModified = invoiceOneModified();
-  List<Invoice> invoicesList = new ArrayList<>(Arrays.asList(invoiceOne, invoiceModified));
+  List<Invoice> invoicesList = Arrays.asList(invoiceOne, invoiceModified);
+  List<Invoice> emptyInvoicesList = new ArrayList<>();
 
   @Autowired
   private MockMvc mockMvc;
@@ -79,6 +80,14 @@ public class InvoiceControllerIntegrationTest {
   }
 
   @Test
+  public void shouldCheckThatStatusIsBadRequestWhenPostingAnEmptyListOfInvoices() throws Exception {
+    mockMvc
+        .perform(post("/invoices/add_invoices").content(invoicesToJson(emptyInvoicesList))
+            .contentType(MediaType.APPLICATION_JSON_UTF8))
+        .andExpect(status().isBadRequest());
+  }
+
+  @Test
   public void shouldCheckThatInvoiceControllerReadsInvoices() throws Exception {
     mockMvc.perform(post("/invoices/add_invoice").content(invoiceToJson(invoiceOne))
         .contentType(MediaType.APPLICATION_JSON_UTF8))
@@ -89,6 +98,12 @@ public class InvoiceControllerIntegrationTest {
         .andExpect(jsonPath("$", hasSize(1)))
         .andExpect(status().isOk())
         .andExpect(content().string(containsString("FV 1/2017")));
+  }
+
+  @Test
+  public void shouldCheckThatStatusIsNotFoundWhenReadingEmptyListOfInvoices() throws Exception {
+    mockMvc.perform(get("/invoices/"))
+        .andExpect(status().isNotFound());
   }
 
   @Test
@@ -130,6 +145,13 @@ public class InvoiceControllerIntegrationTest {
   }
 
   @Test
+  public void shouldCheckThatInvoiceIsNotUpdatedIfIdProvidedDoesNotExist() throws Exception {
+    mockMvc.perform(put("/invoices").content(invoiceToJson(invoiceModified))
+        .contentType(MediaType.APPLICATION_JSON_UTF8))
+        .andExpect(status().isNotFound());
+  }
+
+  @Test
   public void shouldCheckThatInvoiceControllerRemovesInvoice() throws Exception {
     MvcResult response = mockMvc
         .perform(post("/invoices/add_invoice").content(invoiceToJson(invoiceOne))
@@ -143,9 +165,7 @@ public class InvoiceControllerIntegrationTest {
 
     mockMvc.perform(get("/invoices"))
         .andDo(print())
-        .andExpect(jsonPath("$", hasSize(0)))
-        .andExpect(status().isOk())
-        .andExpect(content().string(containsString("[]")));
+        .andExpect(status().isNotFound());
   }
 
   @Test

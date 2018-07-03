@@ -5,7 +5,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Repository;
 import pl.coderstrust.accounting.database.Database;
-import pl.coderstrust.accounting.exceptions.ApplicationException;
 import pl.coderstrust.accounting.model.Invoice;
 
 import java.util.ArrayList;
@@ -38,7 +37,9 @@ public class InFileDatabase implements Database {
       String jsonAsString = jsonHelper.convertInvoiceToJsonString(invoice);
       jsonArray.add(jsonAsString);
     }
-    fileHelper.writeListToFile(jsonArray, configuration.getFileName(), true);
+    if (!jsonArray.isEmpty()) {
+      fileHelper.writeListToFile(jsonArray, configuration.getFileName(), true);
+    }
     return ids;
   }
 

@@ -14,6 +14,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import pl.coderstrust.accounting.exceptions.ApplicationException;
 import pl.coderstrust.accounting.model.Invoice;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -68,11 +69,11 @@ public class JsonHelperTest {
   }
 
   @Test(expected = ApplicationException.class)
-  public void shouldCheckThatObjectMapperThrowsIOExceptionWhenJsonStringsListIsConvertedToListOfInvoices()
+  public void shouldCheckThatApplicationExceptionIsThrownWhenJsonStringListConvertedToInvoicesList()
       throws Exception {
     //given
     when(objectMapper.readValue(anything, Invoice.class))
-        .thenThrow(new ApplicationException("Wrong file format."));
+        .thenThrow(new IOException());
 
     //when
     jsonHelper.convertJsonStringsListToListOfInvoices(stringsList);
@@ -101,7 +102,7 @@ public class JsonHelperTest {
       throws Exception {
     //given
     when(objectMapper.readValue(anything, Invoice.class))
-        .thenThrow(new ApplicationException("Wrong file format."));
+        .thenThrow(new IOException());
 
     //when
     jsonHelper.convertJsonStringToInvoice(anything);
