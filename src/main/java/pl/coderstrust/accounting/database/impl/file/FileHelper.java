@@ -25,7 +25,7 @@ public class FileHelper {
       appendLine(line, bufferedWriter);
     } catch (IOException exception) {
       logger.error("There was a problem with the file: {}.", fileName, exception);
-      throw new ApplicationException("There was a problem with the file");
+      throw new ApplicationException("There was a problem with the file", exception);
     }
   }
 
@@ -44,8 +44,9 @@ public class FileHelper {
         appendLine(line, bufferedWriter);
       }
     } catch (IOException exception) {
-      logger.error("There was a problem with the file: {}.", fileName, exception);
-      throw new ApplicationException("There was a problem with the file.Cannot save data to file.");
+      logger.error("There was a problem with the file: {}.Cannot write list to the file.", fileName,
+          exception);
+      throw new ApplicationException("There was a problem with the file.", exception);
     }
   }
 
@@ -60,8 +61,10 @@ public class FileHelper {
         lines.add(currentLine);
       }
     } catch (IOException exception) {
-      logger.error("There was a problem with the file: {}.", fileName, exception);
-      throw new ApplicationException("There was a problem with the file, cannot read the data form file");
+      logger
+          .error("There was a problem with the file: {}. Cannot read data from the file", fileName,
+              exception);
+      throw new ApplicationException("There was a problem with the file", exception);
     }
     return lines;
   }
@@ -89,8 +92,10 @@ public class FileHelper {
       }
       writeListToFile(allInvoicesInJsonAfterRemoval, fileName, false);
     } catch (IOException exception) {
-      logger.error("There was a problem with the file: {}.", fileName, exception);
-      throw new ApplicationException("There was a problem with the file.");
+      logger.error(
+          "There was a problem with the file: {}. Cannot remove line containing the following data from the file: {}",
+          fileName, content, exception);
+      throw new ApplicationException("There was a problem with the file.", exception);
     }
   }
 
@@ -111,8 +116,10 @@ public class FileHelper {
       }
       writeListToFile(allInvoicesInJsonAfterUpdate, fileName, false);
     } catch (IOException exception) {
-      logger.error("There was a problem with the file: {}.", fileName, exception);
-      throw new ApplicationException("There was a problem with the file, cannot write data to file.");
+      logger.error(
+          "There was a problem with the file: {}.Cannot update line containing the following data from the file: {}",
+          fileName, content, exception);
+      throw new ApplicationException("There was a problem with the file.", exception);
     }
   }
 }

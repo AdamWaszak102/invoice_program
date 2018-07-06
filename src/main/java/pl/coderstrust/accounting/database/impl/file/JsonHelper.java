@@ -22,7 +22,7 @@ public class JsonHelper {
   private ObjectMapper readingMapper;
 
   public JsonHelper(@Qualifier("writingMapper") ObjectMapper writingMapper,
-      @Qualifier("readingMapper")ObjectMapper readingMapper) {
+      @Qualifier("readingMapper") ObjectMapper readingMapper) {
     this.writingMapper = writingMapper;
     this.readingMapper = readingMapper;
   }
@@ -31,8 +31,9 @@ public class JsonHelper {
     try {
       return writingMapper.writeValueAsString(invoice);
     } catch (JsonProcessingException exception) {
-      logger.error("Wrong invoice. Invoice id: {}", invoice.getId(),  exception);
-      throw new ApplicationException("Wrong invoice format");
+      logger.error("There was a problem with JSON serialization of invoice with id: {}",
+          invoice.getId(), exception);
+      throw new ApplicationException("There was a problem with JSON serialization", exception);
     }
   }
 
@@ -43,9 +44,9 @@ public class JsonHelper {
         Invoice invoice = readingMapper.readValue(invoiceInString, Invoice.class);
         allInvoices.add(invoice);
       } catch (IOException exception) {
-        logger.error("Wrong file format:{}. Cannot convert invoice and add to list of \n"
-            + "invoices", invoiceInString, exception);
-        throw new ApplicationException("Wrong file format,it cannot be added to list of invoices");
+        logger.error("There was a problem with JSON deserialization of invoice list string: {}",
+            invoiceInString, exception);
+        throw new ApplicationException("There was a problem with JSON deserialization", exception);
       }
     }
     return allInvoices;
@@ -56,7 +57,7 @@ public class JsonHelper {
       return readingMapper.readValue(invoiceLine, Invoice.class);
     } catch (IOException exception) {
       logger.error("Wrong file format: {}", invoiceLine, exception);
-      throw new ApplicationException("Wrong file format.");
+      throw new ApplicationException("Wrong file format.", exception);
     }
   }
 }
