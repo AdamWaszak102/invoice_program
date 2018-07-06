@@ -1,5 +1,8 @@
 package pl.coderstrust.accounting.model;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
@@ -7,10 +10,14 @@ import java.util.Objects;
 /**
  * Created by Adam on 2018-04-16.
  */
+@ApiModel(value = "InvoiceModel", description = "Sample Invoice Model")
 public class Invoice {
 
   private Long id;
+
+  @ApiModelProperty(value = "invoice number in format chosen by company", example = "FV 9/2018")
   private String identifier;
+
   private LocalDate issueDate;
   private Company buyer;
   private Company seller;

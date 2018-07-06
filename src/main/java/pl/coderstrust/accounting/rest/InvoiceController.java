@@ -1,5 +1,8 @@
 package pl.coderstrust.accounting.rest;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +20,7 @@ import pl.coderstrust.accounting.model.Invoice;
 import java.util.Collection;
 import java.util.List;
 
+@Api(value = "/invoices", description = "Operations on invoices")
 @RestController
 @RequestMapping("/invoices")
 public class InvoiceController {
@@ -29,47 +33,75 @@ public class InvoiceController {
     this.invoiceBook = invoiceBook;
   }
 
+  @ApiOperation(value = "Gets all Invoices",
+      notes = "Gets all invoices that were saved",
+      response = Invoice.class,
+      responseContainer = "List")
   @GetMapping
   public ResponseEntity<Collection<Invoice>> getInvoices() {
     Collection<Invoice> invoicesToReturn = invoiceBook.getInvoices();
-
-    if (invoicesToReturn == null) {
+    if (invoicesToReturn.isEmpty()) {
       return ResponseEntity.notFound().build();
     }
     return ResponseEntity.ok(invoicesToReturn);
   }
 
+  @ApiOperation(value = "Posts one Invoice",
+      notes = "One invoice is added to the list and is provided with a new id number value.")
   @PostMapping("/add_invoice")
-  public ResponseEntity<Long> saveInvoice(@RequestBody Invoice invoice) {
-    Long id = invoiceBook.saveInvoice(invoice);
-
-    if (id == 0) {
-      return ResponseEntity.notFound().build();
-    }
-    return ResponseEntity.ok(id);
+  public Long saveInvoice(@RequestBody Invoice invoice) {
+    return invoiceBook.saveInvoice(invoice);
   }
 
+  @ApiOperation(value = "Deletes one Invoice by id",
+      notes = "One invoice is deleted from the list by its id.")
   @DeleteMapping("/{id}")
-  public void removeInvoiceById(@PathVariable("id") Long id) {
+  public ResponseEntity removeInvoiceById(
+      @ApiParam(value = "id number of the invoice to be deleted",
+          required = true) @PathVariable("id") Long id) {
+    if (invoiceBook.getInvoiceById(id) == null) {
+      return ResponseEntity.notFound().build();
+    }
     invoiceBook.removeInvoiceById(id);
     logger.info("Invoice deleted, invoice id:{}", id);
+    return ResponseEntity.ok().build();
   }
 
+  @ApiOperation(value = "Updates one invoice",
+      notes = "Information contained in one invoice is updated"
+          + " using its id and information provided")
   @PutMapping
-  public ResponseEntity<Long> updateInvoice(@RequestBody Invoice invoice) {
-    Long id = invoiceBook.updateInvoice(invoice);
-    if (id == 0) {
+  public ResponseEntity updateInvoice(@RequestBody Invoice invoice) {
+    if (invoiceBook.getInvoiceById(invoice.getId()) == null) {
       return ResponseEntity.notFound().build();
     }
-    return ResponseEntity.ok(id);
+    invoiceBook.updateInvoice(invoice);
+    return ResponseEntity.ok().build();
   }
 
+  @ApiOperation(value = "Posts a list of invoices",
+      notes = "Adds a list of invoices, each one provided with unique id number value.")
   @PostMapping("/add_invoices")
   public ResponseEntity<List<Long>> saveInvoices(@RequestBody List<Invoice> invoices) {
     List<Long> savedInvoices = invoiceBook.saveInvoices(invoices);
-    if (savedInvoices == null) {
-      return ResponseEntity.notFound().build();
+    if (savedInvoices.size() == 0) {
+      return ResponseEntity.badRequest().build();
     }
     return ResponseEntity.ok().body(savedInvoices);
+  }
+
+  @ApiOperation(value = "Gets one invoice by id",
+      notes = "Gets one invoice by its id value.",
+      response = Invoice.class,
+      responseContainer = "String")
+  @GetMapping("/{id}")
+  public ResponseEntity<Invoice> getInvoiceById(
+      @ApiParam(value = "id number of the invoice to be read",
+          required = true) @PathVariable Long id) {
+    Invoice invoiceToReturn = invoiceBook.getInvoiceById(id);
+    if (invoiceToReturn == null) {
+      return ResponseEntity.notFound().build();
+    }
+    return ResponseEntity.ok(invoiceToReturn);
   }
 }

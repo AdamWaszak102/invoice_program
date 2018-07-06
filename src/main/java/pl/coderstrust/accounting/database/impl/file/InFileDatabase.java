@@ -5,17 +5,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Repository;
 import pl.coderstrust.accounting.database.Database;
-import pl.coderstrust.accounting.exceptions.ApplicationException;
 import pl.coderstrust.accounting.model.Invoice;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Scanner;
 
 @ConditionalOnProperty(value = "inFileDatabase.enabled", havingValue = "true")
 @Repository
@@ -43,7 +37,9 @@ public class InFileDatabase implements Database {
       String jsonAsString = jsonHelper.convertInvoiceToJsonString(invoice);
       jsonArray.add(jsonAsString);
     }
-    fileHelper.writeListToFile(jsonArray, configuration.getFileName(), true);
+    if (!jsonArray.isEmpty()) {
+      fileHelper.writeListToFile(jsonArray, configuration.getFileName(), true);
+    }
     return ids;
   }
 
@@ -65,14 +61,14 @@ public class InFileDatabase implements Database {
   public Invoice getInvoiceById(Long id) {
     String invoiceLine = fileHelper
         .readJsonFileAndFindInvoiceLineById(configuration.getFileName(), getJsonStringIdPart(id));
-    return jsonHelper.returnInvoiceById(invoiceLine);
+    return jsonHelper.convertJsonStringToInvoice(invoiceLine);
   }
 
   @Override
   public void updateInvoice(Invoice invoice) {
-    String invoiceAsJsonString = jsonHelper.convertInvoiceToJsonString(invoice);
     Long currentId = Optional.ofNullable(invoice.getId())
         .orElse(0L);
+    String invoiceAsJsonString = jsonHelper.convertInvoiceToJsonString(invoice);
     fileHelper
         .updateLineWithContentWhenReadingJsonFile(invoiceAsJsonString, configuration.getFileName(),
             getJsonStringIdPart(currentId));
@@ -90,24 +86,8 @@ public class InFileDatabase implements Database {
   }
 
   private synchronized void getIdFromFileAndSaveItBack(Invoice invoice) {
-    Long id = 0L;
-    File file = new File(configuration.getIdNumberFileName());
-    if (file.exists()) {
-      try (Scanner scanner = new Scanner(file)) {
-        while (scanner.hasNextLong()) {
-          id = scanner.nextLong();
-        }
-      } catch (FileNotFoundException exception) {
-        logger.error("Cannot find the correct id number.Problem with the file:{}.", file,exception);
-        throw new ApplicationException("Cannot find the correct id number.");
-      }
-    }
+    Long id = fileHelper.readNumberFromFile(configuration.getIdNumberFileName());
     invoice.setId(++id);
-    try (FileWriter fileWriter = new FileWriter(file)) {
-      fileWriter.write(id.toString());
-    } catch (IOException exception) {
-      logger.error("Cannot save the correct id number.Problem with the file:{}.", file, exception);
-      throw new ApplicationException("Cannot save the correct id number");
-    }
+    fileHelper.writeNumberToFile(id, configuration.getIdNumberFileName());
   }
 }

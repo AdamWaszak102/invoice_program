@@ -1,14 +1,27 @@
 package pl.coderstrust.accounting.model;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 import java.util.Objects;
 
 /**
  * Created by Adam on 2018-04-17.
  */
+@ApiModel(value = "CompanyModel",
+    description = "Sample Company Buyer and Seller's information")
 public class Company {
 
+  @ApiModelProperty(value = "Company buyer name",
+      example = "Abracodeabra sp. z o.o.")
   private String companyName;
+
+  @ApiModelProperty(value = "Company buyer address",
+      example = "ul. Puławska 20/33, 02-222 Warszawa")
   private String address;
+
+  @ApiModelProperty(value = "Company buyer taxIdentification number",
+      example = "5555555555")
   private Long taxIdentificationNumber;
 
   public Company(String companyName, String address, Long taxIdentificationNumber) {
