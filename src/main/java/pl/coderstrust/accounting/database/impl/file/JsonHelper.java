@@ -19,8 +19,7 @@ public class JsonHelper {
   private static final Logger logger = LoggerFactory.getLogger(JsonHelper.class);
 
 
-
-  public JsonHelper( ObjectMapper objectMapper) {
+  public JsonHelper(ObjectMapper objectMapper) {
     this.objectMapper = objectMapper;
   }
 
@@ -53,8 +52,9 @@ public class JsonHelper {
     try {
       return objectMapper.readValue(invoiceLine, Invoice.class);
     } catch (IOException exception) {
-      logger.error("Wrong file format: {}", invoiceLine, exception);
-      throw new ApplicationException("Wrong file format.", exception);
+      logger.error("There was a problem with JSON deserialization of invoice list string: {}",
+          invoiceLine, exception);
+      throw new ApplicationException("There was a problem with JSON deserialization", exception);
     }
   }
 }
