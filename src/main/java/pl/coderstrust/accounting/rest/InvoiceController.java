@@ -75,7 +75,11 @@ public class InvoiceController {
     if (invoiceBook.getInvoiceById(id) == null) {
       return ResponseEntity.notFound().build();
     }
-    invoiceBook.removeInvoiceById(id);
+    try {
+      invoiceBook.removeInvoiceById(id);
+    } catch (ApplicationException exception) {
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+    }
     logger.info("Invoice deleted, invoice id:{}", id);
     return ResponseEntity.ok().build();
   }
