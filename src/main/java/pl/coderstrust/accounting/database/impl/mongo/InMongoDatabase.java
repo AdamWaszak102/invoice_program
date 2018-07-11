@@ -77,7 +77,6 @@ public class InMongoDatabase implements Database {
     Iterator iterator = findIterable.iterator();
     while (iterator.hasNext()) {
       Invoice invoice = (Invoice) iterator.next();
-      System.out.println(invoice);
       return invoice;
     }
     return null;
