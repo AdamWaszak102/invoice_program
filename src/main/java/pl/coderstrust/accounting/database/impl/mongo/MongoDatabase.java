@@ -4,7 +4,6 @@ import static com.mongodb.client.model.Filters.in;
 
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Repository;
@@ -18,15 +17,13 @@ import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.ThreadLocalRandom;
 
-@ConditionalOnProperty(value = "Mongodatabase.enabled", havingValue = "true")
+@ConditionalOnProperty(value = "MongoDatabase.enabled", havingValue = "true")
 @Repository
-public class Mongodatabase implements Database {
+public class MongoDatabase implements Database {
 
-  private MongoDatabase database;
   private MongoCollection<Invoice> collection;
 
-  public Mongodatabase(MongoDatabase database, MongoCollection<Invoice> collection) {
-    this.database = database;
+  public MongoDatabase(MongoCollection<Invoice> collection) {
     this.collection = collection;
   }
 

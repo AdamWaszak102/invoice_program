@@ -32,19 +32,12 @@ public class SpringConfiguration {
 
   @Primary
   @Bean
-  public MongoDatabase database() {
+  public MongoCollection<Invoice> collection() {
     CodecRegistry pojoCodecRegistry = fromRegistries(MongoClient.getDefaultCodecRegistry(),
         fromProviders(PojoCodecProvider.builder().automatic(true).build()));
     MongoClient mongo = new MongoClient(new MongoClientURI("mongodb://localhost:27017"));
     MongoDatabase database = mongo.getDatabase("invoice")
         .withCodecRegistry(pojoCodecRegistry);
-    return database;
-  }
-
-  @Primary
-  @Bean
-  public MongoCollection<Invoice> collection() {
-    MongoDatabase database = database();
     MongoCollection<Invoice> collection = database
         .getCollection("MongoInvoices", Invoice.class);
     return collection;
