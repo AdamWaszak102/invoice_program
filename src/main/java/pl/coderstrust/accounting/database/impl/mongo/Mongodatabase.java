@@ -24,7 +24,6 @@ public class Mongodatabase implements Database {
 
   private MongoDatabase database;
   private MongoCollection<Invoice> collection;
-  private static final String idFileName = "idMongo.txt";
 
   public Mongodatabase(MongoDatabase database, MongoCollection<Invoice> collection) {
     this.database = database;
