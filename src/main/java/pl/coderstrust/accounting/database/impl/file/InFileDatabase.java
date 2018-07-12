@@ -54,7 +54,7 @@ public class InFileDatabase implements Database {
   @Override
   public List<Invoice> getInvoices() {
     List<String> allInvoices = fileHelper.readLines(configuration.getFileName());
-    if (allInvoices != null) {
+    if (!allInvoices.isEmpty()) {
       return jsonHelper.convertJsonStringsListToListOfInvoices(allInvoices);
     }
     return null;
