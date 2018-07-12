@@ -40,8 +40,7 @@ public class JsonHelper {
         Invoice invoice = objectMapper.readValue(invoiceInString, Invoice.class);
         allInvoices.add(invoice);
       } catch (IOException exception) {
-        logger.error("There was a problem with JSON deserialization of invoice list string: {}",
-            invoiceInString, exception);
+        logger.error("There was a problem with JSON deserialization of invoices", exception);
         throw new ApplicationException("There was a problem with JSON deserialization", exception);
       }
     }
@@ -52,7 +51,7 @@ public class JsonHelper {
     try {
       return objectMapper.readValue(invoiceLine, Invoice.class);
     } catch (IOException exception) {
-      logger.error("There was a problem with JSON deserialization of invoice list string: {}",
+      logger.error("There was a problem with JSON deserialization of invoice: {}",
           invoiceLine, exception);
       throw new ApplicationException("There was a problem with JSON deserialization", exception);
     }

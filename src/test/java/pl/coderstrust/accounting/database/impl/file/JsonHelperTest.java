@@ -1,5 +1,6 @@
 package pl.coderstrust.accounting.database.impl.file;
 
+import static org.assertj.core.api.Fail.fail;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -69,7 +70,8 @@ public class JsonHelperTest {
   }
 
   @Test(expected = ApplicationException.class)
-  public void shouldCheckThatApplicationExceptionIsThrownWhenJsonStringListConvertedToInvoicesList()
+  public void
+  shouldCheckThatApplicationExceptionIsThrownWhenObjectMapperThrowsIOExceptionWhileJsonStringListIsConvertedToInvoicesList()
       throws Exception {
     //given
     when(objectMapper.readValue(anything, Invoice.class))
@@ -79,7 +81,7 @@ public class JsonHelperTest {
     jsonHelper.convertJsonStringsListToListOfInvoices(stringsList);
 
     //then
-    verify(objectMapper.readValue(anything, Invoice.class));
+    fail("There was a problem with JSON deserialization");
   }
 
   @Test
@@ -98,7 +100,8 @@ public class JsonHelperTest {
   }
 
   @Test(expected = ApplicationException.class)
-  public void shouldCheckThatApplicationExceptionIsThrownWhenJsonHelperConvertsJsonStringToInvoice()
+  public void
+      shouldCheckThatApplicationExceptionIsThrownWhenObjectMapperThrowsIOExceptionWhileJsonStringIsConvertedToInvoice()
       throws Exception {
     //given
     when(objectMapper.readValue(anything, Invoice.class))
@@ -108,6 +111,6 @@ public class JsonHelperTest {
     jsonHelper.convertJsonStringToInvoice(anything);
 
     //then
-    verify(objectMapper.readValue(anything, Invoice.class));
+    fail("There was a problem with JSON deserialization");
   }
 }

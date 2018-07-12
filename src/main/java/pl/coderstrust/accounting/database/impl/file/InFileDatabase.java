@@ -54,14 +54,20 @@ public class InFileDatabase implements Database {
   @Override
   public List<Invoice> getInvoices() {
     List<String> allInvoices = fileHelper.readLines(configuration.getFileName());
-    return jsonHelper.convertJsonStringsListToListOfInvoices(allInvoices);
+    if (allInvoices != null) {
+      return jsonHelper.convertJsonStringsListToListOfInvoices(allInvoices);
+    }
+    return null;
   }
 
   @Override
   public Invoice getInvoiceById(Long id) {
     String invoiceLine = fileHelper
         .readJsonFileAndFindInvoiceLineById(configuration.getFileName(), getJsonStringIdPart(id));
-    return jsonHelper.convertJsonStringToInvoice(invoiceLine);
+    if (invoiceLine != null) {
+      return jsonHelper.convertJsonStringToInvoice(invoiceLine);
+    }
+    return null;
   }
 
   @Override

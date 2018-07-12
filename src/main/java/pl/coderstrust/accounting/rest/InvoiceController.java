@@ -57,13 +57,13 @@ public class InvoiceController {
       notes = "One invoice is added to the list and is provided with a new id number value.")
   @PostMapping("/add_invoice")
   public ResponseEntity<Long> saveInvoice(@RequestBody Invoice invoice) {
-    Long savedInvoice;
+    Long invoiceId;
     try {
-      savedInvoice = invoiceBook.saveInvoice(invoice);
+      invoiceId = invoiceBook.saveInvoice(invoice);
     } catch (ApplicationException exception) {
       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
     }
-    return ResponseEntity.ok(savedInvoice);
+    return ResponseEntity.ok(invoiceId);
   }
 
   @ApiOperation(value = "Deletes one Invoice by id",
@@ -105,16 +105,16 @@ public class InvoiceController {
       notes = "Adds a list of invoices, each one provided with unique id number value.")
   @PostMapping("/add_invoices")
   public ResponseEntity<List<Long>> saveInvoices(@RequestBody List<Invoice> invoices) {
-    List<Long> savedInvoices = null;
+    if (invoices.size() == 0) {
+      return ResponseEntity.badRequest().build();
+    }
+    List<Long> ids;
     try {
-      savedInvoices = invoiceBook.saveInvoices(invoices);
+      ids = invoiceBook.saveInvoices(invoices);
     } catch (ApplicationException exception) {
       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
     }
-    if (savedInvoices.size() == 0) {
-      return ResponseEntity.badRequest().build();
-    }
-    return ResponseEntity.ok().body(savedInvoices);
+    return ResponseEntity.ok().body(ids);
   }
 
   @ApiOperation(value = "Gets one invoice by id",
