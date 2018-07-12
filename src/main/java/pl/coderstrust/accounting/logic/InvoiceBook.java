@@ -23,7 +23,7 @@ public class InvoiceBook {
     mailService.sendEmail(id);
   }
 
-  public List<Invoice> getInvoicesByDateRange(LocalDate dateFrom, LocalDate dateTo) {
+  public List<Invoice> getInvoicesByIssueDateRange(LocalDate dateFrom, LocalDate dateTo) {
     return database.getInvoices().stream()
         .filter(invoice -> invoice.getIssueDate().isAfter(dateFrom))
         .filter(invoice -> invoice.getIssueDate().isBefore(dateTo))

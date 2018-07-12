@@ -37,11 +37,11 @@ public class MailService {
 
   }
 
-  @Scheduled(cron = "* * * * * *", zone = "GMT")
+  @Scheduled(cron = "19 50 00 * * *", zone = "GMT")
   public void sendMailAtSpecifiedTime() {
     mailSender.sendMail("jola.coderstrust@gmail.com", new String[]{"coderstrust.1@gmail.com",
         "coderstrust.2@onet.pl"}, "Invoice", invoiceConverter(
-        invoiceBook.getInvoicesByDateRange(LocalDate.now().minusDays(1L), LocalDate.now())));
+        invoiceBook.getInvoicesByIssueDateRange(LocalDate.now().minusDays(1L), LocalDate.now())));
   }
 }
 

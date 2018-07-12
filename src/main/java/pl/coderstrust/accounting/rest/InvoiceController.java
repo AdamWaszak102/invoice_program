@@ -88,12 +88,4 @@ public class InvoiceController {
     }
     return ResponseEntity.ok(invoiceToReturn);
   }
-
-//  @ApiOperation(value = "/sendEmail",
-//      notes = "/sendEmail")
-//  @PostMapping("/sendEmail")
-//  public ResponseEntity sendEmail(@RequestBody Long id) {
-//    invoiceBook.sendEmail(id);
-//    return new ResponseEntity(HttpStatus.OK);
-//  }
 }
