@@ -1,17 +1,11 @@
 package pl.coderstrust.accounting.database.impl.mongo;
 
 import static com.mongodb.client.model.Filters.in;
-import static org.bson.codecs.configuration.CodecRegistries.fromProviders;
-import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
 
-import com.mongodb.MongoClient;
-import com.mongodb.MongoClientURI;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
-import org.bson.codecs.configuration.CodecRegistry;
-import org.bson.codecs.pojo.PojoCodecProvider;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Repository;
 import pl.coderstrust.accounting.database.Database;
@@ -28,18 +22,18 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
 
-@ConditionalOnProperty(value = "inMongoDatabase.enabled", havingValue = "true")
+@ConditionalOnProperty(value = "Mongodatabase.enabled", havingValue = "true")
 @Repository
-public class InMongoDatabase implements Database {
+public class Mongodatabase implements Database {
 
-  private CodecRegistry pojoCodecRegistry = fromRegistries(MongoClient.getDefaultCodecRegistry(),
-      fromProviders(PojoCodecProvider.builder().automatic(true).build()));
-  private MongoClient mongo = new MongoClient(new MongoClientURI("mongodb://localhost:27017"));
-  private MongoDatabase database = mongo.getDatabase("invoice")
-      .withCodecRegistry(pojoCodecRegistry);
-  private MongoCollection<Invoice> collection = database
-      .getCollection("MongoInvoices", Invoice.class);
+  private MongoDatabase database;
+  private MongoCollection<Invoice> collection;
   private static final String idFileName = "idMongo.txt";
+
+  public Mongodatabase(MongoDatabase database, MongoCollection<Invoice> collection) {
+    this.database = database;
+    this.collection = collection;
+  }
 
   @Override
   public Long saveInvoice(Invoice invoice) {
