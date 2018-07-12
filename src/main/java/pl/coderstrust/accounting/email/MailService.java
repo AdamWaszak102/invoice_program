@@ -37,7 +37,7 @@ public class MailService {
 
   }
 
-  @Scheduled(cron = "19 50 00 * * *", zone = "GMT")
+  @Scheduled(cron = "0 50 19 * * ?", zone = "GMT")
   public void sendMailAtSpecifiedTime() {
     mailSender.sendMail("jola.coderstrust@gmail.com", new String[]{"coderstrust.1@gmail.com",
         "coderstrust.2@onet.pl"}, "Invoice", invoiceConverter(
