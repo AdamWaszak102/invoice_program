@@ -21,6 +21,7 @@ public abstract class DatabaseTest {
     Invoice invoiceOne = invoiceOne();
     Invoice invoiceTwo = invoiceTwo();
     Database db = getDatabase();
+    db.saveInvoice(invoiceOne);
     int initialInvoicesNumber = db.getInvoices().size();
 
     //when
@@ -38,6 +39,7 @@ public abstract class DatabaseTest {
     Invoice invoiceTwo = invoiceTwo();
     List<Invoice> invoicesList = new ArrayList<>(Arrays.asList(invoiceOne, invoiceTwo));
     Database db = getDatabase();
+    db.saveInvoice(invoiceOne);
     int initialInvoicesNumber = db.getInvoices().size();
 
     //when
@@ -68,6 +70,7 @@ public abstract class DatabaseTest {
     //given
     Invoice invoiceOne = invoiceOne();
     Database db = getDatabase();
+    db.saveInvoice(invoiceOne);
     int initialInvoicesNumber = db.getInvoices().size();
 
     //when
