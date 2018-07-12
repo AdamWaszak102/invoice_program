@@ -41,7 +41,7 @@ public class MailService {
   public void sendMailAtSpecifiedTime() {
     mailSender.sendMail("jola.coderstrust@gmail.com", new String[]{"coderstrust.1@gmail.com",
         "coderstrust.2@onet.pl"}, "Invoice", invoiceConverter(
-        invoiceBook.getInvoicesByIssueDateRange(LocalDate.now().minusDays(1L), LocalDate.now())));
+        invoiceBook.getInvoicesByIssueDateRange(LocalDate.now().minusDays(1L), LocalDate.now().plusDays(1))));
   }
 }
 
