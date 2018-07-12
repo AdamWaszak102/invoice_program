@@ -11,16 +11,12 @@ import org.springframework.stereotype.Repository;
 import pl.coderstrust.accounting.database.Database;
 import pl.coderstrust.accounting.model.Invoice;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
-import java.util.Scanner;
+import java.util.concurrent.ThreadLocalRandom;
 
 @ConditionalOnProperty(value = "Mongodatabase.enabled", havingValue = "true")
 @Repository
@@ -37,7 +33,7 @@ public class Mongodatabase implements Database {
 
   @Override
   public Long saveInvoice(Invoice invoice) {
-    getIdFromFileAndSaveItBack(invoice);
+    setNewId(invoice);
     collection.insertOne(invoice);
     return invoice.getId();
   }
@@ -46,7 +42,7 @@ public class Mongodatabase implements Database {
   public List<Long> saveInvoices(List<Invoice> invoices) {
     List<Long> ids = new ArrayList<>();
     for (Invoice invoice : invoices) {
-      getIdFromFileAndSaveItBack(invoice);
+      setNewId(invoice);
       ids.add(invoice.getId());
     }
     collection.insertMany(invoices);
@@ -88,23 +84,7 @@ public class Mongodatabase implements Database {
     collection.deleteOne((in("_id", id)));
   }
 
-  private synchronized void getIdFromFileAndSaveItBack(Invoice invoice) {
-    Long id = 0L;
-    File file = new File(idFileName);
-    if (file.exists()) {
-      try (Scanner scanner = new Scanner(file)) {
-        while (scanner.hasNextLong()) {
-          id = scanner.nextLong();
-        }
-      } catch (FileNotFoundException exception) {
-        exception.printStackTrace();
-      }
-    }
-    invoice.setId(++id);
-    try (FileWriter fileWriter = new FileWriter(file)) {
-      fileWriter.write(id.toString());
-    } catch (IOException exception) {
-      exception.printStackTrace();
-    }
+  public void setNewId(Invoice invoice) {
+    invoice.setId(Long.valueOf(ThreadLocalRandom.current().nextLong()));
   }
 }
