@@ -2,25 +2,39 @@ package pl.coderstrust.accounting.model;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 
-/**
- * Created by Adam on 2018-04-16.
- */
+
 @ApiModel(value = "InvoiceModel", description = "Sample Invoice Model")
+
+@Entity
 public class Invoice {
 
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
   @ApiModelProperty(value = "invoice number in format chosen by company", example = "FV 9/2018")
   private String identifier;
 
   private LocalDate issueDate;
+
+  @ManyToOne(cascade = CascadeType.ALL)
   private Company buyer;
+  @ManyToOne(cascade = CascadeType.ALL)
   private Company seller;
+  @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
   private List<InvoiceEntry> entries;
 
   public Invoice(Long id, String identifier, LocalDate issueDate,
